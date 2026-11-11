@@ -207,6 +207,40 @@
         button.sith-mode:hover {
             box-shadow: 0 0 25px rgba(229, 9, 20, 0.9);
         }
+
+        /* EASTER EGG CSS: Toast de inatividade */
+        .idle-toast {
+            position: fixed;
+            bottom: -100px; /* Escondido inicialmente */
+            right: 20px;
+            background: linear-gradient(135deg, var(--unaerp-blue), #2c3e80);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: bottom 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 1000;
+            cursor: pointer;
+        }
+        .idle-toast.show {
+            bottom: 30px;
+            animation: pulse-toast 2s infinite 1s;
+        }
+        body.dark-mode .idle-toast {
+            background: linear-gradient(135deg, #111, #1f2833);
+            color: #45a29e;
+            border: 1px solid #45a29e;
+            box-shadow: 0 0 15px rgba(69, 162, 158, 0.4);
+        }
+        @keyframes pulse-toast {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 <body>
@@ -285,6 +319,11 @@
     </div>
 
     <button type="button" id="btnGerar" onclick="gerarDocumentos()">Forjar Petições</button>
+</div>
+
+<!-- Dica Animada (Easter Egg 4) -->
+<div id="idle-toast" class="idle-toast" onclick="limparTimerCafe()">
+    ☕ Muita calma nessa Força... Precisa de ajuda ou um café, padawan? 
 </div>
 
 <!-- Bibliotecas -->
@@ -378,6 +417,40 @@ function verificarOrdem66() {
             document.body.classList.remove('dark-mode');
         }
     }
+}
+
+// EASTER EGG 4: O Café da Força (Inatividade)
+var timerCafe;
+var TEMPO_ESPERA = 30000; // 30 segundos
+
+function iniciarTimerCafe() {
+    clearTimeout(timerCafe);
+    document.getElementById('idle-toast').classList.remove('show');
+    
+    // Só dispara se algum input estiver ativamente focado
+    if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'SELECT')) {
+        timerCafe = setTimeout(function() {
+            document.getElementById('idle-toast').classList.add('show');
+        }, TEMPO_ESPERA);
+    }
+}
+
+function limparTimerCafe() {
+    clearTimeout(timerCafe);
+    document.getElementById('idle-toast').classList.remove('show');
+}
+
+function inicializarEasterEggCafe() {
+    var campos = document.querySelectorAll('input, select');
+    campos.forEach(function(campo) {
+        // Se clicar/focar, inicia a contagem
+        campo.addEventListener('focus', iniciarTimerCafe);
+        // Se digitar qualquer coisa, zera a contagem
+        campo.addEventListener('input', iniciarTimerCafe);
+        campo.addEventListener('keyup', iniciarTimerCafe);
+        // Se sair do campo (perder o foco), cancela a contagem e esconde a mensagem
+        campo.addEventListener('blur', limparTimerCafe);
+    });
 }
 
 // GERAÇÃO DE DOCUMENTOS (Habilitação, Procuração, Gratuidade)
@@ -496,10 +569,12 @@ window.nomeEhPadawan = nomeEhPadawan;
 window.atualizarBotao = atualizarBotao;
 window.verificarOrdem66 = verificarOrdem66;
 window.gerarDocumentos = gerarDocumentos;
+window.limparTimerCafe = limparTimerCafe; // Permite fechar a mensagem clicando nela
 
 // Executa a atualização inicial quando o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', function() {
     atualizarBotao();
+    inicializarEasterEggCafe(); // Inicia os ouvintes do novo Easter Egg
 });
 </script>
 
