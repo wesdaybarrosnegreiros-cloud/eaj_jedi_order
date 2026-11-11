@@ -25,7 +25,7 @@
             transition: background-color 0.8s ease, color 0.8s ease;
         }
         
-        /* Modo escuro (Ordem 66) */
+        /* Modo escuro (Ordem 66 / Não Autorizado) */
         body.dark-mode {
             background-color: #0b0c10;
         }
@@ -328,9 +328,20 @@ function nomeEhPadawan() {
 function atualizarBotao() {
     const nome = normalizar(document.getElementById('nome_bad_boy').value.trim());
     const botao = document.getElementById('btnGerar');
+    const vara = document.getElementById('vara').value.trim();
 
     botao.classList.toggle('sith-mode', SITHS.some(sith => nome.includes(sith)));
-    botao.innerText = nomeEhPadawan() ? TEXTO_BOTAO_PADRAO : TEXTO_NAO_PADAWAN;
+    
+    if (nomeEhPadawan()) {
+        botao.innerText = TEXTO_BOTAO_PADRAO;
+        // Só remove o tema escuro se o campo da vara também não for 66
+        if (vara !== "66") {
+            document.body.classList.remove('dark-mode');
+        }
+    } else {
+        botao.innerText = TEXTO_NAO_PADAWAN;
+        document.body.classList.add('dark-mode');
+    }
 }
 
 atualizarBotao();
@@ -344,7 +355,10 @@ function verificarOrdem66() {
             alert("⚠️ ALERTA DO SENADO GALÁCTICO ⚠️\n\nExecutando Ordem 66...\n\nBrincadeira, padawan! Pode ir voltando ao trabalho.");
         }, 500);
     } else {
-        document.body.classList.remove('dark-mode');
+        // Só remove o tema escuro se o nome for válido
+        if (nomeEhPadawan()) {
+            document.body.classList.remove('dark-mode');
+        }
     }
 }
 
