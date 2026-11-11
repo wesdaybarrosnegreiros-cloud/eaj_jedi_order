@@ -258,8 +258,8 @@
     </div>
     <div class="campo">
         <label>Padawan autor da arte:</label>
-        <!-- Adicionado gatilho input para detetar nomes dos Sith -->
-        <input type="text" id="nome_bad_boy" placeholder="Nome do estagiário(a)" oninput="verificarLadoSombrio()">
+        <!-- Gatilho input: valida o padawan e detecta nomes dos Sith -->
+        <input type="text" id="nome_bad_boy" placeholder="Nome do estagiário(a)" oninput="atualizarBotao()">
     </div>
 
     <button type="button" id="btnGerar" onclick="gerarDocumentos()">Forjar Petições</button>
@@ -284,22 +284,36 @@ function revelarSegredo() {
     alert("🥷 HOLOCRON SECRETO DESBLOQUEADO:\n\n" + fraseSorteada);
 }
 
-// EASTER EGG 2: O Lado Sombrio (Nomes Sith no Bad Boy)
-function verificarLadoSombrio() {
-    const nome = document.getElementById('nome_bad_boy').value.toLowerCase();
-    const botao = document.getElementById('btnGerar');
-    
-    const siths = ["darth vader", "vader", "palpatine", "kylo ren", "dooku", "maul"];
-    const ehSith = siths.some(sith => nome.includes(sith));
-    
-    if (ehSith) {
-        botao.classList.add('sith-mode');
-        botao.innerText = "CUIDADO COM O LADO SOMBRIO!";
-    } else {
-        botao.classList.remove('sith-mode');
-        botao.innerText = "Forjar Petições";
-    }
+// EASTER EGG 2: Teste do Padawan + Lado Sombrio (campo "Padawan autor da arte")
+const TEXTO_BOTAO_PADRAO = "Forjar Petições";
+const TEXTO_NAO_PADAWAN = "não acho que você seja um padawan";
+
+// Nomes em minúsculas e sem acento (a comparação ignora maiúsculas e acentos)
+const PADAWANS = ["joao", "miguel", "chueng", "filipe", "philip", "bruna", "pedro"];
+const SITHS = ["darth vader", "vader", "palpatine", "kylo ren", "dooku", "maul"];
+
+function normalizar(texto) {
+    return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 }
+
+// Campo vazio conta como liberado; preenchido, precisa conter um padawan da lista
+function nomeEhPadawan() {
+    const nome = normalizar(document.getElementById('nome_bad_boy').value.trim());
+    return nome === "" || PADAWANS.some(padawan => nome.includes(padawan));
+}
+
+function atualizarBotao() {
+    const nome = normalizar(document.getElementById('nome_bad_boy').value.trim());
+    const botao = document.getElementById('btnGerar');
+
+    // Visual vermelho dos Sith
+    botao.classList.toggle('sith-mode', SITHS.some(sith => nome.includes(sith)));
+
+    botao.innerText = nomeEhPadawan() ? TEXTO_BOTAO_PADRAO : TEXTO_NAO_PADAWAN;
+}
+
+// Aplica o estado correto ao carregar (o navegador pode restaurar o campo preenchido)
+atualizarBotao();
 
 // EASTER EGG 3: A Ordem 66
 function verificarOrdem66() {
@@ -318,8 +332,12 @@ function verificarOrdem66() {
 // CÓDIGO ORIGINAL DA GERAÇÃO DE DOCUMENTOS
 async function gerarDocumentos() {
     const btn = document.getElementById('btnGerar');
-    // Salva o texto atual para restaurar corretamente depois do processamento
-    const textoOriginalBtn = btn.innerText; 
+
+    // Bloqueia a geração para quem não é padawan da lista
+    if (!nomeEhPadawan()) {
+        alert("🚧 PROGRAMA EM TESTE 🚧\n\nEste é um programa em teste e está em fase de implementação. Por enquanto, a geração de documentos não está liberada para este usuário.");
+        return;
+    }
     
     btn.disabled = true;
     btn.innerText = "Acessando os Arquivos Jedi, aguarde...";
@@ -338,7 +356,7 @@ async function gerarDocumentos() {
     if (arquivosSelecionados.length === 0) {
         alert("Atenção, padawan: Selecione pelo menos um documento para gerar.");
         btn.disabled = false;
-        btn.innerText = textoOriginalBtn;
+        atualizarBotao(); // restaura o texto correto do botão
         return;
     }
 
@@ -398,7 +416,7 @@ async function gerarDocumentos() {
     }
 
     btn.disabled = false;
-    btn.innerText = textoOriginalBtn;
+    atualizarBotao(); // restaura o texto correto do botão
 }
 </script>
 
