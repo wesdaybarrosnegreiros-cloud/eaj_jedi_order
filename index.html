@@ -198,8 +198,8 @@
 <body>
 
 <div class="container">
-    <!-- Imagem do Convênio -->
-    < alt="Convênio UNAERP e Defensoria Pública" class="header-img">
+    <!-- Imagem do Escritório de Assistência Jurídica -->
+    <img src="modelos/cabecalho.png" alt="Escritório de Assistência Jurídica" class="header-img">
     
     <h2>Forja de Documentos do EAJ</h2>
     
@@ -362,63 +362,4 @@ async function gerarDocumentos() {
 
     const dados = {
         vara: document.getElementById('vara').value,
-        numero: document.getElementById('numero').value,
-        nome_autor: (document.getElementById('nome_autor').value || "").toUpperCase(),
-        nacionalidade: document.getElementById('nacionalidade').value,
-        estado_civil: document.getElementById('estado_civil').value,
-        profissao: document.getElementById('profissao').value,
-        rg: document.getElementById('rg').value,
-        cpf: document.getElementById('cpf').value,
-        endereco: document.getElementById('endereco').value,
-        valor_acordo: document.getElementById('valor_acordo').value,
-        nome_bad_boy: (document.getElementById('nome_bad_boy').value || "").toUpperCase()
-    };
-
-    const nomeBase = dados.nome_autor ? dados.nome_autor.split(" ")[0] : "Cliente";
-    let sucessoTotal = true;
-
-    for (const arquivo of arquivosSelecionados) {
-        try {
-            const resposta = await fetch(arquivo.caminho);
-            
-            if (!resposta.ok) {
-                throw new Error(`Holocron não encontrado: O ficheiro ${arquivo.caminho} não está no GitHub.`);
-            }
-            
-            const conteudoBinario = await resposta.arrayBuffer();
-            const zip = new PizZip(conteudoBinario);
-            
-            const doc = new window.docxtemplater(zip, {
-                paragraphLoop: true,
-                linebreaks: true,
-            });
-
-            doc.render(dados);
-
-            const blobDocumento = doc.getZip().generate({
-                type: "blob",
-                mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            });
-            
-            saveAs(blobDocumento, `${arquivo.id}_${nomeBase}.docx`);
-
-            await new Promise(resolve => setTimeout(resolve, 500));
-
-        } catch (erro) {
-            console.error(erro);
-            alert(`Ocorreu um distúrbio na Força (${arquivo.id}): ${erro.message}`);
-            sucessoTotal = false;
-        }
-    }
-
-    if (sucessoTotal) {
-        alert("Documentos forjados com sucesso! O Conselho Jedi ainda precisa aprovar.");
-    }
-
-    btn.disabled = false;
-    atualizarBotao(); // restaura o texto correto do botão
-}
-</script>
-
-</body>
-</html>
+        numero: document.getElementById
