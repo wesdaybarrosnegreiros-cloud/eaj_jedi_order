@@ -15,13 +15,43 @@
             --bg-color: #f4f6f9;
             --text-main: #333;
         }
+        
+        /* Adicionada transição suave para o efeito da Ordem 66 */
         body { 
             font-family: 'Inter', sans-serif; 
             background-color: var(--bg-color); 
             margin: 0; 
             padding: 20px; 
             color: var(--text-main);
+            transition: background-color 0.8s ease, color 0.8s ease;
         }
+        
+        /* Classe especial que será ativada pela Ordem 66 */
+        body.dark-mode {
+            background-color: #0b0c10;
+        }
+        body.dark-mode .container {
+            background-color: #1f2833;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            color: #c5c6c7;
+        }
+        body.dark-mode label {
+            color: #c5c6c7;
+        }
+        body.dark-mode h2 {
+            color: #66fcf1;
+        }
+        body.dark-mode .padawan-greeting {
+            background: #111;
+            color: #45a29e;
+            border-left-color: #45a29e;
+        }
+        body.dark-mode input[type="text"] {
+            background-color: #0b0c10;
+            color: #fff;
+            border-color: #45a29e;
+        }
+
         .container { 
             max-width: 750px; 
             margin: 20px auto; 
@@ -29,6 +59,7 @@
             padding: 40px; 
             border-radius: 12px; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+            transition: background-color 0.8s ease, color 0.8s ease;
         }
         .header-img {
             width: 100%;
@@ -37,13 +68,18 @@
             margin-bottom: 20px;
             border-bottom: 3px solid var(--unaerp-green);
             padding-bottom: 20px;
+            background-color: white; /* Mantém o fundo da logo sempre branco para leitura */
+            border-radius: 8px 8px 0 0;
         }
         h2 { 
             color: var(--unaerp-blue); 
             text-align: center; 
             margin-bottom: 5px;
             font-weight: 700;
+            transition: color 0.8s ease;
         }
+        
+        /* O cursor crosshair (cruz) dá uma pista sutil de que é possível clicar aqui */
         .padawan-greeting {
             text-align: center;
             background: #eef2fa;
@@ -54,7 +90,13 @@
             font-weight: 600;
             margin-bottom: 30px;
             border-left: 4px solid var(--unaerp-blue);
+            cursor: crosshair; 
+            transition: all 0.3s ease;
         }
+        .padawan-greeting:hover {
+            transform: scale(1.02);
+        }
+        
         .campo { margin-bottom: 20px; }
         label { 
             display: block; 
@@ -62,6 +104,7 @@
             margin-bottom: 8px; 
             color: #444; 
             font-size: 0.95em;
+            transition: color 0.8s ease;
         }
         input[type="text"] { 
             width: 100%; 
@@ -78,6 +121,8 @@
             outline: none;
             box-shadow: 0 0 0 3px rgba(64, 84, 165, 0.15);
         }
+        
+        /* Adicionados IDs para a Ordem 66 escurecer esta área também */
         .checkbox-group { 
             display: flex; 
             gap: 15px; 
@@ -88,7 +133,13 @@
             flex-wrap: wrap; 
             justify-content: center;
             border: 1px solid #e5e7eb;
+            transition: background-color 0.8s ease;
         }
+        body.dark-mode .checkbox-group {
+            background-color: #111;
+            border-color: #45a29e;
+        }
+        
         .checkbox-item { 
             display: flex; 
             align-items: center; 
@@ -96,7 +147,12 @@
             font-weight: 600; 
             cursor: pointer; 
             color: var(--unaerp-blue);
+            transition: color 0.8s ease;
         }
+        body.dark-mode .checkbox-item {
+            color: #66fcf1;
+        }
+        
         input[type="checkbox"] {
             width: 18px;
             height: 18px;
@@ -114,7 +170,7 @@
             margin-top: 15px; 
             font-weight: 700; 
             font-family: 'Inter', sans-serif;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -128,6 +184,15 @@
             transform: none;
             box-shadow: none;
         }
+        
+        /* Efeito de Sabres de Luz dos Sith (Sith Mode) */
+        button.sith-mode {
+            background: linear-gradient(135deg, #e50914, #8b0000);
+            box-shadow: 0 0 15px rgba(229, 9, 20, 0.6);
+        }
+        button.sith-mode:hover {
+            box-shadow: 0 0 25px rgba(229, 9, 20, 0.9);
+        }
     </style>
 </head>
 <body>
@@ -138,8 +203,8 @@
     
     <h2>Forja de Documentos - EAJ</h2>
     
-    <!-- Saudação Personalizada -->
-    <div class="padawan-greeting">
+    <!-- Saudação Personalizada com gatilho secreto de clique duplo -->
+    <div class="padawan-greeting" ondblclick="revelarSegredo()" title="Sente alguma perturbação na Força? Dê um duplo clique.">
         Saudações, Bruna, Chuen Lee, Philip e Pedro.<br>
         <em>Que a Força e a jurisprudência estejam com vocês, jovens padawans.</em>
     </div>
@@ -152,7 +217,8 @@
 
     <div class="campo">
         <label>Vara (ex: 1ª):</label>
-        <input type="text" id="vara" placeholder="1ª">
+        <!-- Adicionado gatilho keyup para detetar a Ordem 66 -->
+        <input type="text" id="vara" placeholder="1ª" onkeyup="verificarOrdem66()">
     </div>
     <div class="campo">
         <label>Processo nº:</label>
@@ -192,7 +258,8 @@
     </div>
     <div class="campo">
         <label>Nome do bad boy/girl:</label>
-        <input type="text" id="nome_bad_boy" placeholder="Nome do estagiário(a)">
+        <!-- Adicionado gatilho input para detetar nomes dos Sith -->
+        <input type="text" id="nome_bad_boy" placeholder="Nome do estagiário(a)" oninput="verificarLadoSombrio()">
     </div>
 
     <button type="button" id="btnGerar" onclick="gerarDocumentos()">Forjar Petições</button>
@@ -204,8 +271,57 @@
 <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
 
 <script>
+// EASTER EGG 1: O Holocron do Mestre Yoda
+function revelarSegredo() {
+    const frasesYoda = [
+        "Faça ou não faça. A tentativa não existe. (Principalmente na qualificação da parte!)",
+        "O medo é o caminho para o lado sombrio. E não protocolar no prazo também.",
+        "Muitas das verdades a que nos apegamos dependem do nosso ponto de vista. Mas a jurisprudência é soberana.",
+        "Passar o que aprendeu, você deve. Ajude seu colega padawan ao lado.",
+        "Um Jedi usa a Força para o conhecimento e a defesa. Nunca para bater no teclado."
+    ];
+    
+    const fraseSorteada = frasesYoda[Math.floor(Math.random() * frasesYoda.length)];
+    alert("🥷 HOLOCRON SECRETO DESBLOQUEADO:\n\n" + fraseSorteada);
+}
+
+// EASTER EGG 2: O Lado Sombrio (Nomes Sith no Bad Boy)
+function verificarLadoSombrio() {
+    const nome = document.getElementById('nome_bad_boy').value.toLowerCase();
+    const botao = document.getElementById('btnGerar');
+    
+    const siths = ["darth vader", "vader", "palpatine", "kylo ren", "dooku", "maul"];
+    const ehSith = siths.some(sith => nome.includes(sith));
+    
+    if (ehSith) {
+        botao.classList.add('sith-mode');
+        botao.innerText = "CUIDADO COM O LADO SOMBRIO!";
+    } else {
+        botao.classList.remove('sith-mode');
+        botao.innerText = "Forjar Petições";
+    }
+}
+
+// EASTER EGG 3: A Ordem 66
+function verificarOrdem66() {
+    const vara = document.getElementById('vara').value.trim();
+    if (vara === "66") {
+        document.body.classList.add('dark-mode');
+        // Usamos setTimeout para que o alerta ocorra após a tela escurecer
+        setTimeout(() => {
+            alert("⚠️ ALERTA DO SENADO GALÁCTICO ⚠️\n\nExecutando Ordem 66...\n\nBrincadeira, padawan! Voltando ao trabalho na 66ª Vara.");
+        }, 500);
+    } else {
+        document.body.classList.remove('dark-mode');
+    }
+}
+
+// CÓDIGO ORIGINAL DA GERAÇÃO DE DOCUMENTOS
 async function gerarDocumentos() {
     const btn = document.getElementById('btnGerar');
+    // Salva o texto atual para restaurar corretamente depois do processamento
+    const textoOriginalBtn = btn.innerText; 
+    
     btn.disabled = true;
     btn.innerText = "Acessando os Arquivos Jedi, aguarde...";
 
@@ -223,7 +339,7 @@ async function gerarDocumentos() {
     if (arquivosSelecionados.length === 0) {
         alert("Atenção, padawan: Selecione pelo menos um documento para gerar.");
         btn.disabled = false;
-        btn.innerText = "Forja de petições";
+        btn.innerText = textoOriginalBtn;
         return;
     }
 
@@ -283,7 +399,7 @@ async function gerarDocumentos() {
     }
 
     btn.disabled = false;
-    btn.innerText = "Acionar Hyperdrive (Gerar Documentos)";
+    btn.innerText = textoOriginalBtn;
 }
 </script>
 
