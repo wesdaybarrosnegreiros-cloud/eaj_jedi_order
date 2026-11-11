@@ -23,7 +23,6 @@
 <div class="container">
     <h2>Gerador de Documentos Automático</h2>
     
-    <!-- Retiramos o botão de upload e colocamos caixas de seleção -->
     <div class="checkbox-group">
         <label class="checkbox-item"><input type="checkbox" id="chk_habilitacao" checked> Habilitação</label>
         <label class="checkbox-item"><input type="checkbox" id="chk_procuracao" checked> Procuração</label>
@@ -75,22 +74,20 @@
         <input type="text" id="nome_bad_boy" placeholder="Nome do infrator">
     </div>
 
-    <button type="button" id="btnGerar" onclick="gerarDocumentos()">Gerar Documentos Selecionados (.zip)</button>
+    <button type="button" id="btnGerar" onclick="gerarDocumentos()">Gerar Documentos Separados</button>
 </div>
 
-<!-- Bibliotecas -->
+<!-- Bibliotecas (Removemos o JSZip) -->
 <script src="https://cdn.jsdelivr.net/npm/pizzip@3.1.7/dist/pizzip.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/docxtemplater@3.37.11/build/docxtemplater.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 
 <script>
 async function gerarDocumentos() {
     const btn = document.getElementById('btnGerar');
     btn.disabled = true;
-    btn.innerText = "A buscar modelos no GitHub, aguarde...";
+    btn.innerText = "A gerar e transferir ficheiros...";
 
-    // Identifica quais documentos foram marcados na tela
     const arquivosSelecionados = [];
     if (document.getElementById('chk_habilitacao').checked) {
         arquivosSelecionados.push({ id: 'Habilitacao', caminho: 'modelos/habilitacao.docx' });
@@ -105,11 +102,10 @@ async function gerarDocumentos() {
     if (arquivosSelecionados.length === 0) {
         alert("Selecione pelo menos um documento para gerar.");
         btn.disabled = false;
-        btn.innerText = "Gerar Documentos Selecionados (.zip)";
+        btn.innerText = "Gerar Documentos Separados";
         return;
     }
 
-    // Coleta os dados digitados
     const dados = {
         vara: document.getElementById('vara').value,
         numero: document.getElementById('numero').value,
@@ -125,13 +121,10 @@ async function gerarDocumentos() {
     };
 
     const nomeBase = dados.nome_autor ? dados.nome_autor.split(" ")[0] : "Cliente";
-    const zipFinal = new JSZip(); 
-    let teveErro = false;
 
-    // Busca os arquivos na pasta do GitHub e preenche
+    // Busca e baixa os arquivos um por um
     for (const arquivo of arquivosSelecionados) {
         try {
-            // É AQUI QUE ELE BUSCA O ARQUIVO SOZINHO:
             const resposta = await fetch(arquivo.caminho);
             
             if (!resposta.ok) {
@@ -153,27 +146,20 @@ async function gerarDocumentos() {
                 mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             });
             
-            zipFinal.file(`${arquivo.id}_${nomeBase}.docx`, blobDocumento);
+            // Dispara o download deste arquivo específico
+            saveAs(blobDocumento, `${arquivo.id}_${nomeBase}.docx`);
+
+            // Pequena pausa de meio segundo para o navegador não bloquear os downloads sequenciais
+            await new Promise(resolve => setTimeout(resolve, 500));
 
         } catch (erro) {
             console.error(erro);
-            alert(`Erro na ${arquivo.id}: ${erro.message}\nVerifique se o ficheiro existe dentro da pasta 'modelos' no GitHub e se tem o nome exato de '${arquivo.caminho.split('/')[1]}'.`);
-            teveErro = true;
-        }
-    }
-
-    // Baixa o arquivo .zip com tudo dentro
-    if (!teveErro) {
-        try {
-            const conteudoZip = await zipFinal.generateAsync({ type: "blob" });
-            saveAs(conteudoZip, `Documentos_${nomeBase}.zip`);
-        } catch (erro) {
-            alert("Erro ao empacotar os arquivos ZIP.");
+            alert(`Erro na ${arquivo.id}: ${erro.message}`);
         }
     }
 
     btn.disabled = false;
-    btn.innerText = "Gerar Documentos Selecionados (.zip)";
+    btn.innerText = "Gerar Documentos Separados";
 }
 </script>
 
