@@ -192,7 +192,7 @@
     </div>
     <div class="campo">
         <label>Nome do bad boy/girl:</label>
-        <input type="text" id="nome_bad_boy" placeholder="Nome do infrator">
+        <input type="text" id="nome_bad_boy" placeholder="Nome do estagiário(a)">
     </div>
 
     <button type="button" id="btnGerar" onclick="gerarDocumentos()">Forjar Petições</button>
@@ -223,7 +223,7 @@ async function gerarDocumentos() {
     if (arquivosSelecionados.length === 0) {
         alert("Atenção, padawan: Selecione pelo menos um documento para gerar.");
         btn.disabled = false;
-        btn.innerText = "Acionar Hyperdrive (Gerar Documentos)";
+        btn.innerText = "Forja de petições";
         return;
     }
 
