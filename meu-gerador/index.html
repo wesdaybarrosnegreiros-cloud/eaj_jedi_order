@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerador de Petição Jurídica</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 700px; margin: 40px auto; padding: 20px; background: #f4f4f9; }
+        .container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        .campo { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #333; }
+        input[type="text"], input[type="file"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { background: #2980b9; color: white; border: none; padding: 12px 20px; font-size: 16px; border-radius: 4px; cursor: pointer; width: 100%; margin-top: 10px; }
+        button:hover { background: #1f6391; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Gerador de Petição Inicial / Acordo</h2>
+    
+    <div class="campo">
+        <label>1. Selecione o Modelo Word (.docx):</label>
+        <input type="file" id="arquivoModelo" accept=".docx" required>
+    </div>
+
+    <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+
+    <div class="campo">
+        <label>Vara (ex: 1ª):</label>
+        <input type="text" id="vara" placeholder="1ª">
+    </div>
+    <div class="campo">
+        <label>Processo nº:</label>
+        <input type="text" id="numero" placeholder="0000000-00.0000.0.00.0000">
+    </div>
+    <div class="campo">
+        <label>Nome Completo do Autor:</label>
+        <input type="text" id="nome_autor" placeholder="João da Silva">
+    </div>
+    <div class="campo">
+        <label>Nacionalidade:</label>
+        <input type="text" id="nacionalidade" value="brasileiro(a)">
+    </div>
+    <div class="campo">
+        <label>Estado Civil:</label>
+        <input type="text" id="estado_civil" placeholder="solteiro(a)">
+    </div>
+    <div class="campo">
+        <label>Profissão:</label>
+        <input type="text" id="profissao" placeholder="engenheiro(a)">
+    </div>
+    <div class="campo">
+        <label>RG:</label>
+        <input type="text" id="rg" placeholder="00.000.000-0">
+    </div>
+    <div class="campo">
+        <label>CPF:</label>
+        <input type="text" id="cpf" placeholder="000.000.000-00">
+    </div>
+    <div class="campo">
+        <label>Endereço Completo:</label>
+        <input type="text" id="endereco" placeholder="Rua Exemplo, 123, Centro">
+    </div>
+    <div class="campo">
+        <label>Valor da proposta de acordo:</label>
+        <input type="text" id="valor_acordo" placeholder="R$ 5.000,00">
+    </div>
+    <div class="campo">
+        <label>Nome do bad boy:</label>
+        <input type="text" id="nome_bad_boy" placeholder="Nome do infrator">
+    </div>
+
+    <button type="button" onclick="gerarDocumento()">Gerar Petição (.docx)</button>
+</div>
+
+<!-- Scripts carregados via jsDelivr -->
+<script src="https://cdn.jsdelivr.net/npm/pizzip@3.1.7/dist/pizzip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/docxtemplater@3.37.11/build/docxtemplater.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+
+<script>
+function gerarDocumento() {
+    if (typeof PizZip === 'undefined') {
+        alert("ERRO: O navegador bloqueou o carregamento da biblioteca PizZip. Verifique a sua conexão.");
+        return;
+    }
+
+    const inputArquivo = document.getElementById('arquivoModelo');
+    
+    if (!inputArquivo.files.length) {
+        alert("Por favor, selecione o arquivo modelo (.docx) primeiro.");
+        return;
+    }
+
+    const arquivo = inputArquivo.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+        try {
+            const conteudoBinario = event.target.result;
+            const zip = new PizZip(conteudoBinario);
+            
+            const doc = new window.docxtemplater(zip, {
+                paragraphLoop: true,
+                linebreaks: true,
+            });
+
+            // Dados atualizados com as exclusões e os novos campos
+            const dados = {
+                vara: document.getElementById('vara').value,
+                numero: document.getElementById('numero').value,
+                nome_autor: (document.getElementById('nome_autor').value || "").toUpperCase(),
+                nacionalidade: document.getElementById('nacionalidade').value,
+                estado_civil: document.getElementById('estado_civil').value,
+                profissao: document.getElementById('profissao').value,
+                rg: document.getElementById('rg').value,
+                cpf: document.getElementById('cpf').value,
+                endereco: document.getElementById('endereco').value,
+                valor_acordo: document.getElementById('valor_acordo').value,
+                nome_bad_boy: (document.getElementById('nome_bad_boy').value || "").toUpperCase()
+            };
+
+            doc.render(dados);
+
+            const arquivoFinal = doc.getZip().generate({
+                type: "blob",
+                mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            });
+
+            const nomeArquivo = `Peticao_${dados.nome_autor || 'Pronta'}.docx`;
+            saveAs(arquivoFinal, nomeArquivo);
+            
+            alert("Documento gerado com sucesso!");
+
+        } catch (erro) {
+            console.error("Detalhes do erro:", erro);
+            alert("Erro ao formatar o Word. Certifique-se de que o modelo Word tem as chaves escritas corretamente.");
+        }
+    };
+
+    reader.readAsArrayBuffer(arquivo);
+}
+</script>
+
+</body>
+</html>
