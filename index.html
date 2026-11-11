@@ -421,34 +421,39 @@ function verificarOrdem66() {
 
 // EASTER EGG 4: O Café da Força (Inatividade)
 var timerCafe;
-var TEMPO_ESPERA = 30000; // 30 segundos
+var TEMPO_ESPERA = 5000; // Coloquei 5000 (5 segundos) para você testar. Depois mude para 30000!
 
 function iniciarTimerCafe() {
-    clearTimeout(timerCafe);
-    document.getElementById('idle-toast').classList.remove('show');
+    clearTimeout(timerCafe); // Zera o cronômetro anterior, se houver
     
-    // Só dispara se algum input estiver ativamente focado
-    if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'SELECT')) {
-        timerCafe = setTimeout(function() {
-            document.getElementById('idle-toast').classList.add('show');
-        }, TEMPO_ESPERA);
-    }
+    var toast = document.getElementById('idle-toast');
+    if (toast) toast.classList.remove('show'); // Esconde a mensagem se ela já estiver na tela
+    
+    // Inicia a nova contagem
+    timerCafe = setTimeout(function() {
+        var toast = document.getElementById('idle-toast');
+        if (toast) toast.classList.add('show');
+    }, TEMPO_ESPERA);
 }
 
 function limparTimerCafe() {
     clearTimeout(timerCafe);
-    document.getElementById('idle-toast').classList.remove('show');
+    var toast = document.getElementById('idle-toast');
+    if (toast) toast.classList.remove('show');
 }
 
 function inicializarEasterEggCafe() {
-    var campos = document.querySelectorAll('input, select');
+    // Selecionamos apenas as caixas de texto e o select (ignorando os checkboxes)
+    var campos = document.querySelectorAll('input[type="text"], select');
+    
     campos.forEach(function(campo) {
-        // Se clicar/focar, inicia a contagem
+        // Quando o usuário clica no campo (cursor piscando)
         campo.addEventListener('focus', iniciarTimerCafe);
-        // Se digitar qualquer coisa, zera a contagem
+        
+        // Quando o usuário digita qualquer coisa (reinicia a contagem)
         campo.addEventListener('input', iniciarTimerCafe);
-        campo.addEventListener('keyup', iniciarTimerCafe);
-        // Se sair do campo (perder o foco), cancela a contagem e esconde a mensagem
+        
+        // Quando o usuário clica fora do campo (cancela a contagem e esconde o balão)
         campo.addEventListener('blur', limparTimerCafe);
     });
 }
