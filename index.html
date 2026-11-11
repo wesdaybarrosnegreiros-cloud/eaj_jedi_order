@@ -323,7 +323,7 @@
 
 <!-- Dica Animada (Easter Egg 4) -->
 <div id="idle-toast" class="idle-toast" onclick="limparTimerCafe()">
-    ☕ Muita calma nessa Força... Precisa de ajuda ou um café, padawan? 
+    ᕙ(⇀‸↼‶)ᕗ Muita calma nessa Força... Precisa de ajuda ou um café ☕ padawan? 
 </div>
 
 <!-- Bibliotecas -->
@@ -421,13 +421,13 @@ function verificarOrdem66() {
 
 // EASTER EGG 4: O Café da Força (Inatividade)
 var timerCafe;
-var TEMPO_ESPERA = 5000; // Coloquei 5000 (5 segundos) para você testar. Depois mude para 30000!
+var TEMPO_ESPERA = 30000; 
 
 function iniciarTimerCafe() {
-    clearTimeout(timerCafe); // Zera o cronômetro anterior, se houver
+    clearTimeout(timerCafe); 
     
     var toast = document.getElementById('idle-toast');
-    if (toast) toast.classList.remove('show'); // Esconde a mensagem se ela já estiver na tela
+    if (toast) toast.classList.remove('show'); 
     
     // Inicia a nova contagem
     timerCafe = setTimeout(function() {
