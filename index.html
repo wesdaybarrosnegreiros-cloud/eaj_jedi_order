@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forja de Documentos - EAJ UNAERP</title>
     
-    <!-- Fonte moderna do Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -25,7 +24,6 @@
             transition: background-color 0.8s ease, color 0.8s ease;
         }
         
-        /* Modo escuro (Ordem 66 / Não Autorizado) */
         body.dark-mode {
             background-color: #0b0c10;
         }
@@ -66,7 +64,6 @@
             transition: background-color 0.8s ease, color 0.8s ease;
         }
         
-        /* Logo e Título do EAJ */
         .header-img {
             width: 100%;
             max-width: 250px;
@@ -173,6 +170,7 @@
             height: 18px;
             accent-color: var(--unaerp-blue);
         }
+        
         button { 
             background: linear-gradient(135deg, var(--unaerp-blue), #2c3e80); 
             color: white; 
@@ -208,10 +206,9 @@
             box-shadow: 0 0 25px rgba(229, 9, 20, 0.9);
         }
 
-        /* EASTER EGG CSS: Toast de inatividade */
         .idle-toast {
             position: fixed;
-            bottom: -100px; /* Escondido inicialmente */
+            bottom: -100px;
             right: 20px;
             background: linear-gradient(135deg, var(--unaerp-blue), #2c3e80);
             color: white;
@@ -321,18 +318,17 @@
     <button type="button" id="btnGerar" onclick="gerarDocumentos()">Forjar Petições</button>
 </div>
 
-<!-- Dica Animada (Easter Egg 4) -->
 <div id="idle-toast" class="idle-toast" onclick="limparTimerCafe()">
-    ᕙ(⇀‸↼‶)ᕗ Muita calma nessa Força... Precisa de ajuda ou um café ☕ padawan? 
+    ☕ Muita calma nessa Força... Precisa de ajuda ou um café, padawan? 
 </div>
 
-<!-- Bibliotecas -->
 <script src="https://cdn.jsdelivr.net/npm/pizzip@3.1.7/dist/pizzip.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/docxtemplater@3.37.11/build/docxtemplater.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
 
 <script>
-// EASTER EGG 1: O Holocron do Mestre Yoda
+var audioForja = new Audio('modelos/som-jedi.mp3');
+
 function revelarSegredo() {
     var frasesYoda = [
         "Faça ou não faça. A tentativa não existe. (Principalmente na qualificação da parte!)",
@@ -340,15 +336,12 @@ function revelarSegredo() {
         "Passar o que aprendeu, você deve. Ajude seu colega padawan ao lado.",
         "Um Jedi usa a Força para o conhecimento e a defesa. Nunca para bater no teclado."
     ];
-    
     var fraseSorteada = frasesYoda[Math.floor(Math.random() * frasesYoda.length)];
     alert("🥷 HOLOCRON SECRETO DESBLOQUEADO:\n\n" + fraseSorteada);
 }
 
-// EASTER EGG 2: Teste do Padawan + Lado Sombrio
 var TEXTO_BOTAO_PADRAO = "Forjar Petições";
 var TEXTO_NAO_PADAWAN = "não acho que você seja um padawan";
-
 var PADAWANS = ["joao", "miguel", "chueng", "filipe", "philip", "bruna", "pedro", "marco", "gabriel"];
 var SITHS = ["darth vader", "vader", "palpatine", "kylo ren", "dooku", "maul"];
 
@@ -402,7 +395,6 @@ function atualizarBotao() {
     }
 }
 
-// EASTER EGG 3: A Ordem 66
 function verificarOrdem66() {
     var varaInput = document.getElementById('vara');
     var vara = varaInput ? varaInput.value.trim() : "";
@@ -419,17 +411,14 @@ function verificarOrdem66() {
     }
 }
 
-// EASTER EGG 4: O Café da Força (Inatividade)
 var timerCafe;
-var TEMPO_ESPERA = 30000; 
+var TEMPO_ESPERA = 30000;
 
 function iniciarTimerCafe() {
-    clearTimeout(timerCafe); 
-    
+    clearTimeout(timerCafe);
     var toast = document.getElementById('idle-toast');
-    if (toast) toast.classList.remove('show'); 
+    if (toast) toast.classList.remove('show');
     
-    // Inicia a nova contagem
     timerCafe = setTimeout(function() {
         var toast = document.getElementById('idle-toast');
         if (toast) toast.classList.add('show');
@@ -443,22 +432,14 @@ function limparTimerCafe() {
 }
 
 function inicializarEasterEggCafe() {
-    // Selecionamos apenas as caixas de texto e o select (ignorando os checkboxes)
     var campos = document.querySelectorAll('input[type="text"], select');
-    
     campos.forEach(function(campo) {
-        // Quando o usuário clica no campo (cursor piscando)
         campo.addEventListener('focus', iniciarTimerCafe);
-        
-        // Quando o usuário digita qualquer coisa (reinicia a contagem)
         campo.addEventListener('input', iniciarTimerCafe);
-        
-        // Quando o usuário clica fora do campo (cancela a contagem e esconde o balão)
         campo.addEventListener('blur', limparTimerCafe);
     });
 }
 
-// GERAÇÃO DE DOCUMENTOS (Habilitação, Procuração, Gratuidade)
 async function gerarDocumentos() {
     var btn = document.getElementById('btnGerar');
 
@@ -468,6 +449,9 @@ async function gerarDocumentos() {
         return;
     }
     
+    audioForja.currentTime = 0;
+    audioForja.play().catch(function(erro) {});
+
     btn.disabled = true;
     btn.innerText = "Acessando os Arquivos Jedi, aguarde...";
 
@@ -567,19 +551,17 @@ async function gerarDocumentos() {
     atualizarBotao();
 }
 
-// Vincula explicitamente no objeto global window para garantir visibilidade no HTML
 window.revelarSegredo = revelarSegredo;
 window.normalizar = normalizar;
 window.nomeEhPadawan = nomeEhPadawan;
 window.atualizarBotao = atualizarBotao;
 window.verificarOrdem66 = verificarOrdem66;
 window.gerarDocumentos = gerarDocumentos;
-window.limparTimerCafe = limparTimerCafe; // Permite fechar a mensagem clicando nela
+window.limparTimerCafe = limparTimerCafe; 
 
-// Executa a atualização inicial quando o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', function() {
     atualizarBotao();
-    inicializarEasterEggCafe(); // Inicia os ouvintes do novo Easter Egg
+    inicializarEasterEggCafe();
 });
 </script>
 
