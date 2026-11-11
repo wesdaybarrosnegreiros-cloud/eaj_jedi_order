@@ -212,13 +212,11 @@
 <body>
 
 <div class="container">
-    <!-- Imagem da UNAERP e Título do Escritório de Assistência Jurídica -->
     <img src="modelos/cabecalho.png" alt="Logo UNAERP" class="header-img">
     <div class="header-text">Escritório de Assistência Jurídica</div>
     
     <h2>Forja de Documentos do EAJ</h2>
     
-    <!-- Saudação Personalizada -->
     <div class="padawan-greeting" ondblclick="revelarSegredo()" title="Sente alguma perturbação na Força? Dê um duplo clique.">
         Saudações, Bruna, Chueng Lee, Philip e Pedro... Petições forjar, vocês devem!<br>
         <em>Que a Força esteja com vocês, jovens padawans.</em>
@@ -235,7 +233,6 @@
         <input type="text" id="vara" placeholder="1ª" onkeyup="verificarOrdem66()">
     </div>
     
-    <!-- Novo campo de seleção de competência -->
     <div class="campo">
         <label>Competência / Especialidade:</label>
         <select id="competencia">
@@ -298,64 +295,85 @@
 <script>
 // EASTER EGG 1: O Holocron do Mestre Yoda
 function revelarSegredo() {
-    const frasesYoda = [
+    var frasesYoda = [
         "Faça ou não faça. A tentativa não existe. (Principalmente na qualificação da parte!)",
         "O medo é o caminho para o lado sombrio. E não protocolar no prazo também.",
         "Passar o que aprendeu, você deve. Ajude seu colega padawan ao lado.",
         "Um Jedi usa a Força para o conhecimento e a defesa. Nunca para bater no teclado."
     ];
     
-    const fraseSorteada = frasesYoda[Math.floor(Math.random() * frasesYoda.length)];
+    var fraseSorteada = frasesYoda[Math.floor(Math.random() * frasesYoda.length)];
     alert("🥷 HOLOCRON SECRETO DESBLOQUEADO:\n\n" + fraseSorteada);
 }
 
 // EASTER EGG 2: Teste do Padawan + Lado Sombrio
-const TEXTO_BOTAO_PADRAO = "Forjar Petições";
-const TEXTO_NAO_PADAWAN = "não acho que você seja um padawan";
+var TEXTO_BOTAO_PADRAO = "Forjar Petições";
+var TEXTO_NAO_PADAWAN = "não acho que você seja um padawan";
 
-const PADAWANS = ["joao", "miguel", "chueng", "filipe", "philip", "bruna", "pedro", "marco","gabriel"];
-const SITHS = ["darth vader", "vader", "palpatine", "kylo ren", "dooku", "maul"];
+var PADAWANS = ["joao", "miguel", "chueng", "filipe", "philip", "bruna", "pedro", "marco", "gabriel"];
+var SITHS = ["darth vader", "vader", "palpatine", "kylo ren", "dooku", "maul"];
 
 function normalizar(texto) {
+    if (!texto) return "";
     return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 }
 
 function nomeEhPadawan() {
-    const nome = normalizar(document.getElementById('nome_bad_boy').value.trim());
-    return nome === "" || PADAWANS.some(padawan => nome.includes(padawan));
+    var input = document.getElementById('nome_bad_boy');
+    if (!input) return true;
+    var nome = normalizar(input.value.trim());
+    if (nome === "") return true;
+    for (var i = 0; i < PADAWANS.length; i++) {
+        if (nome.indexOf(PADAWANS[i]) !== -1) return true;
+    }
+    return false;
 }
 
 function atualizarBotao() {
-    const nome = normalizar(document.getElementById('nome_bad_boy').value.trim());
-    const botao = document.getElementById('btnGerar');
-    const vara = document.getElementById('vara').value.trim();
+    var input = document.getElementById('nome_bad_boy');
+    var botao = document.getElementById('btnGerar');
+    var varaInput = document.getElementById('vara');
+    
+    if (!input || !botao) return;
 
-    botao.classList.toggle('sith-mode', SITHS.some(sith => nome.includes(sith)));
+    var nome = normalizar(input.value.trim());
+    var vara = varaInput ? varaInput.value.trim() : "";
+
+    var ehSith = false;
+    for (var i = 0; i < SITHS.length; i++) {
+        if (nome.indexOf(SITHS[i]) !== -1) {
+            ehSith = true;
+            break;
+        }
+    }
+    
+    if (ehSith) {
+        botao.classList.add('sith-mode');
+    } else {
+        botao.classList.remove('sith-mode');
+    }
     
     if (nomeEhPadawan()) {
         botao.innerText = TEXTO_BOTAO_PADRAO;
-        // Retira a tela preta automaticamente se o usuário consertar o nome (e a vara não for 66)
         if (vara !== "66") {
             document.body.classList.remove('dark-mode');
         }
     } else {
         botao.innerText = TEXTO_NAO_PADAWAN;
-        // NOTA: A tela não fica preta mais aqui enquanto o usuário digita.
     }
 }
 
-atualizarBotao();
-
 // EASTER EGG 3: A Ordem 66
 function verificarOrdem66() {
-    const vara = document.getElementById('vara').value.trim();
+    var varaInput = document.getElementById('vara');
+    var vara = varaInput ? varaInput.value.trim() : "";
+
     if (vara === "66") {
         document.body.classList.add('dark-mode');
-        setTimeout(() => {
+        setTimeout(function() {
             alert("⚠️ ALERTA DO SENADO GALÁCTICO ⚠️\n\nExecutando Ordem 66...\n\nBrincadeira, padawan! Pode ir voltando ao trabalho.");
         }, 500);
     } else {
-        // Só remove o tema escuro se o nome também estiver válido
         if (nomeEhPadawan()) {
             document.body.classList.remove('dark-mode');
         }
@@ -364,9 +382,8 @@ function verificarOrdem66() {
 
 // GERAÇÃO DE DOCUMENTOS (Habilitação, Procuração, Gratuidade)
 async function gerarDocumentos() {
-    const btn = document.getElementById('btnGerar');
+    var btn = document.getElementById('btnGerar');
 
-    // MUDANÇA: A tela só fica preta no momento em que o usuário tentar forjar e não for autorizado
     if (!nomeEhPadawan()) {
         document.body.classList.add('dark-mode');
         alert("🚧 PROGRAMA EM TESTE 🚧\n\nEste é um programa em teste e está em fase de implementação. Por enquanto, a geração de documentos não está liberada para este usuário.");
@@ -376,14 +393,18 @@ async function gerarDocumentos() {
     btn.disabled = true;
     btn.innerText = "Acessando os Arquivos Jedi, aguarde...";
 
-    const arquivosSelecionados = [];
-    if (document.getElementById('chk_habilitacao').checked) {
+    var arquivosSelecionados = [];
+    var chkHab = document.getElementById('chk_habilitacao');
+    var chkProc = document.getElementById('chk_procuracao');
+    var chkGrat = document.getElementById('chk_gratuidade');
+
+    if (chkHab && chkHab.checked) {
         arquivosSelecionados.push({ id: 'Habilitacao', caminho: 'modelos/habilitacao.docx' });
     }
-    if (document.getElementById('chk_procuracao').checked) {
+    if (chkProc && chkProc.checked) {
         arquivosSelecionados.push({ id: 'Procuracao', caminho: 'modelos/procuracao.docx' });
     }
-    if (document.getElementById('chk_gratuidade').checked) {
+    if (chkGrat && chkGrat.checked) {
         arquivosSelecionados.push({ id: 'Gratuidade', caminho: 'modelos/gratuidade.docx' });
     }
 
@@ -394,45 +415,93 @@ async function gerarDocumentos() {
         return;
     }
 
-    const dados = {
-        vara: document.getElementById('vara').value,
-        competencia: document.getElementById('competencia').value,
-        numero: document.getElementById('numero').value,
-        nome_autor: (document.getElementById('nome_autor').value || "").toUpperCase(),
-        nacionalidade: document.getElementById('nacionalidade').value,
-        estado_civil: document.getElementById('estado_civil').value,
-        profissao: document.getElementById('profissao').value,
-        rg: document.getElementById('rg').value,
-        cpf: document.getElementById('cpf').value,
-        endereco: document.getElementById('endereco').value,
-        valor_acordo: document.getElementById('valor_acordo').value,
-        nome_bad_boy: (document.getElementById('nome_bad_boy').value || "").toUpperCase()
+    var getVal = function(id) {
+        var el = document.getElementById(id);
+        return el ? el.value : "";
     };
 
-    const nomeBase = dados.nome_autor ? dados.nome_autor.split(" ")[0] : "Cliente";
-    let sucessoTotal = true;
+    var dados = {
+        vara: getVal('vara'),
+        competencia: getVal('competencia'),
+        numero: getVal('numero'),
+        nome_autor: getVal('nome_autor').toUpperCase(),
+        nacionalidade: getVal('nacionalidade'),
+        estado_civil: getVal('estado_civil'),
+        profissao: getVal('profissao'),
+        rg: getVal('rg'),
+        cpf: getVal('cpf'),
+        endereco: getVal('endereco'),
+        valor_acordo: getVal('valor_acordo'),
+        nome_bad_boy: getVal('nome_bad_boy').toUpperCase()
+    };
 
-    for (const arquivo of arquivosSelecionados) {
+    var nomeBase = dados.nome_autor ? dados.nome_autor.split(" ")[0] : "Cliente";
+    var sucessoTotal = true;
+
+    var DocxConstructor = window.docxtemplater || window.Docxtemplater;
+    if (typeof PizZip === 'undefined' || typeof DocxConstructor === 'undefined') {
+        alert("Erro ao carregar bibliotecas. Verifique a conexão com a internet.");
+        btn.disabled = false;
+        atualizarBotao();
+        return;
+    }
+
+    for (var i = 0; i < arquivosSelecionados.length; i++) {
+        var arquivo = arquivosSelecionados[i];
         try {
-            const resposta = await fetch(arquivo.caminho);
+            var resposta = await fetch(arquivo.caminho);
             
             if (!resposta.ok) {
-                throw new Error(`Holocron não encontrado: O ficheiro ${arquivo.caminho} não está no GitHub.`);
+                throw new Error("Holocron não encontrado: O ficheiro " + arquivo.caminho + " não está acessível.");
             }
             
-            const conteudoBinario = await resposta.arrayBuffer();
-            const zip = new PizZip(conteudoBinario);
+            var conteudoBinario = await resposta.arrayBuffer();
+            var zip = new PizZip(conteudoBinario);
             
-            const doc = new window.docxtemplater(zip, {
+            var doc = new DocxConstructor(zip, {
                 paragraphLoop: true,
                 linebreaks: true,
             });
 
             doc.render(dados);
 
-            const blobDocumento = doc.getZip().generate({
+            var blobDocumento = doc.getZip().generate({
                 type: "blob",
                 mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             });
             
-            saveAs(blobDocumento, `${arquivo.
+            saveAs(blobDocumento, arquivo.id + "_" + nomeBase + ".docx");
+
+            await new Promise(function(resolve) { setTimeout(resolve, 500); });
+
+        } catch (erro) {
+            console.error(erro);
+            alert("Ocorreu um distúrbio na Força (" + arquivo.id + "): " + erro.message);
+            sucessoTotal = false;
+        }
+    }
+
+    if (sucessoTotal) {
+        alert("Documentos forjados com sucesso! O Conselho Jedi ainda precisa aprovar.");
+    }
+
+    btn.disabled = false;
+    atualizarBotao();
+}
+
+// Vincula explicitamente no objeto global window para garantir visibilidade no HTML
+window.revelarSegredo = revelarSegredo;
+window.normalizar = normalizar;
+window.nomeEhPadawan = nomeEhPadawan;
+window.atualizarBotao = atualizarBotao;
+window.verificarOrdem66 = verificarOrdem66;
+window.gerarDocumentos = gerarDocumentos;
+
+// Executa a atualização inicial quando o DOM estiver pronto
+document.addEventListener('DOMContentLoaded', function() {
+    atualizarBotao();
+});
+</script>
+
+</body>
+</html>
