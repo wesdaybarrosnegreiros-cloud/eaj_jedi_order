@@ -334,13 +334,13 @@ function atualizarBotao() {
     
     if (nomeEhPadawan()) {
         botao.innerText = TEXTO_BOTAO_PADRAO;
-        // Só remove o tema escuro se o campo da vara também não for 66
+        // Retira a tela preta automaticamente se o usuário consertar o nome (e a vara não for 66)
         if (vara !== "66") {
             document.body.classList.remove('dark-mode');
         }
     } else {
         botao.innerText = TEXTO_NAO_PADAWAN;
-        document.body.classList.add('dark-mode');
+        // NOTA: A tela não fica preta mais aqui enquanto o usuário digita.
     }
 }
 
@@ -355,7 +355,7 @@ function verificarOrdem66() {
             alert("⚠️ ALERTA DO SENADO GALÁCTICO ⚠️\n\nExecutando Ordem 66...\n\nBrincadeira, padawan! Pode ir voltando ao trabalho.");
         }, 500);
     } else {
-        // Só remove o tema escuro se o nome for válido
+        // Só remove o tema escuro se o nome também estiver válido
         if (nomeEhPadawan()) {
             document.body.classList.remove('dark-mode');
         }
@@ -366,7 +366,9 @@ function verificarOrdem66() {
 async function gerarDocumentos() {
     const btn = document.getElementById('btnGerar');
 
+    // MUDANÇA: A tela só fica preta no momento em que o usuário tentar forjar e não for autorizado
     if (!nomeEhPadawan()) {
+        document.body.classList.add('dark-mode');
         alert("🚧 PROGRAMA EM TESTE 🚧\n\nEste é um programa em teste e está em fase de implementação. Por enquanto, a geração de documentos não está liberada para este usuário.");
         return;
     }
@@ -433,25 +435,4 @@ async function gerarDocumentos() {
                 mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             });
             
-            saveAs(blobDocumento, `${arquivo.id}_${nomeBase}.docx`);
-
-            await new Promise(resolve => setTimeout(resolve, 500));
-
-        } catch (erro) {
-            console.error(erro);
-            alert(`Ocorreu um distúrbio na Força (${arquivo.id}): ${erro.message}`);
-            sucessoTotal = false;
-        }
-    }
-
-    if (sucessoTotal) {
-        alert("Documentos forjados com sucesso! O Conselho Jedi ainda precisa aprovar.");
-    }
-
-    btn.disabled = false;
-    atualizarBotao();
-}
-</script>
-
-</body>
-</html>
+            saveAs(blobDocumento, `${arquivo.
