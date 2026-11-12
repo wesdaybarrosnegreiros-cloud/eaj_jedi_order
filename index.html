@@ -327,6 +327,9 @@
 <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
 
 <script>
+// --- URL DA SUA API GOOGLE SHEETS ---
+const URL_PLANILHA_JEDI = "https://script.google.com/macros/s/AKfycbzvfsh-NOIrdvAVnTrTR7q1JurdLpnaPBjsn8NxcKy2WEWewcf11DSZDaGNz5V8-zqPpg/exec";
+
 var audioForja = new Audio('modelos/som-jedi.mp3');
 
 function revelarSegredo() {
@@ -342,8 +345,9 @@ function revelarSegredo() {
 
 var TEXTO_BOTAO_PADRAO = "Forjar Petições";
 var TEXTO_NAO_PADAWAN = "não acho que você seja um padawan";
-var PADAWANS = ["joao", "miguel", "chueng", "filipe", "philip", "bruna", "pedro", "marco", "gabriel","Fabrizio"];
-var SITHS = ["Diogo", "Beatriz", "Hugo", "Heitor", "Luiz"];
+// Nomes em minúsculo para a checagem funcionar corretamente!
+var PADAWANS = ["joao", "miguel", "chueng", "filipe", "philip", "bruna", "pedro", "marco", "gabriel", "fabrizio"];
+var SITHS = ["diogo", "beatriz", "hugo", "heitor", "luiz"];
 
 function normalizar(texto) {
     if (!texto) return "";
@@ -543,7 +547,26 @@ async function gerarDocumentos() {
         }
     }
 
+    // --- REGISTRO NA PLANILHA ---
     if (sucessoTotal) {
+        var nomesPecasMarcadas = arquivosSelecionados.map(function(arq) { return arq.id; }).join(", ");
+        
+        var dadosRegistro = {
+            padawan: dados.nome_bad_boy || "Desconhecido",
+            processo: dados.numero || "Não informado",
+            acao: "Habilitação",
+            pecas: nomesPecasMarcadas
+        };
+
+        fetch(URL_PLANILHA_JEDI, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(dadosRegistro)
+        }).catch(function(err) { console.log("Erro ao salvar no holocron (planilha):", err); });
+
         alert("Documentos forjados com sucesso! O Conselho Jedi ainda precisa aprovar.");
     }
 
