@@ -255,6 +255,7 @@
     
     <div class="checkbox-group">
         <label class="checkbox-item"><input type="checkbox" id="chk_habilitacao" checked> Habilitação</label>
+        <label class="checkbox-item"><input type="checkbox" id="chk_contestacao"> Contestação por negativa geral</label>
         <label class="checkbox-item"><input type="checkbox" id="chk_procuracao" checked> Procuração</label>
         <label class="checkbox-item"><input type="checkbox" id="chk_gratuidade" checked> Gratuidade</label>
     </div>
@@ -461,11 +462,15 @@ async function gerarDocumentos() {
 
     var arquivosSelecionados = [];
     var chkHab = document.getElementById('chk_habilitacao');
+    var chkCont = document.getElementById('chk_contestacao');
     var chkProc = document.getElementById('chk_procuracao');
     var chkGrat = document.getElementById('chk_gratuidade');
 
     if (chkHab && chkHab.checked) {
         arquivosSelecionados.push({ id: 'Habilitacao', caminho: 'modelos/habilitacao.docx' });
+    }
+    if (chkCont && chkCont.checked) {
+        arquivosSelecionados.push({ id: 'Contestacao', caminho: 'modelos/Contestação por negativa geral - curadoria especial.docx' });
     }
     if (chkProc && chkProc.checked) {
         arquivosSelecionados.push({ id: 'Procuracao', caminho: 'modelos/procuracao.docx' });
