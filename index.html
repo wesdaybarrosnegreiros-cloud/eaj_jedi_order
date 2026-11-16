@@ -134,6 +134,20 @@
             outline: none;
             box-shadow: 0 0 0 3px rgba(64, 84, 165, 0.15);
         }
+
+        /* Estilo das caixas desabilitadas (cinza e sem preenchimento) */
+        input[type="text"]:disabled, select:disabled {
+            background-color: #e5e7eb;
+            color: #9ca3af;
+            border-color: #d1d5db;
+            cursor: not-allowed;
+        }
+        body.dark-mode input[type="text"]:disabled, body.dark-mode select:disabled {
+            background-color: #161b22;
+            color: #4b5563;
+            border-color: #2d3748;
+            cursor: not-allowed;
+        }
         
         .checkbox-group { 
             display: flex; 
@@ -188,7 +202,7 @@
             letter-spacing: 0.5px;
         }
         button:hover { 
-            transform: translateY(-2px);
+            transform: translateY(-2px); 
             box-shadow: 0 8px 20px rgba(64, 84, 165, 0.3);
         }
         button:disabled { 
@@ -254,10 +268,10 @@
     </div>
     
     <div class="checkbox-group">
-        <label class="checkbox-item"><input type="checkbox" id="chk_habilitacao" checked> Habilitação</label>
-        <label class="checkbox-item"><input type="checkbox" id="chk_contestacao"> Contestação por negativa geral</label>
-        <label class="checkbox-item"><input type="checkbox" id="chk_procuracao" checked> Procuração</label>
-        <label class="checkbox-item"><input type="checkbox" id="chk_gratuidade" checked> Gratuidade</label>
+        <label class="checkbox-item"><input type="checkbox" id="chk_habilitacao" checked onchange="aoMarcarOutraOpcao()"> Habilitação</label>
+        <label class="checkbox-item"><input type="checkbox" id="chk_contestacao" onchange="alternarModoContestacao()"> Contestação por negativa geral</label>
+        <label class="checkbox-item"><input type="checkbox" id="chk_procuracao" checked onchange="aoMarcarOutraOpcao()"> Procuração</label>
+        <label class="checkbox-item"><input type="checkbox" id="chk_gratuidade" checked onchange="aoMarcarOutraOpcao()"> Gratuidade</label>
     </div>
 
     <div class="campo">
@@ -332,6 +346,46 @@
 const URL_PLANILHA_JEDI = "https://script.google.com/macros/s/AKfycbzvfsh-NOIrdvAVnTrTR7q1JurdLpnaPBjsn8NxcKy2WEWewcf11DSZDaGNz5V8-zqPpg/exec";
 
 var audioForja = new Audio('modelos/som-jedi.mp3');
+
+// Campos que ficam cinzas e bloqueados na Contestação por negativa geral
+var CAMPOS_BLOQUEADOS_CONTESTACAO = [
+    'nacionalidade',
+    'estado_civil',
+    'profissao',
+    'rg',
+    'endereco',
+    'valor_acordo'
+];
+
+function alternarModoContestacao() {
+    var chkContestacao = document.getElementById('chk_contestacao');
+    var chkHabilitacao = document.getElementById('chk_habilitacao');
+    var chkProcuracao = document.getElementById('chk_procuracao');
+    var chkGratuidade = document.getElementById('chk_gratuidade');
+
+    var emContestacao = chkContestacao && chkContestacao.checked;
+
+    if (emContestacao) {
+        if (chkHabilitacao) chkHabilitacao.checked = false;
+        if (chkProcuracao) chkProcuracao.checked = false;
+        if (chkGratuidade) chkGratuidade.checked = false;
+    }
+
+    CAMPOS_BLOQUEADOS_CONTESTACAO.forEach(function(id) {
+        var campo = document.getElementById(id);
+        if (campo) {
+            campo.disabled = emContestacao;
+        }
+    });
+}
+
+function aoMarcarOutraOpcao() {
+    var chkContestacao = document.getElementById('chk_contestacao');
+    if (chkContestacao && chkContestacao.checked) {
+        chkContestacao.checked = false;
+        alternarModoContestacao();
+    }
+}
 
 function revelarSegredo() {
     var frasesYoda = [
@@ -579,6 +633,8 @@ async function gerarDocumentos() {
     atualizarBotao();
 }
 
+window.alternarModoContestacao = alternarModoContestacao;
+window.aoMarcarOutraOpcao = aoMarcarOutraOpcao;
 window.revelarSegredo = revelarSegredo;
 window.normalizar = normalizar;
 window.nomeEhPadawan = nomeEhPadawan;
@@ -588,6 +644,7 @@ window.gerarDocumentos = gerarDocumentos;
 window.limparTimerCafe = limparTimerCafe; 
 
 document.addEventListener('DOMContentLoaded', function() {
+    alternarModoContestacao();
     atualizarBotao();
     inicializarEasterEggCafe();
 });
