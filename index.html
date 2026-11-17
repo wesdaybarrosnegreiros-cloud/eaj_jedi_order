@@ -1,634 +1,741 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Forja de Documentos - EAJ UNAERP</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forja de Documentos - EAJ UNAERP</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --unaerp-blue: #4054a5;
+            --unaerp-green: #8dc63f;
+            --bg-color: #f4f6f9;
+            --text-main: #333;
+        }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg-color); 
+            margin: 0; 
+            padding: 20px; 
+            color: var(--text-main);
+            transition: background-color 0.8s ease, color 0.8s ease;
+        }
+        
+        body.dark-mode {
+            background-color: #0b0c10;
+        }
+        body.dark-mode .container {
+            background-color: #1f2833;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            color: #c5c6c7;
+        }
+        body.dark-mode label {
+            color: #c5c6c7;
+        }
+        body.dark-mode h2, body.dark-mode .header-text {
+            color: #66fcf1;
+        }
+        body.dark-mode .padawan-greeting {
+            background: #111;
+            color: #45a29e;
+            border-left-color: #45a29e;
+        }
+        body.dark-mode input[type="text"], 
+        body.dark-mode select, 
+        body.dark-mode textarea {
+            background-color: #0b0c10;
+            color: #fff;
+            border-color: #45a29e;
+        }
+        body.dark-mode .section-title {
+            color: #45a29e;
+            border-bottom-color: #45a29e;
+        }
+        body.dark-mode .header-img {
+            background-color: white; 
+            padding: 10px;
+            border-radius: 8px;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+        .container { 
+            max-width: 750px; 
+            margin: 20px auto; 
+            background: white; 
+            padding: 40px; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+            transition: background-color 0.8s ease, color 0.8s ease;
+        }
+        
+        .header-img {
+            width: 100%;
+            max-width: 250px;
+            display: block;
+            margin: 0 auto 15px auto;
+            object-fit: contain;
+            transition: background-color 0.8s ease;
+        }
+        .header-text {
+            text-align: center;
+            color: var(--unaerp-blue);
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 25px;
+            border-bottom: 3px solid var(--unaerp-green);
+            padding-bottom: 20px;
+            transition: color 0.8s ease;
+        }
+        
+        h2 { 
+            color: var(--text-main); 
+            text-align: center; 
+            margin-bottom: 5px;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition: color 0.8s ease;
+        }
+        
+        .padawan-greeting {
+            text-align: center;
+            background: #eef2fa;
+            color: var(--unaerp-blue);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.95em;
+            font-weight: 600;
+            margin-bottom: 25px;
+            border-left: 4px solid var(--unaerp-blue);
+            cursor: crosshair; 
+            transition: all 0.3s ease;
+        }
+        .padawan-greeting:hover {
+            transform: scale(1.02);
+        }
 
-<style>
-:root {
---unaerp-blue: #4054a5;
---unaerp-green: #8dc63f;
---bg-color: #f4f6f9;
---text-main: #333;
-}
+        .selector-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid var(--unaerp-blue);
+            margin-bottom: 25px;
+            transition: background-color 0.8s ease, border-color 0.8s ease;
+        }
+        body.dark-mode .selector-box {
+            background-color: #111;
+            border-color: #66fcf1;
+        }
+        .selector-box label {
+            color: var(--unaerp-blue);
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+        body.dark-mode .selector-box label {
+            color: #66fcf1;
+        }
+        .pecas-badge {
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: #4b5563;
+            font-weight: 600;
+        }
+        body.dark-mode .pecas-badge {
+            color: #45a29e;
+        }
 
-body { 
-font-family: 'Inter', sans-serif; 
-background-color: var(--bg-color); 
-margin: 0; 
-padding: 20px; 
-color: var(--text-main);
-transition: background-color 0.8s ease, color 0.8s ease;
-}
+        .section-title {
+            font-size: 1.1em;
+            color: var(--unaerp-blue);
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 700;
+            transition: color 0.8s ease, border-color 0.8s ease;
+        }
+        
+        .campo { margin-bottom: 20px; }
+        label { 
+            display: block; 
+            font-weight: 600; 
+            margin-bottom: 8px; 
+            color: #444; 
+            font-size: 0.95em;
+            transition: color 0.8s ease;
+        }
+        input[type="text"], select, textarea { 
+            width: 100%; 
+            padding: 12px 15px; 
+            border: 1.5px solid #d1d5db; 
+            border-radius: 8px; 
+            box-sizing: border-box; 
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            background-color: white;
+            transition: all 0.3s ease;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        input[type="text"]:focus, select:focus, textarea:focus {
+            border-color: var(--unaerp-blue);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(64, 84, 165, 0.15);
+        }
 
-body.dark-mode {
-background-color: #0b0c10;
-}
-body.dark-mode .container {
-background-color: #1f2833;
-box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-color: #c5c6c7;
-}
-body.dark-mode label {
-color: #c5c6c7;
-}
-body.dark-mode h2, body.dark-mode .header-text {
-color: #66fcf1;
-}
-body.dark-mode .padawan-greeting {
-background: #111;
-color: #45a29e;
-border-left-color: #45a29e;
-}
-body.dark-mode input[type="text"], 
-body.dark-mode select, 
-body.dark-mode textarea {
-background-color: #0b0c10;
-color: #fff;
-border-color: #45a29e;
-}
-body.dark-mode .section-title {
-color: #45a29e;
-border-bottom-color: #45a29e;
-}
-body.dark-mode .header-img {
-background-color: white; 
-padding: 10px;
-border-radius: 8px;
-}
+        .nota-asterisco {
+            font-size: 0.85em;
+            color: #666;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        body.dark-mode .nota-asterisco { color: #888; }
 
-.container { 
-max-width: 750px; 
-margin: 20px auto; 
-background: white; 
-padding: 40px; 
-border-radius: 12px; 
-box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
-transition: background-color 0.8s ease, color 0.8s ease;
-}
+        .bloco-peca {
+            display: none;
+        }
+        .bloco-peca.ativo {
+            display: block;
+        }
+        
+        button { 
+            background: linear-gradient(135deg, var(--unaerp-blue), #2c3e80); 
+            color: white; 
+            border: none; 
+            padding: 16px; 
+            font-size: 17px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            width: 100%; 
+            margin-top: 15px; 
+            font-weight: 700; 
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        button:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 20px rgba(64, 84, 165, 0.3);
+        }
+        button:disabled { 
+            background: #9ca3af; 
+            cursor: not-allowed; 
+            transform: none;
+            box-shadow: none;
+        }
+        
+        button.sith-mode {
+            background: linear-gradient(135deg, #e50914, #8b0000);
+            box-shadow: 0 0 15px rgba(229, 9, 20, 0.6);
+        }
+        button.sith-mode:hover {
+            box-shadow: 0 0 25px rgba(229, 9, 20, 0.9);
+        }
 
-.header-img {
-width: 100%;
-max-width: 250px;
-display: block;
-margin: 0 auto 15px auto;
-object-fit: contain;
-transition: background-color 0.8s ease;
-}
-.header-text {
-text-align: center;
-color: var(--unaerp-blue);
-font-size: 1.5em;
-font-weight: 700;
-margin-bottom: 25px;
-border-bottom: 3px solid var(--unaerp-green);
-padding-bottom: 20px;
-transition: color 0.8s ease;
-}
-
-h2 { 
-color: var(--text-main); 
-text-align: center; 
-margin-bottom: 5px;
-font-size: 1.2em;
-font-weight: 600;
-transition: color 0.8s ease;
-}
-
-.padawan-greeting {
-text-align: center;
-background: #eef2fa;
-color: var(--unaerp-blue);
-padding: 15px;
-border-radius: 8px;
-font-size: 0.95em;
-font-weight: 600;
-margin-bottom: 25px;
-border-left: 4px solid var(--unaerp-blue);
-cursor: crosshair; 
-transition: all 0.3s ease;
-}
-.padawan-greeting:hover {
-transform: scale(1.02);
-}
-
-.selector-box {
-background: #f8f9fa;
-padding: 20px;
-border-radius: 10px;
-border: 2px solid var(--unaerp-blue);
-margin-bottom: 25px;
-transition: background-color 0.8s ease, border-color 0.8s ease;
-}
-body.dark-mode .selector-box {
-background-color: #111;
-border-color: #66fcf1;
-}
-.selector-box label {
-color: var(--unaerp-blue);
-font-size: 1em;
-margin-bottom: 10px;
-}
-body.dark-mode .selector-box label {
-color: #66fcf1;
-}
-.pecas-badge {
-margin-top: 10px;
-font-size: 0.85em;
-color: #4b5563;
-font-weight: 600;
-}
-body.dark-mode .pecas-badge {
-color: #45a29e;
-}
-
-.section-title {
-font-size: 1.1em;
-color: var(--unaerp-blue);
-border-bottom: 2px solid #e5e7eb;
-padding-bottom: 5px;
-margin-top: 30px;
-margin-bottom: 15px;
-font-weight: 700;
-transition: color 0.8s ease, border-color 0.8s ease;
-}
-
-.campo { margin-bottom: 20px; }
-label { 
-display: block; 
-font-weight: 600; 
-margin-bottom: 8px; 
-color: #444; 
-font-size: 0.95em;
-transition: color 0.8s ease;
-}
-input[type="text"], select, textarea { 
-width: 100%; 
-padding: 12px 15px; 
-border: 1.5px solid #d1d5db; 
-border-radius: 8px; 
-box-sizing: border-box; 
-font-size: 15px;
-font-family: 'Inter', sans-serif;
-background-color: white;
-transition: all 0.3s ease;
-}
-textarea {
-resize: vertical;
-min-height: 80px;
-}
-input[type="text"]:focus, select:focus, textarea:focus {
-border-color: var(--unaerp-blue);
-outline: none;
-box-shadow: 0 0 0 3px rgba(64, 84, 165, 0.15);
-}
-
-.nota-asterisco {
-font-size: 0.85em;
-color: #666;
-margin-bottom: 15px;
-font-style: italic;
-}
-body.dark-mode .nota-asterisco { color: #888; }
-
-.bloco-peca {
-display: none;
-}
-.bloco-peca.ativo {
-display: block;
-}
-
-button { 
-background: linear-gradient(135deg, var(--unaerp-blue), #2c3e80); 
-color: white; 
-border: none; 
-padding: 16px; 
-font-size: 17px; 
-border-radius: 8px; 
-cursor: pointer; 
-width: 100%; 
-margin-top: 15px; 
-font-weight: 700; 
-font-family: 'Inter', sans-serif;
-transition: all 0.3s ease;
-text-transform: uppercase;
-letter-spacing: 0.5px;
-}
-button:hover { 
-transform: translateY(-2px); 
-box-shadow: 0 8px 20px rgba(64, 84, 165, 0.3);
-}
-button:disabled { 
-background: #9ca3af; 
-cursor: not-allowed; 
-transform: none;
-box-shadow: none;
-}
-
-button.sith-mode {
-background: linear-gradient(135deg, #e50914, #8b0000);
-box-shadow: 0 0 15px rgba(229, 9, 20, 0.6);
-}
-button.sith-mode:hover {
-box-shadow: 0 0 25px rgba(229, 9, 20, 0.9);
-}
-
-.idle-toast {
-position: fixed;
-bottom: -100px;
-right: 20px;
-background: linear-gradient(135deg, var(--unaerp-blue), #2c3e80);
-color: white;
-padding: 15px 25px;
-border-radius: 12px;
-box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-font-weight: 600;
-display: flex;
-align-items: center;
-gap: 10px;
-transition: bottom 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-z-index: 1000;
-cursor: pointer;
-}
-.idle-toast.show {
-bottom: 30px;
-animation: pulse-toast 2s infinite 1s;
-}
-body.dark-mode .idle-toast {
-background: linear-gradient(135deg, #111, #1f2833);
-color: #45a29e;
-border: 1px solid #45a29e;
-box-shadow: 0 0 15px rgba(69, 162, 158, 0.4);
-}
-@keyframes pulse-toast {
-0% { transform: scale(1); }
-50% { transform: scale(1.03); }
-100% { transform: scale(1); }
-}
-</style>
+        .idle-toast {
+            position: fixed;
+            bottom: -100px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--unaerp-blue), #2c3e80);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: bottom 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 1000;
+            cursor: pointer;
+        }
+        .idle-toast.show {
+            bottom: 30px;
+            animation: pulse-toast 2s infinite 1s;
+        }
+        body.dark-mode .idle-toast {
+            background: linear-gradient(135deg, #111, #1f2833);
+            color: #45a29e;
+            border: 1px solid #45a29e;
+            box-shadow: 0 0 15px rgba(69, 162, 158, 0.4);
+        }
+        @keyframes pulse-toast {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+    </style>
 </head>
 <body>
 
 <div class="container">
-<img src="modelos/cabecalho.png" alt="Logo UNAERP" class="header-img">
-<div class="header-text">Escritório de Assistência Jurídica</div>
+    <img src="modelos/cabecalho.png" alt="Logo UNAERP" class="header-img">
+    <div class="header-text">Escritório de Assistência Jurídica</div>
+    
+    <h2>Forja de Documentos do EAJ</h2>
+    
+    <div class="padawan-greeting" ondblclick="revelarSegredo()" title="Sente alguma perturbação na Força? Dê um duplo clique.">
+        Saudações, Bruna, João Miguel, Chueng Lee, Philip e Pedro... Petições forjar, vocês devem!<br>
+        <em>Que a Força esteja com vocês, jovens padawans.</em>
+    </div>
 
-<h2>Forja de Documentos do EAJ</h2>
+    <!-- SELETOR DE PEÇA -->
+    <div class="selector-box">
+        <label for="tipo_peca">Selecione a peça que deseja forjar:</label>
+        <select id="tipo_peca" onchange="alternarFormulario()">
+            <option value="habilitacao">Habilitação</option>
+            <option value="negativa_geral">Contestação por Negativa Geral</option>
+            <option value="desbloqueio">Pedido de Desbloqueio</option>
+            <option value="inicial">Petição Inicial (Em favor da Mãe)</option>
+            <option value="contestacao_pai">Contestação (Em favor do Pai)</option>
+        </select>
+        <div id="info_pacote" class="pecas-badge">
+            📄 Documentos gerados: Habilitação + Procuração + Gratuidade
+        </div>
+    </div>
 
-<div class="padawan-greeting" ondblclick="revelarSegredo()" title="Sente alguma perturbação na Força? Dê um duplo clique.">
-        Bom dia! <br>
-        Jovens Padawans, petições forjar, vocês devem!<br>
-<em>Que a Força esteja com vocês, padawans.</em>
-</div>
+    <!-- ===================================================================== -->
+    <!-- BLOCO 1: HABILITAÇÃO                                                  -->
+    <!-- ===================================================================== -->
+    <div id="bloco_habilitacao" class="bloco-peca ativo">
+        <div class="section-title">Dados da Habilitação</div>
+        <div class="campo">
+            <label>Vara (ex: 1ª):</label>
+            <input type="text" id="hab_vara" placeholder="1ª" onkeyup="verificarOrdem66(this)">
+        </div>
+        <div class="campo">
+            <label>Competência / Especialidade:</label>
+            <select id="hab_competencia">
+                <option value="CÍVEL">CÍVEL</option>
+                <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
+                <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
+                <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
+            </select>
+        </div>
+        <div class="campo">
+            <label>Processo nº:</label>
+            <input type="text" id="hab_numero" placeholder="0000000-00.0000.0.00.0000">
+        </div>
+        <div class="campo">
+            <label>Nome Completo do Assistido:</label>
+            <input type="text" id="hab_nome_autor" placeholder="João da Silva">
+        </div>
+        <div class="campo">
+            <label>Nacionalidade:</label>
+            <input type="text" id="hab_nacionalidade" value="brasileiro(a)">
+        </div>
+        <div class="campo">
+            <label>Estado Civil:</label>
+            <input type="text" id="hab_estado_civil" placeholder="solteiro(a)">
+        </div>
+        <div class="campo">
+            <label>Profissão:</label>
+            <input type="text" id="hab_profissao" placeholder="engenheiro(a)">
+        </div>
+        <div class="campo">
+            <label>RG:</label>
+            <input type="text" id="hab_rg" placeholder="00.000.000-0">
+        </div>
+        <div class="campo">
+            <label>CPF:</label>
+            <input type="text" id="hab_cpf" placeholder="000.000.000-00">
+        </div>
+        <div class="campo">
+            <label>Endereço Completo:</label>
+            <input type="text" id="hab_endereco" placeholder="Rua Exemplo, 123, Centro, Ribeirão Preto/SP, CEP:">
+        </div>
+        <div class="campo">
+            <label>Valor da proposta de acordo:</label>
+            <input type="text" id="hab_valor_acordo" placeholder="R$ 5.000,00">
+        </div>
+    </div>
 
-<!-- SELETOR DE PEÇA -->
-<div class="selector-box">
-<label for="tipo_peca">Selecione a peça que deseja forjar:</label>
-<select id="tipo_peca" onchange="alternarFormulario()">
-<option value="habilitacao">Habilitação</option>
-<option value="negativa_geral">Contestação por Negativa Geral</option>
-<option value="inicial">Petição Inicial (Em favor da Mãe)</option>
-<option value="contestacao_pai">Contestação (Em favor do Pai)</option>
-</select>
-<div id="info_pacote" class="pecas-badge">
-📄 Documentos gerados: Habilitação + Procuração + Gratuidade
-</div>
-</div>
+    <!-- ===================================================================== -->
+    <!-- BLOCO 2: CONTESTAÇÃO POR NEGATIVA GERAL                               -->
+    <!-- ===================================================================== -->
+    <div id="bloco_negativa_geral" class="bloco-peca">
+        <div class="section-title">Dados da Contestação por Negativa Geral</div>
+        <div class="campo">
+            <label>Vara (ex: 1ª):</label>
+            <input type="text" id="neg_vara" placeholder="1ª" onkeyup="verificarOrdem66(this)">
+        </div>
+        <div class="campo">
+            <label>Competência / Especialidade:</label>
+            <select id="neg_competencia">
+                <option value="CÍVEL">CÍVEL</option>
+                <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
+                <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
+                <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
+            </select>
+        </div>
+        <div class="campo">
+            <label>Processo nº:</label>
+            <input type="text" id="neg_numero" placeholder="0000000-00.0000.0.00.0000">
+        </div>
+        <div class="campo">
+            <label>Nome Completo do Assistido:</label>
+            <input type="text" id="neg_nome_autor" placeholder="João da Silva">
+        </div>
+        <div class="campo">
+            <label>CPF:</label>
+            <input type="text" id="neg_cpf" placeholder="000.000.000-00">
+        </div>
+    </div>
 
-<!-- ===================================================================== -->
-<!-- BLOCO 1: HABILITAÇÃO                                                  -->
-<!-- ===================================================================== -->
-<div id="bloco_habilitacao" class="bloco-peca ativo">
-<div class="section-title">Dados da Habilitação</div>
-<div class="campo">
-<label>Vara (ex: 1ª):</label>
-<input type="text" id="hab_vara" placeholder="1ª" onkeyup="verificarOrdem66(this)">
-</div>
-<div class="campo">
-<label>Competência / Especialidade:</label>
-<select id="hab_competencia">
-<option value="CÍVEL">CÍVEL</option>
-<option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
-<option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
-<option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
-</select>
-</div>
-<div class="campo">
-<label>Processo nº:</label>
-<input type="text" id="hab_numero" placeholder="0000000-00.0000.0.00.0000">
-</div>
-<div class="campo">
-<label>Nome Completo do Assistido:</label>
-<input type="text" id="hab_nome_autor" placeholder="João da Silva">
-</div>
-<div class="campo">
-<label>Nacionalidade:</label>
-<input type="text" id="hab_nacionalidade" value="brasileiro(a)">
-</div>
-<div class="campo">
-<label>Estado Civil:</label>
-<input type="text" id="hab_estado_civil" placeholder="solteiro(a)">
-</div>
-<div class="campo">
-<label>Profissão:</label>
-<input type="text" id="hab_profissao" placeholder="engenheiro(a)">
-</div>
-<div class="campo">
-<label>RG:</label>
-<input type="text" id="hab_rg" placeholder="00.000.000-0">
-</div>
-<div class="campo">
-<label>CPF:</label>
-<input type="text" id="hab_cpf" placeholder="000.000.000-00">
-</div>
-<div class="campo">
-<label>Endereço Completo:</label>
-<input type="text" id="hab_endereco" placeholder="Rua Exemplo, 123, Centro, Ribeirão Preto/SP, CEP:">
-</div>
-<div class="campo">
-<label>Valor da proposta de acordo:</label>
-<input type="text" id="hab_valor_acordo" placeholder="R$ 5.000,00">
-</div>
-</div>
+    <!-- ===================================================================== -->
+    <!-- BLOCO 3: PEDIDO DE DESBLOQUEIO                                        -->
+    <!-- ===================================================================== -->
+    <div id="bloco_desbloqueio" class="bloco-peca">
+        <div class="section-title">Dados do Processo e das Partes</div>
+        <div class="campo">
+            <label>Vara (apenas o número, ex: 1):</label>
+            <input type="text" id="desb_vara" placeholder="1" onkeyup="verificarOrdem66(this)">
+        </div>
+        <div class="campo">
+            <label>Competência / Especialidade:</label>
+            <select id="desb_competencia">
+                <option value="CÍVEL">CÍVEL</option>
+                <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
+                <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
+                <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
+            </select>
+        </div>
+        <div class="campo">
+            <label>Processo nº:</label>
+            <input type="text" id="desb_numero" placeholder="0000000-00.0000.0.00.0000">
+        </div>
+        <div class="campo">
+            <label>Nome Completo do(a) Assistido(a):</label>
+            <input type="text" id="desb_nome_assistido" placeholder="Ex: João da Silva">
+        </div>
+        <div class="campo">
+            <label>Título da Ação (em que ocorreu o bloqueio):</label>
+            <input type="text" id="desb_titulo_da_acao" placeholder="Ex: Ação de Execução de Título Extrajudicial">
+        </div>
+        <div class="campo">
+            <label>Nome da Parte Contrária (Exequente):</label>
+            <input type="text" id="desb_nome_parte_contraria" placeholder="Ex: Banco X S.A. ou Maria das Graças">
+        </div>
+        <div class="campo">
+            <label>Natureza do Crédito Executado:</label>
+            <input type="text" id="desb_natureza_credito_executado" placeholder="Ex: dívida de natureza cível e não alimentar">
+        </div>
 
-<!-- ===================================================================== -->
-<!-- BLOCO 2: CONTESTAÇÃO POR NEGATIVA GERAL                               -->
-<!-- ===================================================================== -->
-<div id="bloco_negativa_geral" class="bloco-peca">
-<div class="section-title">Dados da Contestação por Negativa Geral</div>
-<div class="campo">
-<label>Vara (ex: 1ª):</label>
-<input type="text" id="neg_vara" placeholder="1ª" onkeyup="verificarOrdem66(this)">
-</div>
-<div class="campo">
-<label>Competência / Especialidade:</label>
-<select id="neg_competencia">
-<option value="CÍVEL">CÍVEL</option>
-<option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
-<option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
-<option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
-</select>
-</div>
-<div class="campo">
-<label>Processo nº:</label>
-<input type="text" id="neg_numero" placeholder="0000000-00.0000.0.00.0000">
-</div>
-<div class="campo">
-<label>Nome Completo do Assistido:</label>
-<input type="text" id="neg_nome_autor" placeholder="João da Silva">
-</div>
-<div class="campo">
-<label>CPF:</label>
-<input type="text" id="neg_cpf" placeholder="000.000.000-00">
-</div>
-</div>
+        <div class="section-title">Dados do Bloqueio e da Conta</div>
+        <div class="campo">
+            <label>Data do Bloqueio:</label>
+            <input type="text" id="desb_data_bloqueio" placeholder="Ex: 10/11/2026">
+        </div>
+        <div class="campo">
+            <label>Data da Intimação do Bloqueio:</label>
+            <input type="text" id="desb_data_intimacao_bloqueio" placeholder="Ex: 12/11/2026">
+        </div>
+        <div class="campo">
+            <label>Instituição Financeira (Banco):</label>
+            <input type="text" id="desb_banco" placeholder="Ex: Banco Itaú S.A.">
+        </div>
+        <div class="campo">
+            <label>Tipo de Conta (já com a palavra "conta"):</label>
+            <input type="text" id="desb_tipo_conta" placeholder="Ex: conta-corrente">
+        </div>
+        <div class="campo">
+            <label>Valor Total Bloqueado:</label>
+            <input type="text" id="desb_valor_total_bloqueado" placeholder="Ex: R$ 4.919,49">
+        </div>
+        <div class="campo">
+            <label>Proporção da Verba Bloqueada (já com artigo):</label>
+            <input type="text" id="desb_proporcao_verba_bloqueada" placeholder="Ex: a totalidade">
+        </div>
 
-<!-- ===================================================================== -->
-<!-- BLOCO 3: PETIÇÃO INICIAL (MÃE)                                        -->
-<!-- ===================================================================== -->
-<div id="bloco_inicial" class="bloco-peca">
-<div class="nota-asterisco">
-* Campos marcados com asterisco serão inseridos apenas na Petição Inicial.
-</div>
+        <div class="section-title">Origem da Verba e Subsistência</div>
+        <div class="campo">
+            <label>Natureza da Verba:</label>
+            <input type="text" id="desb_natureza_verba" placeholder="Ex: proventos de aposentadoria">
+        </div>
+        <div class="campo">
+            <label>Fonte Pagadora (Quem pagou):</label>
+            <input type="text" id="desb_fonte_pagadora" placeholder="Ex: INSS">
+        </div>
+        <div class="campo">
+            <label>Data do Crédito:</label>
+            <input type="text" id="desb_data_credito" placeholder="Ex: 05/11/2026">
+        </div>
+        <div class="campo">
+            <label>Valor Creditado:</label>
+            <input type="text" id="desb_valor_credito" placeholder="Ex: R$ 4.919,49">
+        </div>
+        <div class="campo">
+            <label>Descrição Literal do Crédito no Extrato:</label>
+            <input type="text" id="desb_descricao_credito_extrato" placeholder="Ex: PGTO INSS 05701121220">
+        </div>
+        <div class="campo">
+            <label>Valor de 40 Salários Mínimos na Data:</label>
+            <input type="text" id="desb_valor_40_salarios_minimos" placeholder="Ex: R$ 64.840,00">
+        </div>
+        <div class="campo">
+            <label>Localização do Extrato nos Autos:</label>
+            <input type="text" id="desb_doc_extrato" placeholder="Ex: Doc. 02 / ID 123456">
+        </div>
+        <div class="campo">
+            <label>Documentos de Despesas e Família nos Autos:</label>
+            <input type="text" id="desb_doc_comprovantes" placeholder="Ex: Docs. 03 a 07">
+        </div>
+        <div class="campo">
+            <label>Situação Familiar e Dependência da Renda:</label>
+            <input type="text" id="desb_situacao_familiar" placeholder="Ex: reside com a esposa e dois filhos menores, que dependem de sua renda">
+        </div>
+        <div class="campo">
+            <label>Despesas Essenciais:</label>
+            <input type="text" id="desb_despesas_essenciais" placeholder="Ex: aluguel, alimentação, medicamentos e transporte">
+        </div>
+    </div>
 
-<div class="section-title">Qualificação da Parte Autora</div>
-<div class="campo">
-<label>Nome Completo do Autor(a):</label>
-<input type="text" id="ini_nome_autor" placeholder="Ex: Adrielle Gonçalves dos Santos">
-</div>
-<div class="campo">
-<label>Nacionalidade:</label>
-<input type="text" id="ini_nacionalidade" value="brasileiro(a)">
-</div>
-<div class="campo">
-<label>Estado Civil:</label>
-<input type="text" id="ini_estado_civil" placeholder="Ex: casada">
-</div>
-<div class="campo">
-<label>Profissão:</label>
-<input type="text" id="ini_profissao" placeholder="Ex: desempregada">
-</div>
-<div class="campo">
-<label>RG:</label>
-<input type="text" id="ini_rg" placeholder="00.000.000-0">
-</div>
-<div class="campo">
-<label>CPF:</label>
-<input type="text" id="ini_cpf" placeholder="000.000.000-00">
-</div>
-<div class="campo">
-<label>Endereço Completo:</label>
-<input type="text" id="ini_endereco" placeholder="Ex: Rua Paranapanema, 345, torre A, AP 608, Sumarezinho, Ribeirão Preto-SP">
-</div>
+    <!-- ===================================================================== -->
+    <!-- BLOCO 4: PETIÇÃO INICIAL (MÃE)                                        -->
+    <!-- ===================================================================== -->
+    <div id="bloco_inicial" class="bloco-peca">
+        <div class="nota-asterisco">
+            * Campos marcados com asterisco serão inseridos apenas na Petição Inicial.
+        </div>
 
-<div class="section-title">Dados da Petição Inicial *</div>
-<div class="campo">
-<label>Vara* (ex: 1ª):</label>
-<input type="text" id="ini_vara" placeholder="Deixe em branco se for a distribuir" onkeyup="verificarOrdem66(this)">
-</div>
-<div class="campo">
-<label>Nome Completo do Requerido*:</label>
-<input type="text" id="ini_nome_requerido" placeholder="Ex: Ericlis Gonçalves">
-</div>
-<div class="campo">
-<label>Profissão do Requerido*:</label>
-<input type="text" id="ini_profissao_requerido" placeholder="Ex: desenvolvedor de sistemas">
-</div>
-<div class="campo">
-<label>RG do Requerido*:</label>
-<input type="text" id="ini_rg_requerido" placeholder="00.000.000-0">
-</div>
-<div class="campo">
-<label>CPF do Requerido*:</label>
-<input type="text" id="ini_cpf_requerido" placeholder="000.000.000-00">
-</div>
-<div class="campo">
-<label>Endereço do Requerido*:</label>
-<input type="text" id="ini_endereco_requerido" placeholder="Ex: R. Des. Thrasybulo Pinheiro de Albuquerque, Cidade Kemel, São Paulo - SP">
-</div>
-<div class="campo">
-<label>Data do Casamento*:</label>
-<input type="text" id="ini_data_casamento" placeholder="Ex: 13 de maio de 2023">
-</div>
-<div class="campo">
-<label>Regime de Bens*:</label>
-<input type="text" id="ini_regime_bens" placeholder="Ex: comunhão parcial de bens">
-</div>
-<div class="campo">
-<label>Cartório e Registro de Casamento (Livro/Fls/Nº)*:</label>
-<input type="text" id="ini_registro_casamento" placeholder="Ex: Cartório de Registro Civil do Itaim Paulista, Livro B-0213, Fls. 227, nº 64797">
-</div>
-<div class="campo">
-<label>Nome do Filho(a)*:</label>
-<input type="text" id="ini_nome_filho" placeholder="Ex: Enzo Gabriel Monteiro dos Santos">
-</div>
-<div class="campo">
-<label>Data de Nascimento do Filho(a)*:</label>
-<input type="text" id="ini_nascimento_filho" placeholder="Ex: 17 de abril de 2016">
-</div>
-<div class="campo">
-<label>RG do Filho(a)*:</label>
-<input type="text" id="ini_rg_filho" placeholder="00.000.000-0">
-</div>
-<div class="campo">
-<label>CPF do Filho(a)*:</label>
-<input type="text" id="ini_cpf_filho" placeholder="000.000.000-00">
-</div>
-<div class="campo">
-<label>Bens a Partilhar*:</label>
-<input type="text" id="ini_bens_partilhar" placeholder="Ex: um imóvel em Ribeirão Preto/SP, um carro e uma moto">
-</div>
-<div class="campo">
-<label>Nome de Solteira a retornar*:</label>
-<input type="text" id="ini_nome_solteira" placeholder="Ex: Genilsa Nunes De Souza">
-</div>
-<div class="campo">
-<label>Valor da Causa*:</label>
-<input type="text" id="ini_valor_causa" placeholder="12x a pensão mensal - art. 292, III do CPC">
-</div>
-</div>
+        <div class="section-title">Qualificação da Parte Autora</div>
+        <div class="campo">
+            <label>Nome Completo do Autor(a):</label>
+            <input type="text" id="ini_nome_autor" placeholder="Ex: Adrielle Gonçalves dos Santos">
+        </div>
+        <div class="campo">
+            <label>Nacionalidade:</label>
+            <input type="text" id="ini_nacionalidade" value="brasileiro(a)">
+        </div>
+        <div class="campo">
+            <label>Estado Civil:</label>
+            <input type="text" id="ini_estado_civil" placeholder="Ex: casada">
+        </div>
+        <div class="campo">
+            <label>Profissão:</label>
+            <input type="text" id="ini_profissao" placeholder="Ex: desempregada">
+        </div>
+        <div class="campo">
+            <label>RG:</label>
+            <input type="text" id="ini_rg" placeholder="00.000.000-0">
+        </div>
+        <div class="campo">
+            <label>CPF:</label>
+            <input type="text" id="ini_cpf" placeholder="000.000.000-00">
+        </div>
+        <div class="campo">
+            <label>Endereço Completo:</label>
+            <input type="text" id="ini_endereco" placeholder="Ex: Rua Paranapanema, 345, torre A, AP 608, Sumarezinho, Ribeirão Preto-SP">
+        </div>
 
-<!-- ===================================================================== -->
-<!-- BLOCO 4: CONTESTAÇÃO (PAI)                                            -->
-<!-- ===================================================================== -->
-<div id="bloco_contestacao_pai" class="bloco-peca">
-<div class="section-title">Dados do Processo</div>
-<div class="campo">
-<label>Vara (ex: 1ª):</label>
-<input type="text" id="cpai_vara" placeholder="Ex: 1ª" onkeyup="verificarOrdem66(this)">
-</div>
-<div class="campo">
-<label>Número do Processo:</label>
-<input type="text" id="cpai_numero" placeholder="0000000-00.0000.0.00.0000">
-</div>
-<div class="campo">
-<label>Tipo de Ação:</label>
-<input type="text" id="cpai_tipo_de_acao" placeholder="Ex: Ação de Guarda c/c Alimentos">
-</div>
-<div class="campo">
-<label>Ofício Defensoria (Nº):</label>
-<input type="text" id="cpai_n_oficio_defensoria" placeholder="Ex: 1234/2026">
-</div>
+        <div class="section-title">Dados da Petição Inicial *</div>
+        <div class="campo">
+            <label>Vara* (ex: 1ª):</label>
+            <input type="text" id="ini_vara" placeholder="Deixe em branco se for a distribuir" onkeyup="verificarOrdem66(this)">
+        </div>
+        <div class="campo">
+            <label>Nome Completo do Requerido*:</label>
+            <input type="text" id="ini_nome_requerido" placeholder="Ex: Ericlis Gonçalves">
+        </div>
+        <div class="campo">
+            <label>Profissão do Requerido*:</label>
+            <input type="text" id="ini_profissao_requerido" placeholder="Ex: desenvolvedor de sistemas">
+        </div>
+        <div class="campo">
+            <label>RG do Requerido*:</label>
+            <input type="text" id="ini_rg_requerido" placeholder="00.000.000-0">
+        </div>
+        <div class="campo">
+            <label>CPF do Requerido*:</label>
+            <input type="text" id="ini_cpf_requerido" placeholder="000.000.000-00">
+        </div>
+        <div class="campo">
+            <label>Endereço do Requerido*:</label>
+            <input type="text" id="ini_endereco_requerido" placeholder="Ex: R. Des. Thrasybulo Pinheiro de Albuquerque, Cidade Kemel, São Paulo - SP">
+        </div>
+        <div class="campo">
+            <label>Data do Casamento*:</label>
+            <input type="text" id="ini_data_casamento" placeholder="Ex: 13 de maio de 2023">
+        </div>
+        <div class="campo">
+            <label>Regime de Bens*:</label>
+            <input type="text" id="ini_regime_bens" placeholder="Ex: comunhão parcial de bens">
+        </div>
+        <div class="campo">
+            <label>Cartório e Registro de Casamento (Livro/Fls/Nº)*:</label>
+            <input type="text" id="ini_registro_casamento" placeholder="Ex: Cartório de Registro Civil do Itaim Paulista, Livro B-0213, Fls. 227, nº 64797">
+        </div>
+        <div class="campo">
+            <label>Nome do Filho(a)*:</label>
+            <input type="text" id="ini_nome_filho" placeholder="Ex: Enzo Gabriel Monteiro dos Santos">
+        </div>
+        <div class="campo">
+            <label>Data de Nascimento do Filho(a)*:</label>
+            <input type="text" id="ini_nascimento_filho" placeholder="Ex: 17 de abril de 2016">
+        </div>
+        <div class="campo">
+            <label>RG do Filho(a)*:</label>
+            <input type="text" id="ini_rg_filho" placeholder="00.000.000-0">
+        </div>
+        <div class="campo">
+            <label>CPF do Filho(a)*:</label>
+            <input type="text" id="ini_cpf_filho" placeholder="000.000.000-00">
+        </div>
+        <div class="campo">
+            <label>Bens a Partilhar*:</label>
+            <input type="text" id="ini_bens_partilhar" placeholder="Ex: um imóvel em Ribeirão Preto/SP, um carro e uma moto">
+        </div>
+        <div class="campo">
+            <label>Nome de Solteira a retornar*:</label>
+            <input type="text" id="ini_nome_solteira" placeholder="Ex: Genilsa Nunes De Souza">
+        </div>
+        <div class="campo">
+            <label>Valor da Causa*:</label>
+            <input type="text" id="ini_valor_causa" placeholder="12x a pensão mensal - art. 292, III do CPC">
+        </div>
+    </div>
 
-<div class="section-title">Qualificação das Partes</div>
-<div class="campo">
-<label>Nome Completo do REQUERIDO (Seu Cliente):</label>
-<input type="text" id="cpai_nome_reu" placeholder="Ex: João da Silva">
-</div>
-<div class="campo">
-<label>Nacionalidade (Requerido):</label>
-<input type="text" id="cpai_nacionalidade" value="brasileiro(a)">
-</div>
-<div class="campo">
-<label>Estado Civil (Requerido):</label>
-<input type="text" id="cpai_estado_civil" placeholder="Ex: divorciado">
-</div>
-<div class="campo">
-<label>Profissão (Requerido):</label>
-<input type="text" id="cpai_profissao" placeholder="Ex: autônomo">
-</div>
-<div class="campo">
-<label>RG (Requerido):</label>
-<input type="text" id="cpai_rg" placeholder="00.000.000-0">
-</div>
-<div class="campo">
-<label>CPF (Requerido):</label>
-<input type="text" id="cpai_cpf" placeholder="000.000.000-00">
-</div>
-<div class="campo">
-<label>Endereço Completo (Requerido):</label>
-<input type="text" id="cpai_endereco" placeholder="Rua, Número, Bairro, Cidade-UF, CEP">
-</div>
-<div class="campo">
-<label>Nome Completo da AUTORA (Parte Contrária):</label>
-<input type="text" id="cpai_nome_autor" placeholder="Ex: Maria das Graças">
-</div>
+    <!-- ===================================================================== -->
+    <!-- BLOCO 5: CONTESTAÇÃO (PAI)                                            -->
+    <!-- ===================================================================== -->
+    <div id="bloco_contestacao_pai" class="bloco-peca">
+        <div class="section-title">Dados do Processo</div>
+        <div class="campo">
+            <label>Vara (ex: 1ª):</label>
+            <input type="text" id="cpai_vara" placeholder="Ex: 1ª" onkeyup="verificarOrdem66(this)">
+        </div>
+        <div class="campo">
+            <label>Número do Processo:</label>
+            <input type="text" id="cpai_numero" placeholder="0000000-00.0000.0.00.0000">
+        </div>
+        <div class="campo">
+            <label>Tipo de Ação:</label>
+            <input type="text" id="cpai_tipo_de_acao" placeholder="Ex: Ação de Guarda c/c Alimentos">
+        </div>
+        <div class="campo">
+            <label>Ofício Defensoria (Nº):</label>
+            <input type="text" id="cpai_n_oficio_defensoria" placeholder="Ex: 1234/2026">
+        </div>
 
-<div class="section-title">Resumo dos Fatos e Filhos</div>
-<div class="campo">
-<label>Nome dos Filhos:</label>
-<input type="text" id="cpai_nomes_filhos" placeholder="Ex: Enzo e Valentina Silva">
-</div>
-<div class="campo">
-<label>Idade dos Filhos:</label>
-<input type="text" id="cpai_idades_filhos" placeholder="Ex: 8 e 5 anos">
-</div>
-<div class="campo">
-<label>O que a Autora pretende? (Síntese):</label>
-<textarea id="cpai_sintese_pretensoes_autor" placeholder="Ex: a fixação de alimentos em 30% dos rendimentos líquidos..."></textarea>
-</div>
+        <div class="section-title">Qualificação das Partes</div>
+        <div class="campo">
+            <label>Nome Completo do REQUERIDO (Seu Cliente):</label>
+            <input type="text" id="cpai_nome_reu" placeholder="Ex: João da Silva">
+        </div>
+        <div class="campo">
+            <label>Nacionalidade (Requerido):</label>
+            <input type="text" id="cpai_nacionalidade" value="brasileiro(a)">
+        </div>
+        <div class="campo">
+            <label>Estado Civil (Requerido):</label>
+            <input type="text" id="cpai_estado_civil" placeholder="Ex: divorciado">
+        </div>
+        <div class="campo">
+            <label>Profissão (Requerido):</label>
+            <input type="text" id="cpai_profissao" placeholder="Ex: autônomo">
+        </div>
+        <div class="campo">
+            <label>RG (Requerido):</label>
+            <input type="text" id="cpai_rg" placeholder="00.000.000-0">
+        </div>
+        <div class="campo">
+            <label>CPF (Requerido):</label>
+            <input type="text" id="cpai_cpf" placeholder="000.000.000-00">
+        </div>
+        <div class="campo">
+            <label>Endereço Completo (Requerido):</label>
+            <input type="text" id="cpai_endereco" placeholder="Rua, Número, Bairro, Cidade-UF, CEP">
+        </div>
+        <div class="campo">
+            <label>Nome Completo da AUTORA (Parte Contrária):</label>
+            <input type="text" id="cpai_nome_autor" placeholder="Ex: Maria das Graças">
+        </div>
 
-<div class="section-title">Situação Financeira e Emprego do Réu</div>
-<div class="campo">
-<label>Data de Desligamento:</label>
-<input type="text" id="cpai_data_desligamento" placeholder="Ex: 15 de janeiro de 2026">
-</div>
-<div class="campo">
-<label>Último Empregador:</label>
-<input type="text" id="cpai_ultimo_empregador" placeholder="Ex: Construtora X">
-</div>
-<div class="campo">
-<label>Cargo do Último Emprego:</label>
-<input type="text" id="cpai_cargo_ultimo_emprego" placeholder="Ex: pedreiro">
-</div>
-<div class="campo">
-<label>Motivo do Desligamento:</label>
-<input type="text" id="cpai_motivo_desligamento" placeholder="Ex: corte de gastos da empresa">
-</div>
-<div class="campo">
-<label>Último Salário:</label>
-<input type="text" id="cpai_ultimo_salario" placeholder="Ex: R$ 2.500,00">
-</div>
-<div class="campo">
-<label>Renda Atual do Requerido:</label>
-<input type="text" id="cpai_renda_atual_requerido" placeholder="Ex: vive de bicos esporádicos recebendo cerca de R$ 800,00 mensais">
-</div>
+        <div class="section-title">Resumo dos Fatos e Filhos</div>
+        <div class="campo">
+            <label>Nome dos Filhos:</label>
+            <input type="text" id="cpai_nomes_filhos" placeholder="Ex: Enzo e Valentina Silva">
+        </div>
+        <div class="campo">
+            <label>Idade dos Filhos:</label>
+            <input type="text" id="cpai_idades_filhos" placeholder="Ex: 8 e 5 anos">
+        </div>
+        <div class="campo">
+            <label>O que a Autora pretende? (Síntese):</label>
+            <textarea id="cpai_sintese_pretensoes_autor" placeholder="Ex: a fixação de alimentos em 30% dos rendimentos líquidos..."></textarea>
+        </div>
+        
+        <div class="section-title">Situação Financeira e Emprego do Réu</div>
+        <div class="campo">
+            <label>Data de Desligamento:</label>
+            <input type="text" id="cpai_data_desligamento" placeholder="Ex: 15 de janeiro de 2026">
+        </div>
+        <div class="campo">
+            <label>Último Empregador:</label>
+            <input type="text" id="cpai_ultimo_empregador" placeholder="Ex: Construtora X">
+        </div>
+        <div class="campo">
+            <label>Cargo do Último Emprego:</label>
+            <input type="text" id="cpai_cargo_ultimo_emprego" placeholder="Ex: pedreiro">
+        </div>
+        <div class="campo">
+            <label>Motivo do Desligamento:</label>
+            <input type="text" id="cpai_motivo_desligamento" placeholder="Ex: corte de gastos da empresa">
+        </div>
+        <div class="campo">
+            <label>Último Salário:</label>
+            <input type="text" id="cpai_ultimo_salario" placeholder="Ex: R$ 2.500,00">
+        </div>
+        <div class="campo">
+            <label>Renda Atual do Requerido:</label>
+            <input type="text" id="cpai_renda_atual_requerido" placeholder="Ex: vive de bicos esporádicos recebendo cerca de R$ 800,00 mensais">
+        </div>
 
-<div class="section-title">Teses de Defesa e Propostas</div>
-<div class="campo">
-<label>Impugnação às Alegações da Autora:</label>
-<textarea id="cpai_impugnacao_alegacoes_autor" placeholder="Ex: A Autora alega sem provas que o Réu possui empresa oculta..."></textarea>
-</div>
-<div class="campo">
-<label>Contribuições In Natura (O que o Réu já paga?):</label>
-<textarea id="cpai_contribuicoes_in_natura" placeholder="Ex: compra material escolar, roupas e paga o plano de saúde"></textarea>
-</div>
-<div class="campo">
-<label>Tese sobre a Guarda:</label>
-<textarea id="cpai_tese_guarda_especifica" placeholder="Ex: a guarda compartilhada deve ser mantida pois atende o melhor interesse..."></textarea>
-</div>
-<div class="campo">
-<label>Fundamento para o Estudo Social:</label>
-<textarea id="cpai_fundamento_estudo_social" placeholder="Ex: a intensa animosidade entre as partes e as acusações recíprocas"></textarea>
-</div>
-<div class="campo">
-<label>Percentual de Rendimentos Proposto (Se empregado):</label>
-<input type="text" id="cpai_percentual_rendimentos_proposto" placeholder="Ex: 20">
-</div>
-<div class="campo">
-<label>Percentual do Salário Mínimo (Se desempregado):</label>
-<input type="text" id="cpai_percentual_salario_minimo_proposto" placeholder="Ex: 30">
-</div>
-</div>
+        <div class="section-title">Teses de Defesa e Propostas</div>
+        <div class="campo">
+            <label>Impugnação às Alegações da Autora:</label>
+            <textarea id="cpai_impugnacao_alegacoes_autor" placeholder="Ex: A Autora alega sem provas que o Réu possui empresa oculta..."></textarea>
+        </div>
+        <div class="campo">
+            <label>Contribuições In Natura (O que o Réu já paga?):</label>
+            <textarea id="cpai_contribuicoes_in_natura" placeholder="Ex: compra material escolar, roupas e paga o plano de saúde"></textarea>
+        </div>
+        <div class="campo">
+            <label>Tese sobre a Guarda:</label>
+            <textarea id="cpai_tese_guarda_especifica" placeholder="Ex: a guarda compartilhada deve ser mantida pois atende o melhor interesse..."></textarea>
+        </div>
+        <div class="campo">
+            <label>Fundamento para o Estudo Social:</label>
+            <textarea id="cpai_fundamento_estudo_social" placeholder="Ex: a intensa animosidade entre as partes e as acusações recíprocas"></textarea>
+        </div>
+        <div class="campo">
+            <label>Percentual de Rendimentos Proposto (Se empregado):</label>
+            <input type="text" id="cpai_percentual_rendimentos_proposto" placeholder="Ex: 20">
+        </div>
+        <div class="campo">
+            <label>Percentual do Salário Mínimo (Se desempregado):</label>
+            <input type="text" id="cpai_percentual_salario_minimo_proposto" placeholder="Ex: 30">
+        </div>
+    </div>
 
-<!-- ===================================================================== -->
-<!-- ASSINATURA FIXA EM TODOS OS MODELOS                                   -->
-<!-- ===================================================================== -->
-<div class="section-title">Assinatura</div>
-<div class="campo">
-<label>Padawan autor da arte:</label>
-<input type="text" id="nome_bad_boy" placeholder="Nome do estagiário(a)" oninput="atualizarBotao()">
-</div>
+    <!-- ===================================================================== -->
+    <!-- ASSINATURA FIXA EM TODOS OS MODELOS                                   -->
+    <!-- ===================================================================== -->
+    <div class="section-title">Assinatura</div>
+    <div class="campo">
+        <label>Padawan autor da arte:</label>
+        <input type="text" id="nome_bad_boy" placeholder="Nome do estagiário(a)" oninput="atualizarBotao()">
+    </div>
 
-<button type="button" id="btnGerar" onclick="gerarDocumentos()">Forjar Petições</button>
+    <button type="button" id="btnGerar" onclick="gerarDocumentos()">Forjar Petições</button>
 </div>
 
 <div id="idle-toast" class="idle-toast" onclick="limparTimerCafe()">
     ☕ Muita calma nessa Força... Precisa de ajuda ou um café, padawan? 
-    ☕ Padawan, precisa de ajuda ou um café? Pode ir conversar com o Dr. Wesday sem medo viu...
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/pizzip@3.1.7/dist/pizzip.min.js"></script>
@@ -642,370 +749,406 @@ const URL_PLANILHA_JEDI = "https://script.google.com/macros/s/AKfycbzvfsh-NOIrdv
 const audioForja = new Audio('modelos/som-jedi.mp3');
 
 const DESCRICOES_PACOTE = {
-habilitacao: "📄 Documentos gerados: Habilitação + Procuração + Gratuidade",
-negativa_geral: "📄 Documento gerado: Somente Contestação por Negativa Geral",
-inicial: "📄 Documentos gerados: Petição Inicial + Procuração + Gratuidade",
-contestacao_pai: "📄 Documentos gerados: Contestação + Procuração + Gratuidade"
+    habilitacao: "📄 Documentos gerados: Habilitação + Procuração + Gratuidade",
+    negativa_geral: "📄 Documento gerado: Somente Contestação por Negativa Geral",
+    desbloqueio: "📄 Documento gerado: Somente Pedido de Desbloqueio",
+    inicial: "📄 Documentos gerados: Petição Inicial + Procuração + Gratuidade",
+    contestacao_pai: "📄 Documentos gerados: Contestação + Procuração + Gratuidade"
 };
 
 function alternarFormulario() {
-const tipo = document.getElementById('tipo_peca').value;
-const blocos = ['habilitacao', 'negativa_geral', 'inicial', 'contestacao_pai'];
+    const tipo = document.getElementById('tipo_peca').value;
+    const blocos = ['habilitacao', 'negativa_geral', 'desbloqueio', 'inicial', 'contestacao_pai'];
 
-blocos.forEach(nome => {
-const el = document.getElementById('bloco_' + nome);
-if (el) {
-el.classList.toggle('ativo', nome === tipo);
-}
-});
+    blocos.forEach(nome => {
+        const el = document.getElementById('bloco_' + nome);
+        if (el) {
+            el.classList.toggle('ativo', nome === tipo);
+        }
+    });
 
-const infoPacote = document.getElementById('info_pacote');
-if (infoPacote && DESCRICOES_PACOTE[tipo]) {
-infoPacote.innerText = DESCRICOES_PACOTE[tipo];
-}
+    const infoPacote = document.getElementById('info_pacote');
+    if (infoPacote && DESCRICOES_PACOTE[tipo]) {
+        infoPacote.innerText = DESCRICOES_PACOTE[tipo];
+    }
 
-verificarOrdem66Ativa();
+    verificarOrdem66Ativa();
 }
 
 function revelarSegredo() {
-const frasesYoda = [
-"Faça ou não faça. A tentativa não existe. (Principalmente na qualificação da parte!)",
-"O medo é o caminho para o lado sombrio. E não protocolar no prazo também.",
-"Passar o que aprendeu, você deve. Ajude seu colega padawan ao lado.",
-"Um Jedi usa a Força para o conhecimento e a defesa. Nunca para bater no teclado."
-];
-const fraseSorteada = frasesYoda[Math.floor(Math.random() * frasesYoda.length)];
+    const frasesYoda = [
+        "Faça ou não faça. A tentativa não existe. (Principalmente na qualificação da parte!)",
+        "O medo é o caminho para o lado sombrio. E não protocolar no prazo também.",
+        "Passar o que aprendeu, você deve. Ajude seu colega padawan ao lado.",
+        "Um Jedi usa a Força para o conhecimento e a defesa. Nunca para bater no teclado."
+    ];
+    const fraseSorteada = frasesYoda[Math.floor(Math.random() * frasesYoda.length)];
     alert("🥷 HOLOCRON SECRETO DESBLOQUEADO:\n\n" + fraseSorteada);
-    alert("📜🪐 HOLOCRON SECRETO DESBLOQUEADO:\n\n" + fraseSorteada);
 }
 
 const TEXTO_BOTAO_PADRAO = "Forjar Petições";
 const TEXTO_NAO_PADAWAN = "não acho que você seja um padawan";
 const PADAWANS = ["joao", "miguel", "chueng", "filipe", "colus", "bruna", "pedro", "marco", "gabriel", "helena", "ilayla"];
-const PADAWANS = ["joao", "miguel", "chueng", "filipe", "colus", "bruna", "pedro", "marco", "gabriel", "helena", "ilayla","jennyfer"];
 const SITHS = ["diogo", "beatriz", "hugo", "heitor", "luiz", "leonardo", "marina", "luiza"];
 
 function normalizar(texto) {
-if (!texto) return "";
-return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    if (!texto) return "";
+    return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 }
 
 function nomeEhPadawan() {
-const input = document.getElementById('nome_bad_boy');
-if (!input) return true;
-const nome = normalizar(input.value.trim());
-if (nome === "") return true;
-return PADAWANS.some(padawan => nome.includes(padawan));
+    const input = document.getElementById('nome_bad_boy');
+    if (!input) return true;
+    const nome = normalizar(input.value.trim());
+    if (nome === "") return true;
+    return PADAWANS.some(padawan => nome.includes(padawan));
 }
 
 function obterVaraAtual() {
-const tipo = document.getElementById('tipo_peca').value;
-const mapaVara = {
-habilitacao: 'hab_vara',
-negativa_geral: 'neg_vara',
-inicial: 'ini_vara',
-contestacao_pai: 'cpai_vara'
-};
-const el = document.getElementById(mapaVara[tipo]);
-return el ? el.value.trim() : "";
+    const tipo = document.getElementById('tipo_peca').value;
+    const mapaVara = {
+        habilitacao: 'hab_vara',
+        negativa_geral: 'neg_vara',
+        desbloqueio: 'desb_vara',
+        inicial: 'ini_vara',
+        contestacao_pai: 'cpai_vara'
+    };
+    const el = document.getElementById(mapaVara[tipo]);
+    return el ? el.value.trim() : "";
 }
 
 function verificarOrdem66Ativa() {
-const vara = obterVaraAtual();
-if (vara === "66" || vara === "66ª") {
-document.body.classList.add('dark-mode');
-} else if (nomeEhPadawan()) {
-document.body.classList.remove('dark-mode');
-}
+    const vara = obterVaraAtual();
+    if (vara === "66" || vara === "66ª") {
+        document.body.classList.add('dark-mode');
+    } else if (nomeEhPadawan()) {
+        document.body.classList.remove('dark-mode');
+    }
 }
 
 function atualizarBotao() {
-const input = document.getElementById('nome_bad_boy');
-const botao = document.getElementById('btnGerar');
-if (!input || !botao) return;
+    const input = document.getElementById('nome_bad_boy');
+    const botao = document.getElementById('btnGerar');
+    if (!input || !botao) return;
 
-const nome = normalizar(input.value.trim());
-const ehSith = SITHS.some(sith => nome.includes(sith));
+    const nome = normalizar(input.value.trim());
+    const ehSith = SITHS.some(sith => nome.includes(sith));
 
-botao.classList.toggle('sith-mode', ehSith);
+    botao.classList.toggle('sith-mode', ehSith);
 
-if (nomeEhPadawan()) {
-botao.innerText = TEXTO_BOTAO_PADRAO;
-verificarOrdem66Ativa();
-} else {
-botao.innerText = TEXTO_NAO_PADAWAN;
-}
+    if (nomeEhPadawan()) {
+        botao.innerText = TEXTO_BOTAO_PADRAO;
+        verificarOrdem66Ativa();
+    } else {
+        botao.innerText = TEXTO_NAO_PADAWAN;
+    }
 }
 
 function verificarOrdem66(inputEl) {
-const vara = inputEl ? inputEl.value.trim() : "";
-if (vara === "66" || vara === "66ª") {
-document.body.classList.add('dark-mode');
-setTimeout(() => {
-alert("⚠️ ALERTA DO SENADO GALÁCTICO ⚠️\n\nExecutando Ordem 66...\n\nBrincadeira, padawan! Pode ir voltando ao trabalho.");
-}, 500);
-} else if (nomeEhPadawan()) {
-document.body.classList.remove('dark-mode');
-}
+    const vara = inputEl ? inputEl.value.trim() : "";
+    if (vara === "66" || vara === "66ª") {
+        document.body.classList.add('dark-mode');
+        setTimeout(() => {
+            alert("⚠️ ALERTA DO SENADO GALÁCTICO ⚠️\n\nExecutando Ordem 66...\n\nBrincadeira, padawan! Pode ir voltando ao trabalho.");
+        }, 500);
+    } else if (nomeEhPadawan()) {
+        document.body.classList.remove('dark-mode');
+    }
 }
 
 let timerCafe;
 const TEMPO_ESPERA = 30000;
 
 function iniciarTimerCafe() {
-clearTimeout(timerCafe);
-const toast = document.getElementById('idle-toast');
-if (toast) toast.classList.remove('show');
+    clearTimeout(timerCafe);
+    const toast = document.getElementById('idle-toast');
+    if (toast) toast.classList.remove('show');
 
-timerCafe = setTimeout(() => {
-if (toast) toast.classList.add('show');
-}, TEMPO_ESPERA);
+    timerCafe = setTimeout(() => {
+        if (toast) toast.classList.add('show');
+    }, TEMPO_ESPERA);
 }
 
 function limparTimerCafe() {
-clearTimeout(timerCafe);
-const toast = document.getElementById('idle-toast');
-if (toast) toast.classList.remove('show');
+    clearTimeout(timerCafe);
+    const toast = document.getElementById('idle-toast');
+    if (toast) toast.classList.remove('show');
 }
 
 function inicializarEasterEggCafe() {
-const campos = document.querySelectorAll('input[type="text"], select, textarea');
-campos.forEach(campo => {
-campo.addEventListener('focus', iniciarTimerCafe);
-campo.addEventListener('input', iniciarTimerCafe);
-campo.addEventListener('blur', limparTimerCafe);
-});
+    const campos = document.querySelectorAll('input[type="text"], select, textarea');
+    campos.forEach(campo => {
+        campo.addEventListener('focus', iniciarTimerCafe);
+        campo.addEventListener('input', iniciarTimerCafe);
+        campo.addEventListener('blur', limparTimerCafe);
+    });
 }
 
 async function gerarDocumentos() {
-const btn = document.getElementById('btnGerar');
+    const btn = document.getElementById('btnGerar');
 
-if (!nomeEhPadawan()) {
-document.body.classList.add('dark-mode');
-alert("🚧 PROGRAMA EM TESTE 🚧\n\nEste é um programa em teste e está em fase de implementação. Por enquanto, a geração de documentos não está liberada para este usuário.");
-return;
-}
+    if (!nomeEhPadawan()) {
+        document.body.classList.add('dark-mode');
+        alert("🚧 PROGRAMA EM TESTE 🚧\n\nEste é um programa em teste e está em fase de implementação. Por enquanto, a geração de documentos não está liberada para este usuário.");
+        return;
+    }
+    
+    audioForja.currentTime = 0;
+    audioForja.play().catch(erro => console.log("Erro de Áudio:", erro));
 
-audioForja.currentTime = 0;
-audioForja.play().catch(erro => console.log("Erro de Áudio:", erro));
+    btn.disabled = true;
+    btn.innerText = "Acessando os Arquivos Jedi, aguarde...";
 
-btn.disabled = true;
-btn.innerText = "Acessando os Arquivos Jedi, aguarde...";
+    const getVal = id => {
+        const el = document.getElementById(id);
+        return el ? el.value : "";
+    };
 
-const getVal = id => {
-const el = document.getElementById(id);
-return el ? el.value : "";
-};
+    const tipo = document.getElementById('tipo_peca').value;
+    const padawan = getVal('nome_bad_boy').toUpperCase();
 
-const tipo = document.getElementById('tipo_peca').value;
-const padawan = getVal('nome_bad_boy').toUpperCase();
+    let arquivosSelecionados = [];
+    let dadosPrincipal = {};
+    let dadosCliente = {};
+    let nomeBase = "Cliente";
+    let processoPlanilha = "Não informado";
+    let acaoPlanilha = "";
 
-let arquivosSelecionados = [];
-let dadosPrincipal = {};
-let dadosCliente = {};
-let nomeBase = "Cliente";
-let processoPlanilha = "Não informado";
-let acaoPlanilha = "";
+    if (tipo === 'habilitacao') {
+        dadosPrincipal = {
+            vara: getVal('hab_vara'),
+            competencia: getVal('hab_competencia'),
+            numero: getVal('hab_numero'),
+            nome_autor: getVal('hab_nome_autor').toUpperCase(),
+            nacionalidade: getVal('hab_nacionalidade'),
+            estado_civil: getVal('hab_estado_civil'),
+            profissao: getVal('hab_profissao'),
+            rg: getVal('hab_rg'),
+            cpf: getVal('hab_cpf'),
+            endereco: getVal('hab_endereco'),
+            valor_acordo: getVal('hab_valor_acordo'),
+            nome_bad_boy: padawan
+        };
+        dadosCliente = dadosPrincipal;
+        nomeBase = dadosPrincipal.nome_autor ? dadosPrincipal.nome_autor.split(" ")[0] : "Cliente";
+        processoPlanilha = dadosPrincipal.numero || "Não informado";
+        acaoPlanilha = "Habilitação";
 
-if (tipo === 'habilitacao') {
-dadosPrincipal = {
-vara: getVal('hab_vara'),
-competencia: getVal('hab_competencia'),
-numero: getVal('hab_numero'),
-nome_autor: getVal('hab_nome_autor').toUpperCase(),
-nacionalidade: getVal('hab_nacionalidade'),
-estado_civil: getVal('hab_estado_civil'),
-profissao: getVal('hab_profissao'),
-rg: getVal('hab_rg'),
-cpf: getVal('hab_cpf'),
-endereco: getVal('hab_endereco'),
-valor_acordo: getVal('hab_valor_acordo'),
-nome_bad_boy: padawan
-};
-dadosCliente = dadosPrincipal;
-nomeBase = dadosPrincipal.nome_autor ? dadosPrincipal.nome_autor.split(" ")[0] : "Cliente";
-processoPlanilha = dadosPrincipal.numero || "Não informado";
-acaoPlanilha = "Habilitação";
+        arquivosSelecionados = [
+            { id: 'Habilitacao', caminho: 'modelos/habilitacao.docx', dados: dadosPrincipal },
+            { id: 'Procuracao', caminho: 'modelos/procuracao.docx', dados: dadosCliente },
+            { id: 'Gratuidade', caminho: 'modelos/gratuidade.docx', dados: dadosCliente }
+        ];
 
-arquivosSelecionados = [
-{ id: 'Habilitacao', caminho: 'modelos/habilitacao.docx', dados: dadosPrincipal },
-{ id: 'Procuracao', caminho: 'modelos/procuracao.docx', dados: dadosCliente },
-{ id: 'Gratuidade', caminho: 'modelos/gratuidade.docx', dados: dadosCliente }
-];
+    } else if (tipo === 'negativa_geral') {
+        dadosPrincipal = {
+            vara: getVal('neg_vara'),
+            competencia: getVal('neg_competencia'),
+            numero: getVal('neg_numero'),
+            nome_autor: getVal('neg_nome_autor').toUpperCase(),
+            cpf: getVal('neg_cpf'),
+            nome_bad_boy: padawan
+        };
+        nomeBase = dadosPrincipal.nome_autor ? dadosPrincipal.nome_autor.split(" ")[0] : "Cliente";
+        processoPlanilha = dadosPrincipal.numero || "Não informado";
+        acaoPlanilha = "Contestação por Negativa Geral";
 
-} else if (tipo === 'negativa_geral') {
-dadosPrincipal = {
-vara: getVal('neg_vara'),
-competencia: getVal('neg_competencia'),
-numero: getVal('neg_numero'),
-nome_autor: getVal('neg_nome_autor').toUpperCase(),
-cpf: getVal('neg_cpf'),
-nome_bad_boy: padawan
-};
-nomeBase = dadosPrincipal.nome_autor ? dadosPrincipal.nome_autor.split(" ")[0] : "Cliente";
-processoPlanilha = dadosPrincipal.numero || "Não informado";
-acaoPlanilha = "Contestação por Negativa Geral";
+        // Somente a contestação por negativa geral (sem Procuração e sem Gratuidade)
+        arquivosSelecionados = [
+            { id: 'Contestacao', caminho: 'modelos/contestacao.docx', dados: dadosPrincipal }
+        ];
 
-// Somente a contestação por negativa geral (sem Procuração e sem Gratuidade)
-arquivosSelecionados = [
-{ id: 'Contestacao', caminho: 'modelos/contestacao.docx', dados: dadosPrincipal }
-];
+    } else if (tipo === 'desbloqueio') {
+        dadosPrincipal = {
+            vara: getVal('desb_vara'),
+            competencia: getVal('desb_competencia'),
+            numero: getVal('desb_numero'),
+            nome_assistido: getVal('desb_nome_assistido').toUpperCase(),
+            titulo_da_acao: getVal('desb_titulo_da_acao'),
+            "nome_parte_contrária": getVal('desb_nome_parte_contraria').toUpperCase(),
+            natureza_credito_executado: getVal('desb_natureza_credito_executado'),
+            data_bloqueio: getVal('desb_data_bloqueio'),
+            data_intimacao_bloqueio: getVal('desb_data_intimacao_bloqueio'),
+            banco: getVal('desb_banco'),
+            tipo_conta: getVal('desb_tipo_conta'),
+            valor_total_bloqueado: getVal('desb_valor_total_bloqueado'),
+            proporcao_verba_bloqueada: getVal('desb_proporcao_verba_bloqueada'),
+            natureza_verba: getVal('desb_natureza_verba'),
+            fonte_pagadora: getVal('desb_fonte_pagadora'),
+            data_credito: getVal('desb_data_credito'),
+            valor_credito: getVal('desb_valor_credito'),
+            descricao_credito_extrato: getVal('desb_descricao_credito_extrato'),
+            valor_40_salarios_minimos: getVal('desb_valor_40_salarios_minimos'),
+            doc_extrato: getVal('desb_doc_extrato'),
+            doc_comprovantes: getVal('desb_doc_comprovantes'),
+            situacao_familiar: getVal('desb_situacao_familiar'),
+            despesas_essenciais: getVal('desb_despesas_essenciais'),
+            nome_bad_boy: padawan
+        };
+        nomeBase = dadosPrincipal.nome_assistido ? dadosPrincipal.nome_assistido.split(" ")[0] : "Cliente";
+        processoPlanilha = dadosPrincipal.numero || "Não informado";
+        acaoPlanilha = "Pedido de Desbloqueio";
 
-} else if (tipo === 'inicial') {
-dadosPrincipal = {
-nome_autor: getVal('ini_nome_autor').toUpperCase(),
-nacionalidade: getVal('ini_nacionalidade'),
-estado_civil: getVal('ini_estado_civil'),
-profissao: getVal('ini_profissao'),
-rg: getVal('ini_rg'),
-cpf: getVal('ini_cpf'),
-endereco: getVal('ini_endereco'),
-vara: getVal('ini_vara'),
-nome_requerido: getVal('ini_nome_requerido').toUpperCase(),
-profissao_requerido: getVal('ini_profissao_requerido'),
-rg_requerido: getVal('ini_rg_requerido'),
-cpf_requerido: getVal('ini_cpf_requerido'),
-endereco_requerido: getVal('ini_endereco_requerido'),
-data_casamento: getVal('ini_data_casamento'),
-regime_bens: getVal('ini_regime_bens'),
-registro_casamento: getVal('ini_registro_casamento'),
-nome_filho: getVal('ini_nome_filho'),
-nascimento_filho: getVal('ini_nascimento_filho'),
-rg_filho: getVal('ini_rg_filho'),
-cpf_filho: getVal('ini_cpf_filho'),
-bens_partilhar: getVal('ini_bens_partilhar'),
-nome_solteira: getVal('ini_nome_solteira'),
-valor_causa: getVal('ini_valor_causa'),
-nome_bad_boy: padawan
-};
-dadosCliente = dadosPrincipal;
-nomeBase = dadosPrincipal.nome_autor ? dadosPrincipal.nome_autor.split(" ")[0] : "Cliente";
-processoPlanilha = "A Distribuir";
-acaoPlanilha = "Petição Inicial";
+        // Somente o pedido de desbloqueio (sem Procuração e sem Gratuidade)
+        arquivosSelecionados = [
+            { id: 'Desbloqueio', caminho: 'modelos/desbloqueio.docx', dados: dadosPrincipal }
+        ];
 
-arquivosSelecionados = [
-{ id: 'Inicial', caminho: 'modelos/inicial.docx', dados: dadosPrincipal },
-{ id: 'Procuracao', caminho: 'modelos/procuracao.docx', dados: dadosCliente },
-{ id: 'Gratuidade', caminho: 'modelos/gratuidade.docx', dados: dadosCliente }
-];
+    } else if (tipo === 'inicial') {
+        dadosPrincipal = {
+            nome_autor: getVal('ini_nome_autor').toUpperCase(),
+            nacionalidade: getVal('ini_nacionalidade'),
+            estado_civil: getVal('ini_estado_civil'),
+            profissao: getVal('ini_profissao'),
+            rg: getVal('ini_rg'),
+            cpf: getVal('ini_cpf'),
+            endereco: getVal('ini_endereco'),
+            vara: getVal('ini_vara'),
+            nome_requerido: getVal('ini_nome_requerido').toUpperCase(),
+            profissao_requerido: getVal('ini_profissao_requerido'),
+            rg_requerido: getVal('ini_rg_requerido'),
+            cpf_requerido: getVal('ini_cpf_requerido'),
+            endereco_requerido: getVal('ini_endereco_requerido'),
+            data_casamento: getVal('ini_data_casamento'),
+            regime_bens: getVal('ini_regime_bens'),
+            registro_casamento: getVal('ini_registro_casamento'),
+            nome_filho: getVal('ini_nome_filho'),
+            nascimento_filho: getVal('ini_nascimento_filho'),
+            rg_filho: getVal('ini_rg_filho'),
+            cpf_filho: getVal('ini_cpf_filho'),
+            bens_partilhar: getVal('ini_bens_partilhar'),
+            nome_solteira: getVal('ini_nome_solteira'),
+            valor_causa: getVal('ini_valor_causa'),
+            nome_bad_boy: padawan
+        };
+        dadosCliente = dadosPrincipal;
+        nomeBase = dadosPrincipal.nome_autor ? dadosPrincipal.nome_autor.split(" ")[0] : "Cliente";
+        processoPlanilha = "A Distribuir";
+        acaoPlanilha = "Petição Inicial";
 
-} else if (tipo === 'contestacao_pai') {
-dadosPrincipal = {
-vara: getVal('cpai_vara'),
-numero: getVal('cpai_numero'),
-nome_reu: getVal('cpai_nome_reu').toUpperCase(),
-nacionalidade: getVal('cpai_nacionalidade'),
-estado_civil: getVal('cpai_estado_civil'),
-profissao: getVal('cpai_profissao'),
-rg: getVal('cpai_rg'),
-cpf: getVal('cpai_cpf'),
-endereco: getVal('cpai_endereco'),
-tipo_de_acao: getVal('cpai_tipo_de_acao'),
-nome_autor: getVal('cpai_nome_autor').toUpperCase(),
-n_oficio_defensoria: getVal('cpai_n_oficio_defensoria'),
-nomes_filhos: getVal('cpai_nomes_filhos'),
-idades_filhos: getVal('cpai_idades_filhos'),
-sintese_pretensoes_autor: getVal('cpai_sintese_pretensoes_autor'),
-data_desligamento: getVal('cpai_data_desligamento'),
-ultimo_empregador: getVal('cpai_ultimo_empregador'),
-cargo_ultimo_emprego: getVal('cpai_cargo_ultimo_emprego'),
-motivo_desligamento: getVal('cpai_motivo_desligamento'),
-ultimo_salario: getVal('cpai_ultimo_salario'),
-renda_atual_requerido: getVal('cpai_renda_atual_requerido'),
-impugnacao_alegacoes_autor: getVal('cpai_impugnacao_alegacoes_autor'),
-contribuicoes_in_natura: getVal('cpai_contribuicoes_in_natura'),
-tese_guarda_especifica: getVal('cpai_tese_guarda_especifica'),
-fundamento_estudo_social: getVal('cpai_fundamento_estudo_social'),
-percentual_rendimentos_proposto: getVal('cpai_percentual_rendimentos_proposto'),
-percentual_salario_minimo_proposto: getVal('cpai_percentual_salario_minimo_proposto'),
-nome_bad_boy: padawan
-};
+        arquivosSelecionados = [
+            { id: 'Inicial', caminho: 'modelos/inicial.docx', dados: dadosPrincipal },
+            { id: 'Procuracao', caminho: 'modelos/procuracao.docx', dados: dadosCliente },
+            { id: 'Gratuidade', caminho: 'modelos/gratuidade.docx', dados: dadosCliente }
+        ];
 
-// Na Procuração e Gratuidade, a tag {nome_autor} do Word recebe o nome do cliente (o Pai/Requerido)
-dadosCliente = {
-...dadosPrincipal,
-nome_autor: dadosPrincipal.nome_reu
-};
+    } else if (tipo === 'contestacao_pai') {
+        dadosPrincipal = {
+            vara: getVal('cpai_vara'),
+            numero: getVal('cpai_numero'),
+            nome_reu: getVal('cpai_nome_reu').toUpperCase(),
+            nacionalidade: getVal('cpai_nacionalidade'),
+            estado_civil: getVal('cpai_estado_civil'),
+            profissao: getVal('cpai_profissao'),
+            rg: getVal('cpai_rg'),
+            cpf: getVal('cpai_cpf'),
+            endereco: getVal('cpai_endereco'),
+            tipo_de_acao: getVal('cpai_tipo_de_acao'),
+            nome_autor: getVal('cpai_nome_autor').toUpperCase(),
+            n_oficio_defensoria: getVal('cpai_n_oficio_defensoria'),
+            nomes_filhos: getVal('cpai_nomes_filhos'),
+            idades_filhos: getVal('cpai_idades_filhos'),
+            sintese_pretensoes_autor: getVal('cpai_sintese_pretensoes_autor'),
+            data_desligamento: getVal('cpai_data_desligamento'),
+            ultimo_empregador: getVal('cpai_ultimo_empregador'),
+            cargo_ultimo_emprego: getVal('cpai_cargo_ultimo_emprego'),
+            motivo_desligamento: getVal('cpai_motivo_desligamento'),
+            ultimo_salario: getVal('cpai_ultimo_salario'),
+            renda_atual_requerido: getVal('cpai_renda_atual_requerido'),
+            impugnacao_alegacoes_autor: getVal('cpai_impugnacao_alegacoes_autor'),
+            contribuicoes_in_natura: getVal('cpai_contribuicoes_in_natura'),
+            tese_guarda_especifica: getVal('cpai_tese_guarda_especifica'),
+            fundamento_estudo_social: getVal('cpai_fundamento_estudo_social'),
+            percentual_rendimentos_proposto: getVal('cpai_percentual_rendimentos_proposto'),
+            percentual_salario_minimo_proposto: getVal('cpai_percentual_salario_minimo_proposto'),
+            nome_bad_boy: padawan
+        };
 
-nomeBase = dadosPrincipal.nome_reu ? dadosPrincipal.nome_reu.split(" ")[0] : "Cliente";
-processoPlanilha = dadosPrincipal.numero || "Não informado";
-acaoPlanilha = dadosPrincipal.tipo_de_acao || "Contestação (Pai)";
+        // Na Procuração e Gratuidade, a tag {nome_autor} do Word recebe o nome do cliente (o Pai/Requerido)
+        dadosCliente = {
+            ...dadosPrincipal,
+            nome_autor: dadosPrincipal.nome_reu
+        };
 
-arquivosSelecionados = [
-{ id: 'Contestacao', caminho: 'modelos/contestacao_pai.docx', dados: dadosPrincipal },
-{ id: 'Procuracao', caminho: 'modelos/procuracao.docx', dados: dadosCliente },
-{ id: 'Gratuidade', caminho: 'modelos/gratuidade.docx', dados: dadosCliente }
-];
-}
+        nomeBase = dadosPrincipal.nome_reu ? dadosPrincipal.nome_reu.split(" ")[0] : "Cliente";
+        processoPlanilha = dadosPrincipal.numero || "Não informado";
+        acaoPlanilha = dadosPrincipal.tipo_de_acao || "Contestação (Pai)";
 
-let sucessoTotal = true;
+        arquivosSelecionados = [
+            { id: 'Contestacao', caminho: 'modelos/contestacao_pai.docx', dados: dadosPrincipal },
+            { id: 'Procuracao', caminho: 'modelos/procuracao.docx', dados: dadosCliente },
+            { id: 'Gratuidade', caminho: 'modelos/gratuidade.docx', dados: dadosCliente }
+        ];
+    }
 
-const DocxConstructor = window.docxtemplater || window.Docxtemplater;
-if (typeof PizZip === 'undefined' || typeof DocxConstructor === 'undefined') {
-alert("Erro nas bibliotecas Jedi (PizZip/Docxtemplater não carregaram). Verifique a internet.");
-btn.disabled = false;
-atualizarBotao();
-return;
-}
+    let sucessoTotal = true;
 
-for (const arquivo of arquivosSelecionados) {
-try {
-const resposta = await fetch(arquivo.caminho);
+    const DocxConstructor = window.docxtemplater || window.Docxtemplater;
+    if (typeof PizZip === 'undefined' || typeof DocxConstructor === 'undefined') {
+        alert("Erro nas bibliotecas Jedi (PizZip/Docxtemplater não carregaram). Verifique a internet.");
+        btn.disabled = false;
+        atualizarBotao();
+        return;
+    }
 
-if (!resposta.ok) {
-throw new Error(`Holocron não encontrado: O ficheiro ${arquivo.caminho} não está acessível.`);
-}
+    for (const arquivo of arquivosSelecionados) {
+        try {
+            const resposta = await fetch(arquivo.caminho);
+            
+            if (!resposta.ok) {
+                throw new Error(`Holocron não encontrado: O ficheiro ${arquivo.caminho} não está acessível.`);
+            }
+            
+            const conteudoBinario = await resposta.arrayBuffer();
+            const zip = new PizZip(conteudoBinario);
+            
+            const doc = new DocxConstructor(zip, {
+                paragraphLoop: true,
+                linebreaks: true,
+            });
 
-const conteudoBinario = await resposta.arrayBuffer();
-const zip = new PizZip(conteudoBinario);
+            doc.render(arquivo.dados);
 
-const doc = new DocxConstructor(zip, {
-paragraphLoop: true,
-linebreaks: true,
-});
+            const blobDocumento = doc.getZip().generate({
+                type: "blob",
+                mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            });
+            
+            saveAs(blobDocumento, `${arquivo.id}_${nomeBase}.docx`);
+            await new Promise(resolve => setTimeout(resolve, 500));
 
-doc.render(arquivo.dados);
+        } catch (erro) {
+            console.error(erro);
+            alert(`Ocorreu um distúrbio na Força (${arquivo.id}): ${erro.message}`);
+            sucessoTotal = false;
+        }
+    }
 
-const blobDocumento = doc.getZip().generate({
-type: "blob",
-mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-});
+    // --- REGISTRO NA PLANILHA ---
+    if (sucessoTotal) {
+        const nomesPecasGeradas = arquivosSelecionados.map(arq => arq.id).join(", ");
+        
+        const dadosRegistro = {
+            padawan: padawan || "Desconhecido",
+            processo: processoPlanilha,
+            acao: acaoPlanilha,
+            pecas: nomesPecasGeradas
+        };
 
-saveAs(blobDocumento, `${arquivo.id}_${nomeBase}.docx`);
-await new Promise(resolve => setTimeout(resolve, 500));
+        fetch(URL_PLANILHA_JEDI, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(dadosRegistro)
+        }).catch(err => console.log("Erro ao salvar no holocron (planilha):", err));
 
-} catch (erro) {
-console.error(erro);
-alert(`Ocorreu um distúrbio na Força (${arquivo.id}): ${erro.message}`);
-sucessoTotal = false;
-}
-}
+        alert("Documentos forjados com sucesso! O Conselho Jedi ainda precisa aprovar.");
+    }
 
-// --- REGISTRO NA PLANILHA ---
-if (sucessoTotal) {
-const nomesPecasGeradas = arquivosSelecionados.map(arq => arq.id).join(", ");
-
-const dadosRegistro = {
-padawan: padawan || "Desconhecido",
-processo: processoPlanilha,
-acao: acaoPlanilha,
-pecas: nomesPecasGeradas
-};
-
-fetch(URL_PLANILHA_JEDI, {
-method: "POST",
-mode: "no-cors",
-headers: {
-"Content-Type": "application/json"
-},
-body: JSON.stringify(dadosRegistro)
-}).catch(err => console.log("Erro ao salvar no holocron (planilha):", err));
-
-alert("Documentos forjados com sucesso! O Conselho Jedi ainda precisa aprovar.");
-}
-
-btn.disabled = false;
-atualizarBotao(); 
+    btn.disabled = false;
+    atualizarBotao(); 
 }
 
 window.alternarFormulario = alternarFormulario;
@@ -1018,9 +1161,9 @@ window.gerarDocumentos = gerarDocumentos;
 window.limparTimerCafe = limparTimerCafe;
 
 document.addEventListener('DOMContentLoaded', () => {
-alternarFormulario();
-atualizarBotao();
-inicializarEasterEggCafe();
+    alternarFormulario();
+    atualizarBotao();
+    inicializarEasterEggCafe();
 });
 </script>
 
