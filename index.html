@@ -279,7 +279,7 @@
     <h2>Forja de Documentos do EAJ</h2>
     
     <div class="padawan-greeting" ondblclick="revelarSegredo()" title="Sente alguma perturbação na Força? Dê um duplo clique.">
-        Saudações Padawans... Petições forjar, vocês devem!<br>
+        Saudações, Bruna, João Miguel, Chueng Lee, Philip e Pedro... Petições forjar, vocês devem!<br>
         <em>Que a Força esteja com vocês, jovens padawans.</em>
     </div>
 
@@ -290,6 +290,9 @@
             <option value="habilitacao">Habilitação</option>
             <option value="negativa_geral">Contestação por Negativa Geral</option>
             <option value="desbloqueio">Pedido de Desbloqueio</option>
+            <option value="citacao_edital">Pedido de Citação por Edital</option>
+            <option value="intimacao_pessoal">Pedido de Intimação Pessoal</option>
+            <option value="penhora_sisbajud">Pedido de Penhora SISBAJUD</option>
             <option value="inicial">Petição Inicial (Em favor da Mãe)</option>
             <option value="contestacao_pai">Contestação (Em favor do Pai)</option>
         </select>
@@ -495,7 +498,107 @@
     </div>
 
     <!-- ===================================================================== -->
-    <!-- BLOCO 4: PETIÇÃO INICIAL (MÃE)                                        -->
+    <!-- BLOCO 4: PEDIDO DE CITAÇÃO POR EDITAL                                 -->
+    <!-- ===================================================================== -->
+    <div id="bloco_citacao_edital" class="bloco-peca">
+        <div class="section-title">Dados do Pedido de Citação por Edital</div>
+        <div class="campo">
+            <label>Vara (apenas o número, ex: 1):</label>
+            <input type="text" id="ced_vara" placeholder="1" onkeyup="verificarOrdem66(this)">
+        </div>
+        <div class="campo">
+            <label>Competência / Especialidade:</label>
+            <select id="ced_competencia">
+                <option value="CÍVEL">CÍVEL</option>
+                <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
+                <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
+                <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
+            </select>
+        </div>
+        <div class="campo">
+            <label>Processo nº:</label>
+            <input type="text" id="ced_numero" placeholder="0000000-00.0000.0.00.0000">
+        </div>
+        <div class="campo">
+            <label>Nome Completo do(a) Assistido(a):</label>
+            <input type="text" id="ced_nome_assistido" placeholder="Ex: Maria das Graças">
+        </div>
+        <div class="campo">
+            <label>Em atendimento a (decisão / despacho / ato ordinatório e fls.):</label>
+            <input type="text" id="ced_decisao_despacho" placeholder="Ex: à r. decisão de fls. 45 / ao ato ordinatório de fls. 22">
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- BLOCO 5: PEDIDO DE INTIMAÇÃO PESSOAL                                  -->
+    <!-- ===================================================================== -->
+    <div id="bloco_intimacao_pessoal" class="bloco-peca">
+        <div class="section-title">Dados do Pedido de Intimação Pessoal</div>
+        <div class="campo">
+            <label>Vara (apenas o número, ex: 1):</label>
+            <input type="text" id="int_vara" placeholder="1" onkeyup="verificarOrdem66(this)">
+        </div>
+        <div class="campo">
+            <label>Competência / Especialidade:</label>
+            <select id="int_competencia">
+                <option value="CÍVEL">CÍVEL</option>
+                <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
+                <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
+                <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
+            </select>
+        </div>
+        <div class="campo">
+            <label>Processo nº:</label>
+            <input type="text" id="int_numero" placeholder="0000000-00.0000.0.00.0000">
+        </div>
+        <div class="campo">
+            <label>Nome Completo do(a) Assistido(a):</label>
+            <input type="text" id="int_nome_assistido" placeholder="Ex: João da Silva">
+        </div>
+        <div class="campo">
+            <label>Motivo da necessidade de contato ("não conseguimos contato com a parte para..."):</label>
+            <textarea id="int_motivo_contato" placeholder="Ex: informar o endereço atualizado da parte contrária e apresentar documentos indispensáveis ao prosseguimento do feito."></textarea>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- BLOCO 6: PEDIDO DE PENHORA SISBAJUD                                   -->
+    <!-- ===================================================================== -->
+    <div id="bloco_penhora_sisbajud" class="bloco-peca">
+        <div class="section-title">Dados do Pedido de Penhora SISBAJUD</div>
+        <div class="campo">
+            <label>Vara (apenas o número, ex: 1):</label>
+            <input type="text" id="sis_vara" placeholder="1" onkeyup="verificarOrdem66(this)">
+        </div>
+        <div class="campo">
+            <label>Competência / Especialidade:</label>
+            <select id="sis_competencia">
+                <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
+                <option value="CÍVEL">CÍVEL</option>
+                <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
+                <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
+            </select>
+        </div>
+        <div class="campo">
+            <label>Processo nº:</label>
+            <input type="text" id="sis_numero" placeholder="0000000-00.0000.0.00.0000">
+        </div>
+        <div class="campo">
+            <label>Nome da Criança / Exequente:</label>
+            <input type="text" id="sis_nome_crianca" placeholder="Ex: Enzo Gabriel da Silva">
+        </div>
+        <div class="campo">
+            <label>Nome da Genitora (Representante Legal):</label>
+            <input type="text" id="sis_nome_mae" placeholder="Ex: Maria da Silva">
+        </div>
+        <div class="campo">
+            <label>Período dos Alimentos Vencidos ("abranger os valores devidos de..."):</label>
+            <input type="text" id="sis_periodo_alimentos" placeholder="Ex: janeiro a novembro de 2026">
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- BLOCO 7: PETIÇÃO INICIAL (MÃE)                                        -->
     <!-- ===================================================================== -->
     <div id="bloco_inicial" class="bloco-peca">
         <div class="nota-asterisco">
@@ -600,7 +703,7 @@
     </div>
 
     <!-- ===================================================================== -->
-    <!-- BLOCO 5: CONTESTAÇÃO (PAI)                                            -->
+    <!-- BLOCO 8: CONTESTAÇÃO (PAI)                                            -->
     <!-- ===================================================================== -->
     <div id="bloco_contestacao_pai" class="bloco-peca">
         <div class="section-title">Dados do Processo</div>
@@ -752,13 +855,25 @@ const DESCRICOES_PACOTE = {
     habilitacao: "📄 Documentos gerados: Habilitação + Procuração + Gratuidade",
     negativa_geral: "📄 Documento gerado: Somente Contestação por Negativa Geral",
     desbloqueio: "📄 Documento gerado: Somente Pedido de Desbloqueio",
+    citacao_edital: "📄 Documento gerado: Somente Pedido de Citação por Edital",
+    intimacao_pessoal: "📄 Documento gerado: Somente Pedido de Intimação Pessoal",
+    penhora_sisbajud: "📄 Documento gerado: Somente Pedido de Penhora SISBAJUD",
     inicial: "📄 Documentos gerados: Petição Inicial + Procuração + Gratuidade",
     contestacao_pai: "📄 Documentos gerados: Contestação + Procuração + Gratuidade"
 };
 
 function alternarFormulario() {
     const tipo = document.getElementById('tipo_peca').value;
-    const blocos = ['habilitacao', 'negativa_geral', 'desbloqueio', 'inicial', 'contestacao_pai'];
+    const blocos = [
+        'habilitacao',
+        'negativa_geral',
+        'desbloqueio',
+        'citacao_edital',
+        'intimacao_pessoal',
+        'penhora_sisbajud',
+        'inicial',
+        'contestacao_pai'
+    ];
 
     blocos.forEach(nome => {
         const el = document.getElementById('bloco_' + nome);
@@ -810,6 +925,9 @@ function obterVaraAtual() {
         habilitacao: 'hab_vara',
         negativa_geral: 'neg_vara',
         desbloqueio: 'desb_vara',
+        citacao_edital: 'ced_vara',
+        intimacao_pessoal: 'int_vara',
+        penhora_sisbajud: 'sis_vara',
         inicial: 'ini_vara',
         contestacao_pai: 'cpai_vara'
     };
@@ -953,7 +1071,6 @@ async function gerarDocumentos() {
         processoPlanilha = dadosPrincipal.numero || "Não informado";
         acaoPlanilha = "Contestação por Negativa Geral";
 
-        // Somente a contestação por negativa geral (sem Procuração e sem Gratuidade)
         arquivosSelecionados = [
             { id: 'Contestacao', caminho: 'modelos/contestacao.docx', dados: dadosPrincipal }
         ];
@@ -989,9 +1106,62 @@ async function gerarDocumentos() {
         processoPlanilha = dadosPrincipal.numero || "Não informado";
         acaoPlanilha = "Pedido de Desbloqueio";
 
-        // Somente o pedido de desbloqueio (sem Procuração e sem Gratuidade)
         arquivosSelecionados = [
             { id: 'Desbloqueio', caminho: 'modelos/desbloqueio.docx', dados: dadosPrincipal }
+        ];
+
+    } else if (tipo === 'citacao_edital') {
+        dadosPrincipal = {
+            vara: getVal('ced_vara'),
+            competencia: getVal('ced_competencia'),
+            numero: getVal('ced_numero'),
+            nome_assistido: getVal('ced_nome_assistido').toUpperCase(),
+            "decisão_despacho_ato_ordinatorio_fls": getVal('ced_decisao_despacho'),
+            nome_bad_boy: padawan
+        };
+        nomeBase = dadosPrincipal.nome_assistido ? dadosPrincipal.nome_assistido.split(" ")[0] : "Cliente";
+        processoPlanilha = dadosPrincipal.numero || "Não informado";
+        acaoPlanilha = "Pedido de Citação por Edital";
+
+        arquivosSelecionados = [
+            { id: 'Citacao_Edital', caminho: 'modelos/citacao_edital.docx', dados: dadosPrincipal }
+        ];
+
+    } else if (tipo === 'intimacao_pessoal') {
+        dadosPrincipal = {
+            vara: getVal('int_vara'),
+            competencia: getVal('int_competencia'),
+            numero: getVal('int_numero'),
+            nome_assistido: getVal('int_nome_assistido').toUpperCase(),
+            motivo_da_necessidade_de_contato: getVal('int_motivo_contato'),
+            nome_bad_boy: padawan
+        };
+        nomeBase = dadosPrincipal.nome_assistido ? dadosPrincipal.nome_assistido.split(" ")[0] : "Cliente";
+        processoPlanilha = dadosPrincipal.numero || "Não informado";
+        acaoPlanilha = "Pedido de Intimação Pessoal";
+
+        arquivosSelecionados = [
+            { id: 'Intimacao_Pessoal', caminho: 'modelos/intimacao_pessoal.docx', dados: dadosPrincipal }
+        ];
+
+    } else if (tipo === 'penhora_sisbajud') {
+        dadosPrincipal = {
+            vara: getVal('sis_vara'),
+            competencia: getVal('sis_competencia'),
+            numero: getVal('sis_numero'),
+            "nome_criança": getVal('sis_nome_crianca').toUpperCase(),
+            nome_mae: getVal('sis_nome_mae').toUpperCase(),
+            "período_dos_alimentos_vencidos": getVal('sis_periodo_alimentos'),
+            nome_bad_boy: padawan
+        };
+        nomeBase = dadosPrincipal["nome_criança"]
+            ? dadosPrincipal["nome_criança"].split(" ")[0]
+            : (dadosPrincipal.nome_mae ? dadosPrincipal.nome_mae.split(" ")[0] : "Cliente");
+        processoPlanilha = dadosPrincipal.numero || "Não informado";
+        acaoPlanilha = "Pedido de Penhora SISBAJUD";
+
+        arquivosSelecionados = [
+            { id: 'Penhora_SISBAJUD', caminho: 'modelos/penhora_sisbajud.docx', dados: dadosPrincipal }
         ];
 
     } else if (tipo === 'inicial') {
