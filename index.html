@@ -3,156 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forja de Documentos - EAJ UNAERP</title>
+    <title>Forja de Documentos - The Jedi Order</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --unaerp-blue: #4054a5;
-            --unaerp-green: #8dc63f;
-            --bg-color: #f4f6f9;
-            --text-main: #333;
+            --bg-space: #050b18;
+            --panel-bg: #0b172e;
+            --panel-inner: #081123;
+            --jedi-gold: #e5b84b;
+            --jedi-gold-bright: #f7d774;
+            --jedi-cyan: #38bdf8;
+            --jedi-cyan-glow: rgba(56, 189, 248, 0.25);
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border-subtle: rgba(56, 189, 248, 0.35);
+        }
+
+        /* Tema Sith (ativado na Ordem 66 ou usuário não autorizado) */
+        body.sith-theme {
+            --bg-space: #090204;
+            --panel-bg: #18060a;
+            --panel-inner: #100306;
+            --jedi-gold: #ef4444;
+            --jedi-gold-bright: #f87171;
+            --jedi-cyan: #dc2626;
+            --jedi-cyan-glow: rgba(239, 68, 68, 0.3);
+            --text-main: #f1f5f9;
+            --text-muted: #fca5a5;
+            --border-subtle: rgba(239, 68, 68, 0.45);
         }
         
         body { 
             font-family: 'Inter', sans-serif; 
-            background-color: var(--bg-color); 
+            background-color: var(--bg-space);
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 80% 80%, rgba(229, 184, 75, 0.07) 0%, transparent 45%);
             margin: 0; 
             padding: 20px; 
             color: var(--text-main);
             transition: background-color 0.8s ease, color 0.8s ease;
         }
-        
-        body.dark-mode {
-            background-color: #0b0c10;
-        }
-        body.dark-mode .container {
-            background-color: #1f2833;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            color: #c5c6c7;
-        }
-        body.dark-mode label {
-            color: #c5c6c7;
-        }
-        body.dark-mode h2, body.dark-mode .header-text {
-            color: #66fcf1;
-        }
-        body.dark-mode .padawan-greeting {
-            background: #111;
-            color: #45a29e;
-            border-left-color: #45a29e;
-        }
-        body.dark-mode input[type="text"], 
-        body.dark-mode select, 
-        body.dark-mode textarea {
-            background-color: #0b0c10;
-            color: #fff;
-            border-color: #45a29e;
-        }
-        body.dark-mode .section-title {
-            color: #45a29e;
-            border-bottom-color: #45a29e;
-        }
-        body.dark-mode .header-img {
-            background-color: white; 
-            padding: 10px;
-            border-radius: 8px;
+
+        body.sith-theme {
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(220, 38, 38, 0.14) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(127, 29, 29, 0.18) 0%, transparent 50%);
         }
 
         .container { 
-            max-width: 750px; 
+            max-width: 780px; 
             margin: 20px auto; 
-            background: white; 
-            padding: 40px; 
-            border-radius: 12px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
-            transition: background-color 0.8s ease, color 0.8s ease;
+            background: var(--panel-bg); 
+            padding: 0 40px 40px 40px; 
+            border-radius: 14px; 
+            border: 1.5px solid var(--border-subtle);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.65), 0 0 25px var(--jedi-cyan-glow); 
+            overflow: hidden;
+            transition: background-color 0.8s ease, border-color 0.8s ease, box-shadow 0.8s ease;
+        }
+
+        .banner-wrapper {
+            margin: 0 -40px 25px -40px;
+            border-bottom: 2px solid var(--jedi-gold);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            background: #040914;
         }
         
         .header-img {
             width: 100%;
-            max-width: 250px;
             display: block;
-            margin: 0 auto 15px auto;
-            object-fit: contain;
-            transition: background-color 0.8s ease;
+            object-fit: cover;
         }
+
         .header-text {
+            font-family: 'Cinzel', serif;
             text-align: center;
-            color: var(--unaerp-blue);
-            font-size: 1.5em;
+            color: var(--jedi-gold-bright);
+            font-size: 1.75em;
             font-weight: 700;
-            margin-bottom: 25px;
-            border-bottom: 3px solid var(--unaerp-green);
-            padding-bottom: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            text-shadow: 0 0 14px rgba(229, 184, 75, 0.35);
             transition: color 0.8s ease;
         }
         
         h2 { 
-            color: var(--text-main); 
+            color: var(--jedi-cyan); 
             text-align: center; 
-            margin-bottom: 5px;
-            font-size: 1.2em;
+            margin-top: 0;
+            margin-bottom: 22px;
+            font-size: 1.1em;
             font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
             transition: color 0.8s ease;
         }
         
         .padawan-greeting {
             text-align: center;
-            background: #eef2fa;
-            color: var(--unaerp-blue);
-            padding: 15px;
-            border-radius: 8px;
+            background: var(--panel-inner);
+            color: var(--text-main);
+            padding: 16px 20px;
+            border-radius: 10px;
             font-size: 0.95em;
             font-weight: 600;
             margin-bottom: 25px;
-            border-left: 4px solid var(--unaerp-blue);
+            border: 1px solid var(--border-subtle);
+            border-left: 4px solid var(--jedi-gold);
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.4);
             cursor: crosshair; 
             transition: all 0.3s ease;
         }
+        .padawan-greeting em {
+            color: var(--jedi-gold-bright);
+        }
         .padawan-greeting:hover {
-            transform: scale(1.02);
+            transform: scale(1.015);
+            border-color: var(--jedi-gold);
+            box-shadow: 0 0 18px var(--jedi-cyan-glow);
         }
 
         .selector-box {
-            background: #f8f9fa;
+            background: var(--panel-inner);
             padding: 20px;
             border-radius: 10px;
-            border: 2px solid var(--unaerp-blue);
+            border: 1.5px solid var(--jedi-gold);
             margin-bottom: 25px;
+            box-shadow: 0 0 15px rgba(229, 184, 75, 0.12);
             transition: background-color 0.8s ease, border-color 0.8s ease;
         }
-        body.dark-mode .selector-box {
-            background-color: #111;
-            border-color: #66fcf1;
-        }
         .selector-box label {
-            color: var(--unaerp-blue);
+            color: var(--jedi-gold-bright);
             font-size: 1em;
             margin-bottom: 10px;
         }
-        body.dark-mode .selector-box label {
-            color: #66fcf1;
-        }
         .pecas-badge {
-            margin-top: 10px;
-            font-size: 0.85em;
-            color: #4b5563;
+            margin-top: 12px;
+            font-size: 0.88em;
+            color: var(--jedi-cyan);
             font-weight: 600;
-        }
-        body.dark-mode .pecas-badge {
-            color: #45a29e;
         }
 
         .section-title {
+            font-family: 'Cinzel', serif;
             font-size: 1.1em;
-            color: var(--unaerp-blue);
-            border-bottom: 2px solid #e5e7eb;
-            padding-bottom: 5px;
-            margin-top: 30px;
-            margin-bottom: 15px;
+            color: var(--jedi-gold-bright);
+            border-bottom: 1.5px solid var(--border-subtle);
+            padding-bottom: 6px;
+            margin-top: 32px;
+            margin-bottom: 18px;
             font-weight: 700;
+            letter-spacing: 0.8px;
             transition: color 0.8s ease, border-color 0.8s ease;
         }
         
@@ -161,38 +166,45 @@
             display: block; 
             font-weight: 600; 
             margin-bottom: 8px; 
-            color: #444; 
-            font-size: 0.95em;
+            color: var(--text-main); 
+            font-size: 0.94em;
             transition: color 0.8s ease;
         }
         input[type="text"], select, textarea { 
             width: 100%; 
             padding: 12px 15px; 
-            border: 1.5px solid #d1d5db; 
+            border: 1.5px solid var(--border-subtle); 
             border-radius: 8px; 
             box-sizing: border-box; 
             font-size: 15px;
             font-family: 'Inter', sans-serif;
-            background-color: white;
-            transition: all 0.3s ease;
+            background-color: var(--panel-inner);
+            color: #ffffff;
+            transition: all 0.25s ease;
+        }
+        input[type="text"]::placeholder, textarea::placeholder {
+            color: #64748b;
+        }
+        select option {
+            background-color: #0b172e;
+            color: #ffffff;
         }
         textarea {
             resize: vertical;
             min-height: 80px;
         }
         input[type="text"]:focus, select:focus, textarea:focus {
-            border-color: var(--unaerp-blue);
+            border-color: var(--jedi-cyan);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(64, 84, 165, 0.15);
+            box-shadow: 0 0 0 3px var(--jedi-cyan-glow);
         }
 
         .nota-asterisco {
             font-size: 0.85em;
-            color: #666;
+            color: var(--text-muted);
             margin-bottom: 15px;
             font-style: italic;
         }
-        body.dark-mode .nota-asterisco { color: #888; }
 
         .bloco-peca {
             display: none;
@@ -202,9 +214,9 @@
         }
         
         button { 
-            background: linear-gradient(135deg, var(--unaerp-blue), #2c3e80); 
-            color: white; 
-            border: none; 
+            background: linear-gradient(135deg, #d4af37, #b48811); 
+            color: #050b18; 
+            border: 1px solid var(--jedi-gold-bright); 
             padding: 16px; 
             font-size: 17px; 
             border-radius: 8px; 
@@ -212,17 +224,21 @@
             width: 100%; 
             margin-top: 15px; 
             font-weight: 700; 
-            font-family: 'Inter', sans-serif;
+            font-family: 'Cinzel', serif;
             transition: all 0.3s ease;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1.2px;
+            box-shadow: 0 4px 18px rgba(229, 184, 75, 0.25);
         }
         button:hover { 
             transform: translateY(-2px); 
-            box-shadow: 0 8px 20px rgba(64, 84, 165, 0.3);
+            background: linear-gradient(135deg, #f7d774, #d4af37);
+            box-shadow: 0 8px 25px rgba(229, 184, 75, 0.45);
         }
         button:disabled { 
-            background: #9ca3af; 
+            background: #334155; 
+            color: #94a3b8;
+            border-color: #475569;
             cursor: not-allowed; 
             transform: none;
             box-shadow: none;
@@ -230,21 +246,25 @@
         
         button.sith-mode {
             background: linear-gradient(135deg, #e50914, #8b0000);
-            box-shadow: 0 0 15px rgba(229, 9, 20, 0.6);
+            color: #ffffff;
+            border-color: #f87171;
+            box-shadow: 0 0 18px rgba(229, 9, 20, 0.6);
         }
         button.sith-mode:hover {
-            box-shadow: 0 0 25px rgba(229, 9, 20, 0.9);
+            background: linear-gradient(135deg, #ff1e27, #a30000);
+            box-shadow: 0 0 28px rgba(229, 9, 20, 0.9);
         }
 
         .idle-toast {
             position: fixed;
             bottom: -100px;
             right: 20px;
-            background: linear-gradient(135deg, var(--unaerp-blue), #2c3e80);
-            color: white;
+            background: var(--panel-inner);
+            color: var(--jedi-gold-bright);
+            border: 1.5px solid var(--jedi-cyan);
             padding: 15px 25px;
             border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), 0 0 15px var(--jedi-cyan-glow);
             font-weight: 600;
             display: flex;
             align-items: center;
@@ -257,26 +277,31 @@
             bottom: 30px;
             animation: pulse-toast 2s infinite 1s;
         }
-        body.dark-mode .idle-toast {
-            background: linear-gradient(135deg, #111, #1f2833);
-            color: #45a29e;
-            border: 1px solid #45a29e;
-            box-shadow: 0 0 15px rgba(69, 162, 158, 0.4);
-        }
         @keyframes pulse-toast {
             0% { transform: scale(1); }
             50% { transform: scale(1.03); }
             100% { transform: scale(1); }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 0 20px 25px 20px;
+            }
+            .banner-wrapper {
+                margin: 0 -20px 20px -20px;
+            }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <img src="modelos/cabecalho.png" alt="Logo UNAERP" class="header-img">
-    <div class="header-text">Escritório de Assistência Jurídica</div>
+    <div class="banner-wrapper">
+        <img src="modelos/cabecalho.png" alt="EAJ - The Jedi Order" class="header-img">
+    </div>
     
-    <h2>Forja de Documentos do EAJ</h2>
+    <div class="header-text">The Jedi Order</div>
+    <h2>Forja de Documentos</h2>
     
     <div class="padawan-greeting" ondblclick="revelarSegredo()" title="Sente alguma perturbação na Força? Dê um duplo clique.">
         Bom dia! Petições forjar, vocês devem!<br>
@@ -850,6 +875,36 @@
 const URL_PLANILHA_JEDI = "https://script.google.com/macros/s/AKfycbzvfsh-NOIrdvAVnTrTR7q1JurdLpnaPBjsn8NxcKy2WEWewcf11DSZDaGNz5V8-zqPpg/exec";
 
 const audioForja = new Audio('modelos/som-jedi.mp3');
+const audioAbertura = new Audio('modelos/abertura.mp3');
+let timerAbertura = null;
+
+function tocarAbertura26s() {
+    if (timerAbertura) {
+        clearTimeout(timerAbertura);
+        timerAbertura = null;
+    }
+    audioAbertura.pause();
+    audioAbertura.currentTime = 0;
+
+    audioAbertura.play().then(() => {
+        timerAbertura = setTimeout(() => {
+            audioAbertura.pause();
+            audioAbertura.currentTime = 0;
+            timerAbertura = null;
+        }, 26000);
+    }).catch(erro => console.log("Erro ao reproduzir abertura.mp3:", erro));
+}
+
+audioAbertura.addEventListener('timeupdate', () => {
+    if (audioAbertura.currentTime >= 26) {
+        audioAbertura.pause();
+        audioAbertura.currentTime = 0;
+        if (timerAbertura) {
+            clearTimeout(timerAbertura);
+            timerAbertura = null;
+        }
+    }
+});
 
 const DESCRICOES_PACOTE = {
     habilitacao: "📄 Documentos gerados: Habilitação + Procuração + Gratuidade",
@@ -891,6 +946,8 @@ function alternarFormulario() {
 }
 
 function revelarSegredo() {
+    tocarAbertura26s();
+
     const frasesYoda = [
         "Faça ou não faça. A tentativa não existe. (Principalmente na qualificação da parte!)",
         "O medo é o caminho para o lado sombrio. E não protocolar no prazo também.",
@@ -903,7 +960,7 @@ function revelarSegredo() {
 
 const TEXTO_BOTAO_PADRAO = "Forjar Petições";
 const TEXTO_NAO_PADAWAN = "não acho que você seja um padawan";
-const PADAWANS = ["joao", "miguel", "chueng", "filipe", "colus", "bruna", "pedro", "marco", "gabriel", "helena"];
+const PADAWANS = ["joao", "miguel", "chueng", "filipe", "colus", "bruna", "pedro", "marco", "gabriel", "helena", "ilayla"];
 const SITHS = ["diogo", "beatriz", "hugo", "heitor", "luiz", "leonardo", "marina", "luiza"];
 
 function normalizar(texto) {
@@ -938,9 +995,9 @@ function obterVaraAtual() {
 function verificarOrdem66Ativa() {
     const vara = obterVaraAtual();
     if (vara === "66" || vara === "66ª") {
-        document.body.classList.add('dark-mode');
+        document.body.classList.add('sith-theme');
     } else if (nomeEhPadawan()) {
-        document.body.classList.remove('dark-mode');
+        document.body.classList.remove('sith-theme');
     }
 }
 
@@ -965,12 +1022,12 @@ function atualizarBotao() {
 function verificarOrdem66(inputEl) {
     const vara = inputEl ? inputEl.value.trim() : "";
     if (vara === "66" || vara === "66ª") {
-        document.body.classList.add('dark-mode');
+        document.body.classList.add('sith-theme');
         setTimeout(() => {
             alert("⚠️ ALERTA DO SENADO GALÁCTICO ⚠️\n\nExecutando Ordem 66...\n\nBrincadeira, padawan! Pode ir voltando ao trabalho.");
         }, 500);
     } else if (nomeEhPadawan()) {
-        document.body.classList.remove('dark-mode');
+        document.body.classList.remove('sith-theme');
     }
 }
 
@@ -1006,7 +1063,7 @@ async function gerarDocumentos() {
     const btn = document.getElementById('btnGerar');
 
     if (!nomeEhPadawan()) {
-        document.body.classList.add('dark-mode');
+        document.body.classList.add('sith-theme');
         alert("🚧 PROGRAMA EM TESTE 🚧\n\nEste é um programa em teste e está em fase de implementação. Por enquanto, a geração de documentos não está liberada para este usuário.");
         return;
     }
@@ -1234,7 +1291,6 @@ async function gerarDocumentos() {
             nome_bad_boy: padawan
         };
 
-        // Na Procuração e Gratuidade, a tag {nome_autor} do Word recebe o nome do cliente (o Pai/Requerido)
         dadosCliente = {
             ...dadosPrincipal,
             nome_autor: dadosPrincipal.nome_reu
