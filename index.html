@@ -318,6 +318,7 @@
             <option value="citacao_edital">Pedido de Citação por Edital</option>
             <option value="intimacao_pessoal">Pedido de Intimação Pessoal</option>
             <option value="penhora_sisbajud">Pedido de Penhora SISBAJUD</option>
+            <option value="oficio_localizar">Pedido de Expedição de Ofício (Localizar Parte Contrária)</option>
             <option value="inicial">Petição Inicial (Em favor da Mãe)</option>
             <option value="contestacao_pai">Contestação (Em favor do Pai)</option>
         </select>
@@ -623,11 +624,39 @@
     </div>
 
     <!-- ===================================================================== -->
-    <!-- BLOCO 7: PETIÇÃO INICIAL (MÃE)                                        -->
+    <!-- BLOCO 7: PEDIDO DE EXPEDIÇÃO DE OFÍCIO (LOCALIZAR PARTE CONTRÁRIA)    -->
+    <!-- ===================================================================== -->
+    <div id="bloco_oficio_localizar" class="bloco-peca">
+        <div class="section-title">Dados do Pedido de Expedição de Ofício (Localizar Parte Contrária)</div>
+        <div class="campo">
+            <label>Vara (apenas o número, ex: 1):</label>
+            <input type="text" id="ofi_vara" placeholder="1" onkeyup="verificarOrdem66(this)">
+        </div>
+        <div class="campo">
+            <label>Competência / Especialidade:</label>
+            <select id="ofi_competencia">
+                <option value="CÍVEL">CÍVEL</option>
+                <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
+                <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
+                <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
+            </select>
+        </div>
+        <div class="campo">
+            <label>Processo nº:</label>
+            <input type="text" id="ofi_numero" placeholder="0000000-00.0000.0.00.0000">
+        </div>
+        <div class="campo">
+            <label>Nome Completo do(a) Assistido(a):</label>
+            <input type="text" id="ofi_nome_assistido" placeholder="Ex: João da Silva">
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- BLOCO 8: PETIÇÃO INICIAL (MÃE)                                        -->
     <!-- ===================================================================== -->
     <div id="bloco_inicial" class="bloco-peca">
         <div class="nota-asterisco">
-            * Campos marcados com asterisco serão inseridos apenas na Petição Inicial.
+- Campos marcados com asterisco serão inseridos apenas na Petição Inicial.
         </div>
 
         <div class="section-title">Qualificação da Parte Autora</div>
@@ -728,7 +757,7 @@
     </div>
 
     <!-- ===================================================================== -->
-    <!-- BLOCO 8: CONTESTAÇÃO (PAI)                                            -->
+    <!-- BLOCO 9: CONTESTAÇÃO (PAI)                                            -->
     <!-- ===================================================================== -->
     <div id="bloco_contestacao_pai" class="bloco-peca">
         <div class="section-title">Dados do Processo</div>
@@ -913,6 +942,7 @@ const DESCRICOES_PACOTE = {
     citacao_edital: "📄 Documento gerado: Somente Pedido de Citação por Edital",
     intimacao_pessoal: "📄 Documento gerado: Somente Pedido de Intimação Pessoal",
     penhora_sisbajud: "📄 Documento gerado: Somente Pedido de Penhora SISBAJUD",
+    oficio_localizar: "📄 Documento gerado: Somente Pedido de Expedição de Ofício (Localizar Parte Contrária)",
     inicial: "📄 Documentos gerados: Petição Inicial + Procuração + Gratuidade",
     contestacao_pai: "📄 Documentos gerados: Contestação + Procuração + Gratuidade"
 };
@@ -926,6 +956,7 @@ function alternarFormulario() {
         'citacao_edital',
         'intimacao_pessoal',
         'penhora_sisbajud',
+        'oficio_localizar',
         'inicial',
         'contestacao_pai'
     ];
@@ -985,6 +1016,7 @@ function obterVaraAtual() {
         citacao_edital: 'ced_vara',
         intimacao_pessoal: 'int_vara',
         penhora_sisbajud: 'sis_vara',
+        oficio_localizar: 'ofi_vara',
         inicial: 'ini_vara',
         contestacao_pai: 'cpai_vara'
     };
@@ -1219,6 +1251,22 @@ async function gerarDocumentos() {
 
         arquivosSelecionados = [
             { id: 'Penhora_SISBAJUD', caminho: 'modelos/penhora_sisbajud.docx', dados: dadosPrincipal }
+        ];
+
+    } else if (tipo === 'oficio_localizar') {
+        dadosPrincipal = {
+            vara: getVal('ofi_vara'),
+            competencia: getVal('ofi_competencia'),
+            numero: getVal('ofi_numero'),
+            nome_assistido: getVal('ofi_nome_assistido').toUpperCase(),
+            nome_bad_boy: padawan
+        };
+        nomeBase = dadosPrincipal.nome_assistido ? dadosPrincipal.nome_assistido.split(" ")[0] : "Cliente";
+        processoPlanilha = dadosPrincipal.numero || "Não informado";
+        acaoPlanilha = "Pedido de Expedição de Ofício (Localizar Parte Contrária)";
+
+        arquivosSelecionados = [
+            { id: 'Oficio_Localizar', caminho: 'modelos/oficio_localizar.docx', dados: dadosPrincipal }
         ];
 
     } else if (tipo === 'inicial') {
