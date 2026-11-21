@@ -825,7 +825,7 @@
             <span class="mode-tab-icon">✨</span>
             <div class="mode-tab-text">
                 <strong>Modo Chat com Mestre Jedi</strong>
-                <small>IA Jurídica • Base livro.pdf</small>
+                <small>IA Jurídica • Modelos Oficiais EAJ</small>
             </div>
         </button>
         <button type="button" class="mode-tab-btn" id="btn_modo_manual" onclick="alternarModoVisual('manual')">
@@ -847,7 +847,7 @@
                     <span class="status-dot"></span>
                     <div>
                         <span class="chat-title-text">Mestre Jedi Holocron</span>
-                        <span class="chat-subtitle-badge">Manual de Prática Cível consultado (livro.pdf)</span>
+                        <span class="chat-subtitle-badge">Baseado exclusivamente nos modelos oficiais do EAJ</span>
                     </div>
                 </div>
                 <button type="button" class="btn-reset-chat" onclick="reiniciarChat()" title="Limpar conversa e iniciar novo atendimento">
@@ -1237,7 +1237,7 @@
         <!-- BLOCO 8: PETIÇÃO INICIAL (MÃE) -->
         <div id="bloco_inicial" class="bloco-peca">
             <div class="nota-asterisco">
-                - Campos marcados com asterisco serão inseridos apenas na Petição Inicial.
+- Campos marcados com asterisco serão inseridos apenas na Petição Inicial.
             </div>
 
             <div class="section-title">Qualificação da Parte Autora</div>
@@ -1471,8 +1471,8 @@
 <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
 
 <script>
-// --- URL DA SUA API GOOGLE APPS SCRIPT / PLANILHA JEDI ---
-const URL_PLANILHA_JEDI = "https://script.google.com/macros/s/AKfycbzvfsh-NOIrdvAVnTrTR7q1JurdLpnaPBjsn8NxcKy2WEWewcf11DSZDaGNz5V8-zqPpg/exec";
+// --- COLE AQUI A NOVA URL DO SEU GOOGLE APPS SCRIPT IMPLANTADO ---
+const URL_PLANILHA_JEDI = "COLE_AQUI_A_NOVA_URL_DO_WEB_APP";
 
 const audioForja = new Audio('modelos/som-jedi.mp3');
 const audioAbertura = new Audio('modelos/abertura.mp3');
@@ -1738,7 +1738,7 @@ const MENSAGEM_INICIAL_JEDI = `Saudações, jovem Padawan! Sou o Mestre Jedi da 
 Como posso orientar seu trabalho hoje? Você pode:
 1. **Colar anotações brutas** do seu atendimento;
 2. **Dizer qual peça deseja forjar** (ex: Habilitação, Inicial de Alimentos, Contestação do Pai, Desbloqueio etc.);
-3. **Tirar dúvidas jurídicas** com base no nosso livro de Prática Cível da Defensoria Pública (\`livro.pdf\`).
+3. **Pedir adaptações nos modelos** (ex: adequar polo entre pai e mãe, gênero ou narrativa fática).
 
 Cole os fatos ou clique em um dos atalhos acima para começarmos! Que a Força esteja com você.`;
 
@@ -1779,18 +1779,12 @@ function formatarTextoMarkdown(texto) {
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;");
 
-    // Negrito
     html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-    // Itálico
     html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
-    // Código em linha / destaque
     html = html.replace(/`([^`]+)`/g, '<code style="background:rgba(56,189,248,0.15);padding:2px 6px;border-radius:4px;color:var(--jedi-cyan);font-family:monospace;">$1</code>');
-    // Linhas de lista com bullet
     html = html.replace(/^\s*[-*]\s+(.*)$/gm, '<li>$1</li>');
-    // Encapsular li em ul
     html = html.replace(/(<li>[\s\S]*?<\/li>)/g, '<ul>$1</ul>');
     html = html.replace(/<\/ul>\s*<ul>/g, '');
-    // Quebras de linha
     html = html.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
 
     return html;
@@ -1843,7 +1837,6 @@ function reiniciarChat() {
     }
 }
 
-// Normalizador de modelId retornado pelo Google Apps Script
 function normalizarModelId(id) {
     if (!id) return 'habilitacao';
     const s = id.toLowerCase().replace('.docx', '').replace(/\s+/g, '_').trim();
@@ -1859,7 +1852,6 @@ function normalizarModelId(id) {
     return s;
 }
 
-// Preenche o formulário manual automaticamente com os campos extraídos pela IA
 function preencherFormularioManual(modelId, fields) {
     if (!fields) return;
 
@@ -2005,7 +1997,6 @@ function preencherFormularioManual(modelId, fields) {
     }
 }
 
-// Envia mensagem para o Google Apps Script respeitando a regra crítica de CORS
 async function enviarMensagemChat() {
     const input = document.getElementById('chat_input');
     const btnEnviar = document.getElementById('btn_chat_enviar');
@@ -2014,17 +2005,22 @@ async function enviarMensagemChat() {
     const textoUsuario = input.value.trim();
     if (!textoUsuario) return;
 
-    // Easter egg Ordem 66 no chat
+    if (URL_PLANILHA_JEDI.includes("COLE_AQUI")) {
+        adicionarMensagemUI('user', textoUsuario);
+        input.value = '';
+        ajustarAlturaTextarea(input);
+        adicionarMensagemUI('jedi', "⚠️ Cole a nova URL do seu Google Apps Script na variável `URL_PLANILHA_JEDI` do `index.html` para ativar o chat.");
+        return;
+    }
+
     if (textoUsuario.includes("66") || textoUsuario.toLowerCase().includes("ordem 66")) {
         document.body.classList.add('sith-theme');
     }
 
-    // Renderiza a mensagem do usuário no chat
     adicionarMensagemUI('user', textoUsuario);
     input.value = '';
     ajustarAlturaTextarea(input);
 
-    // Registra no histórico
     historicoChat.push({
         role: "user",
         content: textoUsuario
@@ -2034,8 +2030,6 @@ async function enviarMensagemChat() {
     setDigitando(true);
 
     try {
-        // REGRA CRÍTICA DE CORS: NÃO adicionar headers: { "Content-Type": "application/json" }
-        // Sem esse header, a requisição é simples (text/plain) e o Google Apps Script não bloqueia preflight OPTIONS!
         const resposta = await fetch(URL_PLANILHA_JEDI, {
             method: "POST",
             body: JSON.stringify({
@@ -2049,6 +2043,10 @@ async function enviarMensagemChat() {
         }
 
         const textoResposta = await resposta.text();
+        if (textoResposta.trim().startsWith("<")) {
+            throw new Error("O Google Apps Script retornou uma página HTML em vez de JSON. Verifique se a implantação está configurada como 'Qualquer pessoa'.");
+        }
+
         let dadosJson;
         try {
             dadosJson = JSON.parse(textoResposta);
@@ -2065,19 +2063,15 @@ async function enviarMensagemChat() {
 
         setDigitando(false);
 
-        // Se a IA reuniu todos os campos e sinalizou pronto
         if (dadosJson.ready === true || dadosJson.ready === "true") {
             const rawModelId = dadosJson.modelId || dadosJson.model || dadosJson.tipo || 'habilitacao';
             const modelId = normalizarModelId(rawModelId);
             const fields = dadosJson.fields || dadosJson.dados || {};
 
-            // Atualiza campos do formulário manual
             preencherFormularioManual(modelId, fields);
 
-            // Obtém nome do padawan
             const padawan = (obterPadawanAtual() || fields.nome_bad_boy || "Padawan").toUpperCase();
 
-            // Validação de Padawan
             if (!nomeEhPadawan()) {
                 document.body.classList.add('sith-theme');
                 adicionarMensagemUI('jedi', respostaMestre);
@@ -2087,7 +2081,6 @@ async function enviarMensagemChat() {
                 return;
             }
 
-            // Executa a geração do(s) documento(s) com PizZip e Docxtemplater
             const resultadoForja = await executarGeracaoDocumentosPacote(modelId, fields, padawan);
 
             if (resultadoForja.sucesso) {
@@ -2112,7 +2105,6 @@ async function enviarMensagemChat() {
 
                 adicionarMensagemUI('jedi', respostaMestre, cardSucesso);
 
-                // Envia log para o Google Apps Script (action: "log") sem preflight CORS
                 fetch(URL_PLANILHA_JEDI, {
                     method: "POST",
                     body: JSON.stringify({
@@ -2136,7 +2128,7 @@ async function enviarMensagemChat() {
     } catch (erro) {
         console.error("Erro na comunicação com o Mestre Jedi:", erro);
         setDigitando(false);
-        adicionarMensagemUI('jedi', "Houve um distúrbio na comunicação com os Arquivos Jedi (Google Apps Script). Verifique sua conexão e tente novamente.");
+        adicionarMensagemUI('jedi', "⚠️ " + erro.message);
     } finally {
         btnEnviar.disabled = false;
         input.focus();
@@ -2477,7 +2469,6 @@ async function gerarDocumentos() {
     const tipo = document.getElementById('tipo_peca').value;
     const padawan = (obterPadawanAtual() || "PADAWAN").toUpperCase();
 
-    // Monta o objeto de campos lendo os inputs do formulário manual
     let fields = {};
 
     if (tipo === 'habilitacao') {
@@ -2634,17 +2625,18 @@ async function gerarDocumentos() {
     const resultado = await executarGeracaoDocumentosPacote(tipo, fields, padawan);
 
     if (resultado.sucesso) {
-        // Envio do log para Google Apps Script sem preflight OPTIONS (CORS safe)
-        fetch(URL_PLANILHA_JEDI, {
-            method: "POST",
-            body: JSON.stringify({
-                action: "log",
-                padawan: padawan,
-                processo: resultado.processo,
-                acao: resultado.acao,
-                pecas: resultado.arquivos.map(a => a.id).join(", ")
-            })
-        }).catch(err => console.log("Erro ao salvar no holocron (planilha):", err));
+        if (!URL_PLANILHA_JEDI.includes("COLE_AQUI")) {
+            fetch(URL_PLANILHA_JEDI, {
+                method: "POST",
+                body: JSON.stringify({
+                    action: "log",
+                    padawan: padawan,
+                    processo: resultado.processo,
+                    acao: resultado.acao,
+                    pecas: resultado.arquivos.map(a => a.id).join(", ")
+                })
+            }).catch(err => console.log("Erro ao salvar no holocron (planilha):", err));
+        }
 
         alert("Documentos forjados com sucesso! O Conselho Jedi ainda precisa aprovar.");
     } else {
