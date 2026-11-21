@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forja de Documentos - The Jedi Order</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -19,6 +19,8 @@
             --text-main: #e2e8f0;
             --text-muted: #94a3b8;
             --border-subtle: rgba(56, 189, 248, 0.35);
+            --user-bubble-bg: rgba(229, 184, 75, 0.12);
+            --jedi-bubble-bg: #081329;
         }
 
         /* Tema Sith (ativado na Ordem 66 ou usuário não autorizado) */
@@ -33,6 +35,8 @@
             --text-main: #f1f5f9;
             --text-muted: #fca5a5;
             --border-subtle: rgba(239, 68, 68, 0.45);
+            --user-bubble-bg: rgba(239, 68, 68, 0.15);
+            --jedi-bubble-bg: #1f060b;
         }
         
         body { 
@@ -54,7 +58,7 @@
         }
 
         .container { 
-            max-width: 780px; 
+            max-width: 840px; 
             margin: 20px auto; 
             background: var(--panel-bg); 
             padding: 0 40px 40px 40px; 
@@ -95,7 +99,7 @@
             color: var(--jedi-cyan); 
             text-align: center; 
             margin-top: 0;
-            margin-bottom: 22px;
+            margin-bottom: 20px;
             font-size: 1.1em;
             font-weight: 600;
             letter-spacing: 1px;
@@ -111,7 +115,7 @@
             border-radius: 10px;
             font-size: 0.95em;
             font-weight: 600;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             border: 1px solid var(--border-subtle);
             border-left: 4px solid var(--jedi-gold);
             box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.4);
@@ -122,11 +126,490 @@
             color: var(--jedi-gold-bright);
         }
         .padawan-greeting:hover {
-            transform: scale(1.015);
+            transform: scale(1.012);
             border-color: var(--jedi-gold);
             box-shadow: 0 0 18px var(--jedi-cyan-glow);
         }
 
+        /* --- CARD DE IDENTIFICAÇÃO DO PADAWAN --- */
+        .padawan-auth-card {
+            background: var(--panel-inner);
+            border: 1.5px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+            transition: all 0.3s ease;
+        }
+        .padawan-auth-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .padawan-auth-header label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.95em;
+            color: var(--jedi-gold-bright);
+            letter-spacing: 0.8px;
+            margin-bottom: 0;
+        }
+        .padawan-auth-body {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .padawan-auth-body input[type="text"] {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        .padawan-badge-status {
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.82em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+        .padawan-badge-status.padawan {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--jedi-cyan);
+            border: 1px solid var(--jedi-cyan);
+        }
+        .padawan-badge-status.sith {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            border: 1px solid #ef4444;
+        }
+        .padawan-badge-status.vazio {
+            background: rgba(148, 163, 184, 0.12);
+            color: var(--text-muted);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+        }
+
+        /* --- SELETOR DE MODO (CHAT vs MANUAL) --- */
+        .mode-selector-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 28px;
+        }
+        .mode-tab-btn {
+            background: var(--panel-inner);
+            color: var(--text-muted);
+            border: 1.5px solid var(--border-subtle);
+            padding: 16px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        .mode-tab-btn:hover {
+            color: var(--text-main);
+            border-color: var(--jedi-cyan);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px var(--jedi-cyan-glow);
+        }
+        .mode-tab-btn.active {
+            background: linear-gradient(135deg, rgba(8, 17, 35, 0.95), rgba(11, 23, 46, 0.95));
+            border-color: var(--jedi-gold);
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(229, 184, 75, 0.25), inset 0 0 15px rgba(56, 189, 248, 0.1);
+        }
+        .mode-tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--jedi-cyan), var(--jedi-gold-bright));
+        }
+        .mode-tab-icon {
+            font-size: 1.8em;
+            line-height: 1;
+        }
+        .mode-tab-text strong {
+            display: block;
+            font-family: 'Cinzel', serif;
+            font-size: 0.98em;
+            letter-spacing: 0.5px;
+            color: var(--jedi-gold-bright);
+        }
+        .mode-tab-btn:not(.active) .mode-tab-text strong {
+            color: var(--text-main);
+        }
+        .mode-tab-text small {
+            display: block;
+            font-size: 0.82em;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+
+        /* --- PAINÉIS DE CONTEÚDO --- */
+        .painel-modo {
+            display: none;
+            animation: fadeInPanel 0.4s ease;
+        }
+        .painel-modo.ativo {
+            display: block;
+        }
+        @keyframes fadeInPanel {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- MODO CHAT STAR WARS --- */
+        .chat-terminal {
+            background: var(--panel-inner);
+            border: 1.5px solid var(--border-subtle);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-terminal-header {
+            background: #040914;
+            padding: 12px 18px;
+            border-bottom: 1.5px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chat-status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #10b981;
+            box-shadow: 0 0 10px #10b981;
+            animation: pulseDot 2s infinite;
+        }
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.85); }
+        }
+        .chat-title-text {
+            font-family: 'Cinzel', serif;
+            font-size: 0.9em;
+            color: var(--jedi-gold-bright);
+            font-weight: 700;
+            letter-spacing: 0.8px;
+        }
+        .chat-subtitle-badge {
+            font-size: 0.78em;
+            color: var(--jedi-cyan);
+            display: block;
+        }
+        .btn-reset-chat {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border-subtle);
+            padding: 6px 12px;
+            font-size: 0.8em;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            text-transform: none;
+            letter-spacing: 0;
+            width: auto;
+            margin: 0;
+            box-shadow: none;
+        }
+        .btn-reset-chat:hover {
+            color: var(--jedi-gold-bright);
+            border-color: var(--jedi-gold);
+            transform: none;
+            background: rgba(229, 184, 75, 0.1);
+        }
+
+        /* Chips de Ação Rápida */
+        .chat-chips-bar {
+            background: rgba(4, 9, 20, 0.65);
+            padding: 10px 16px;
+            border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            scrollbar-width: thin;
+        }
+        .chat-chip {
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .chat-chip:hover {
+            background: rgba(56, 189, 248, 0.22);
+            color: var(--jedi-gold-bright);
+            border-color: var(--jedi-gold);
+            transform: translateY(-1px);
+        }
+
+        /* Histórico de Mensagens */
+        .chat-messages-container {
+            height: 440px;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            background: linear-gradient(180deg, #070e1c 0%, #050b18 100%);
+            scrollbar-width: thin;
+            scrollbar-color: var(--jedi-cyan) var(--panel-inner);
+        }
+        .chat-messages-container::-webkit-scrollbar {
+            width: 7px;
+        }
+        .chat-messages-container::-webkit-scrollbar-thumb {
+            background: var(--border-subtle);
+            border-radius: 4px;
+        }
+
+        .chat-msg {
+            max-width: 85%;
+            display: flex;
+            gap: 12px;
+            animation: msgIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes msgIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .chat-msg.jedi {
+            align-self: flex-start;
+        }
+        .chat-msg.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+        .chat-msg.system {
+            align-self: center;
+            max-width: 95%;
+        }
+
+        .chat-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25em;
+            flex-shrink: 0;
+            border: 1.5px solid var(--border-subtle);
+            background: #040914;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .chat-msg.jedi .chat-avatar {
+            border-color: var(--jedi-cyan);
+            box-shadow: 0 0 10px var(--jedi-cyan-glow);
+        }
+        .chat-msg.user .chat-avatar {
+            border-color: var(--jedi-gold);
+            box-shadow: 0 0 10px rgba(229, 184, 75, 0.3);
+        }
+
+        .chat-bubble {
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 0.93em;
+            line-height: 1.55;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            word-break: break-word;
+        }
+        .chat-msg.jedi .chat-bubble {
+            background: var(--jedi-bubble-bg);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            border-top-left-radius: 2px;
+        }
+        .chat-msg.user .chat-bubble {
+            background: var(--user-bubble-bg);
+            border: 1px solid var(--jedi-gold);
+            color: #ffffff;
+            border-top-right-radius: 2px;
+        }
+        .chat-msg.system .chat-bubble {
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px dashed #10b981;
+            color: #a7f3d0;
+            text-align: center;
+            font-size: 0.88em;
+            width: 100%;
+        }
+
+        .chat-bubble strong {
+            color: var(--jedi-gold-bright);
+        }
+        .chat-bubble ul {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+        .chat-bubble li {
+            margin-bottom: 4px;
+        }
+
+        /* Indicador de Digitação */
+        .typing-indicator {
+            display: none;
+            align-self: flex-start;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            background: var(--jedi-bubble-bg);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            color: var(--jedi-cyan);
+            font-size: 0.86em;
+            font-style: italic;
+        }
+        .typing-indicator.ativo {
+            display: flex;
+        }
+        .typing-dots {
+            display: inline-flex;
+            gap: 4px;
+        }
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--jedi-cyan);
+            animation: bounceDot 1.4s infinite ease-in-out both;
+        }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounceDot {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        /* Área de Entrada do Chat */
+        .chat-input-wrapper {
+            background: #040914;
+            padding: 14px 18px;
+            border-top: 1.5px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .chat-input-box {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+        .chat-textarea {
+            flex: 1;
+            min-height: 52px;
+            max-height: 160px;
+            resize: none;
+            padding: 12px 14px;
+            border: 1.5px solid var(--border-subtle);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.94em;
+            background: var(--panel-inner);
+            color: #ffffff;
+            box-sizing: border-box;
+            transition: all 0.25s ease;
+        }
+        .chat-textarea:focus {
+            border-color: var(--jedi-cyan);
+            outline: none;
+            box-shadow: 0 0 0 3px var(--jedi-cyan-glow);
+        }
+        .btn-enviar-chat {
+            width: auto;
+            min-width: 130px;
+            padding: 14px 22px;
+            margin-top: 0;
+            font-size: 0.95em;
+            flex-shrink: 0;
+        }
+        .chat-hint-bar {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78em;
+            color: var(--text-muted);
+            padding: 0 4px;
+        }
+
+        /* Card de Download / Sucesso no Chat */
+        .forja-sucesso-card {
+            background: linear-gradient(135deg, rgba(8, 25, 45, 0.95), rgba(11, 35, 60, 0.95));
+            border: 2px solid var(--jedi-cyan);
+            border-radius: 10px;
+            padding: 16px;
+            margin-top: 10px;
+            box-shadow: 0 0 20px var(--jedi-cyan-glow);
+            text-align: left;
+        }
+        .forja-sucesso-card h4 {
+            margin: 0 0 8px 0;
+            color: var(--jedi-gold-bright);
+            font-family: 'Cinzel', serif;
+            font-size: 1.05em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .forja-sucesso-card p {
+            margin: 4px 0 12px 0;
+            font-size: 0.9em;
+            color: var(--text-main);
+        }
+        .forja-pecas-lista {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+        .forja-peca-tag {
+            background: rgba(56, 189, 248, 0.2);
+            border: 1px solid var(--jedi-cyan);
+            color: #ffffff;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.82em;
+            font-weight: 600;
+        }
+        .btn-redownload {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-color: #34d399;
+            color: #ffffff;
+            font-size: 0.88em;
+            padding: 10px 16px;
+            margin-top: 6px;
+            width: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-redownload:hover {
+            background: linear-gradient(135deg, #34d399, #10b981);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        /* --- MODO FORMULÁRIO MANUAL (ESTILOS EXISTENTES) --- */
         .selector-box {
             background: var(--panel-inner);
             padding: 20px;
@@ -283,12 +766,28 @@
             100% { transform: scale(1); }
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 650px) {
             .container {
-                padding: 0 20px 25px 20px;
+                padding: 0 16px 25px 16px;
             }
             .banner-wrapper {
-                margin: 0 -20px 20px -20px;
+                margin: 0 -16px 20px -16px;
+            }
+            .mode-selector-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .padawan-auth-body {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .chat-messages-container {
+                height: 380px;
+            }
+            .chat-input-box {
+                flex-direction: column;
+            }
+            .btn-enviar-chat {
+                width: 100%;
             }
         }
     </style>
@@ -308,587 +807,659 @@
         <em>Que a Força esteja com vocês, jovens padawans.</em>
     </div>
 
-    <!-- SELETOR DE PEÇA -->
-    <div class="selector-box">
-        <label for="tipo_peca">Selecione a peça que deseja forjar:</label>
-        <select id="tipo_peca" onchange="alternarFormulario()">
-            <option value="habilitacao">Habilitação</option>
-            <option value="negativa_geral">Contestação por Negativa Geral</option>
-            <option value="desbloqueio">Pedido de Desbloqueio</option>
-            <option value="citacao_edital">Pedido de Citação por Edital</option>
-            <option value="intimacao_pessoal">Pedido de Intimação Pessoal</option>
-            <option value="penhora_sisbajud">Pedido de Penhora SISBAJUD</option>
-            <option value="oficio_localizar">Pedido de Expedição de Ofício (Localizar Parte Contrária)</option>
-            <option value="inicial">Petição Inicial (Em favor da Mãe)</option>
-            <option value="contestacao_pai">Contestação (Em favor do Pai)</option>
-        </select>
-        <div id="info_pacote" class="pecas-badge">
-            📄 Documentos gerados: Habilitação + Procuração + Gratuidade
+    <!-- IDENTIFICAÇÃO DO PADAWAN (COMPARTILHADA ENTRE CHAT E MANUAL) -->
+    <div class="padawan-auth-card">
+        <div class="padawan-auth-header">
+            <span>⚔️</span>
+            <label for="nome_bad_boy">IDENTIFICAÇÃO DO PADAWAN</label>
+        </div>
+        <div class="padawan-auth-body">
+            <input type="text" id="nome_bad_boy" placeholder="Digite seu nome (ex: João, Bruna, Chueng...)" oninput="atualizarBotao()">
+            <div id="padawan_badge" class="padawan-badge-status vazio">⚠️ Identifique-se para forjar</div>
+        </div>
+    </div>
+
+    <!-- SELETOR DE MODO -->
+    <div class="mode-selector-wrapper">
+        <button type="button" class="mode-tab-btn active" id="btn_modo_chat" onclick="alternarModoVisual('chat')">
+            <span class="mode-tab-icon">✨</span>
+            <div class="mode-tab-text">
+                <strong>Modo Chat com Mestre Jedi</strong>
+                <small>IA Jurídica • Base livro.pdf</small>
+            </div>
+        </button>
+        <button type="button" class="mode-tab-btn" id="btn_modo_manual" onclick="alternarModoVisual('manual')">
+            <span class="mode-tab-icon">📜</span>
+            <div class="mode-tab-text">
+                <strong>Modo Formulário Manual</strong>
+                <small>Preenchimento campo a campo</small>
+            </div>
+        </button>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- MODO 1: CHAT COM O MESTRE JEDI                                        -->
+    <!-- ===================================================================== -->
+    <div id="painel_chat" class="painel-modo ativo">
+        <div class="chat-terminal">
+            <div class="chat-terminal-header">
+                <div class="chat-status-indicator">
+                    <span class="status-dot"></span>
+                    <div>
+                        <span class="chat-title-text">Mestre Jedi Holocron</span>
+                        <span class="chat-subtitle-badge">Manual de Prática Cível consultado (livro.pdf)</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-reset-chat" onclick="reiniciarChat()" title="Limpar conversa e iniciar novo atendimento">
+                    🔄 Novo Atendimento
+                </button>
+            </div>
+
+            <!-- Chips de atalho para guiar o Padawan -->
+            <div class="chat-chips-bar">
+                <span class="chat-chip" onclick="aplicarPromptChip('habilitacao')">📄 Habilitação</span>
+                <span class="chat-chip" onclick="aplicarPromptChip('inicial')">⚖️ Petição Inicial (Mãe/Pai)</span>
+                <span class="chat-chip" onclick="aplicarPromptChip('contestacao_pai')">🛡️ Contestação (Genitor)</span>
+                <span class="chat-chip" onclick="aplicarPromptChip('desbloqueio')">🏦 Desbloqueio SISBAJUD</span>
+                <span class="chat-chip" onclick="aplicarPromptChip('penhora')">📈 Penhora Alimentos</span>
+                <span class="chat-chip" onclick="aplicarPromptChip('edital')">🔍 Citação por Edital</span>
+            </div>
+
+            <!-- Janela de Mensagens -->
+            <div id="chat_mensagens" class="chat-messages-container">
+                <!-- Mensagens inseridas via JS -->
+            </div>
+
+            <!-- Indicador de Digitação -->
+            <div id="chat_digitando" class="typing-indicator">
+                <span>Mestre Jedi está consultando os arquivos da Força</span>
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
+
+            <!-- Caixa de Entrada -->
+            <div class="chat-input-wrapper">
+                <div class="chat-input-box">
+                    <textarea 
+                        id="chat_input" 
+                        class="chat-textarea" 
+                        placeholder="Cole aqui o resumo do atendimento ou converse com o Mestre Jedi... (Pressione Enter para enviar, Shift+Enter para nova linha)"
+                        onkeydown="tratarTeclaChat(event)"
+                        oninput="ajustarAlturaTextarea(this)"></textarea>
+                    <button type="button" id="btn_chat_enviar" class="btn-enviar-chat" onclick="enviarMensagemChat()">
+                        ⚔️ Enviar
+                    </button>
+                </div>
+                <div class="chat-hint-bar">
+                    <span>💡 O Mestre Jedi fará perguntas curtas até reunir todos os dados do modelo .docx</span>
+                    <span>Shift + Enter para quebra de linha</span>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- ===================================================================== -->
-    <!-- BLOCO 1: HABILITAÇÃO                                                  -->
+    <!-- MODO 2: FORMULÁRIO MANUAL EXISTENTE                                    -->
     <!-- ===================================================================== -->
-    <div id="bloco_habilitacao" class="bloco-peca ativo">
-        <div class="section-title">Dados da Habilitação</div>
-        <div class="campo">
-            <label>Vara (ex: 1ª):</label>
-            <input type="text" id="hab_vara" placeholder="1ª" onkeyup="verificarOrdem66(this)">
-        </div>
-        <div class="campo">
-            <label>Competência / Especialidade:</label>
-            <select id="hab_competencia">
-                <option value="CÍVEL">CÍVEL</option>
-                <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
-                <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
-                <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
+    <div id="painel_manual" class="painel-modo">
+        <!-- SELETOR DE PEÇA -->
+        <div class="selector-box">
+            <label for="tipo_peca">Selecione a peça que deseja forjar:</label>
+            <select id="tipo_peca" onchange="alternarFormulario()">
+                <option value="habilitacao">Habilitação</option>
+                <option value="negativa_geral">Contestação por Negativa Geral</option>
+                <option value="desbloqueio">Pedido de Desbloqueio</option>
+                <option value="citacao_edital">Pedido de Citação por Edital</option>
+                <option value="intimacao_pessoal">Pedido de Intimação Pessoal</option>
+                <option value="penhora_sisbajud">Pedido de Penhora SISBAJUD</option>
+                <option value="oficio_localizar">Pedido de Expedição de Ofício (Localizar Parte Contrária)</option>
+                <option value="inicial">Petição Inicial (Em favor da Mãe)</option>
+                <option value="contestacao_pai">Contestação (Em favor do Pai)</option>
             </select>
+            <div id="info_pacote" class="pecas-badge">
+                📄 Documentos gerados: Habilitação + Procuração + Gratuidade
+            </div>
         </div>
-        <div class="campo">
-            <label>Processo nº:</label>
-            <input type="text" id="hab_numero" placeholder="0000000-00.0000.0.00.0000">
+
+        <!-- BLOCO 1: HABILITAÇÃO -->
+        <div id="bloco_habilitacao" class="bloco-peca ativo">
+            <div class="section-title">Dados da Habilitação</div>
+            <div class="campo">
+                <label>Vara (ex: 1ª):</label>
+                <input type="text" id="hab_vara" placeholder="1ª" onkeyup="verificarOrdem66(this)">
+            </div>
+            <div class="campo">
+                <label>Competência / Especialidade:</label>
+                <select id="hab_competencia">
+                    <option value="CÍVEL">CÍVEL</option>
+                    <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
+                    <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
+                    <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
+                </select>
+            </div>
+            <div class="campo">
+                <label>Processo nº:</label>
+                <input type="text" id="hab_numero" placeholder="0000000-00.0000.0.00.0000">
+            </div>
+            <div class="campo">
+                <label>Nome Completo do Assistido:</label>
+                <input type="text" id="hab_nome_autor" placeholder="João da Silva">
+            </div>
+            <div class="campo">
+                <label>Nacionalidade:</label>
+                <input type="text" id="hab_nacionalidade" value="brasileiro(a)">
+            </div>
+            <div class="campo">
+                <label>Estado Civil:</label>
+                <input type="text" id="hab_estado_civil" placeholder="solteiro(a)">
+            </div>
+            <div class="campo">
+                <label>Profissão:</label>
+                <input type="text" id="hab_profissao" placeholder="engenheiro(a)">
+            </div>
+            <div class="campo">
+                <label>RG:</label>
+                <input type="text" id="hab_rg" placeholder="00.000.000-0">
+            </div>
+            <div class="campo">
+                <label>CPF:</label>
+                <input type="text" id="hab_cpf" placeholder="000.000.000-00">
+            </div>
+            <div class="campo">
+                <label>Endereço Completo:</label>
+                <input type="text" id="hab_endereco" placeholder="Rua Exemplo, 123, Centro, Ribeirão Preto/SP, CEP:">
+            </div>
+            <div class="campo">
+                <label>Valor da proposta de acordo:</label>
+                <input type="text" id="hab_valor_acordo" placeholder="R$ 5.000,00">
+            </div>
         </div>
-        <div class="campo">
-            <label>Nome Completo do Assistido:</label>
-            <input type="text" id="hab_nome_autor" placeholder="João da Silva">
+
+        <!-- BLOCO 2: CONTESTAÇÃO POR NEGATIVA GERAL -->
+        <div id="bloco_negativa_geral" class="bloco-peca">
+            <div class="section-title">Dados da Contestação por Negativa Geral</div>
+            <div class="campo">
+                <label>Vara (ex: 1ª):</label>
+                <input type="text" id="neg_vara" placeholder="1ª" onkeyup="verificarOrdem66(this)">
+            </div>
+            <div class="campo">
+                <label>Competência / Especialidade:</label>
+                <select id="neg_competencia">
+                    <option value="CÍVEL">CÍVEL</option>
+                    <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
+                    <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
+                    <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
+                </select>
+            </div>
+            <div class="campo">
+                <label>Processo nº:</label>
+                <input type="text" id="neg_numero" placeholder="0000000-00.0000.0.00.0000">
+            </div>
+            <div class="campo">
+                <label>Nome Completo do Assistido:</label>
+                <input type="text" id="neg_nome_autor" placeholder="João da Silva">
+            </div>
+            <div class="campo">
+                <label>CPF:</label>
+                <input type="text" id="neg_cpf" placeholder="000.000.000-00">
+            </div>
         </div>
-        <div class="campo">
-            <label>Nacionalidade:</label>
-            <input type="text" id="hab_nacionalidade" value="brasileiro(a)">
+
+        <!-- BLOCO 3: PEDIDO DE DESBLOQUEIO -->
+        <div id="bloco_desbloqueio" class="bloco-peca">
+            <div class="section-title">Dados do Processo e das Partes</div>
+            <div class="campo">
+                <label>Vara (apenas o número, ex: 1):</label>
+                <input type="text" id="desb_vara" placeholder="1" onkeyup="verificarOrdem66(this)">
+            </div>
+            <div class="campo">
+                <label>Competência / Especialidade:</label>
+                <select id="desb_competencia">
+                    <option value="CÍVEL">CÍVEL</option>
+                    <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
+                    <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
+                    <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
+                </select>
+            </div>
+            <div class="campo">
+                <label>Processo nº:</label>
+                <input type="text" id="desb_numero" placeholder="0000000-00.0000.0.00.0000">
+            </div>
+            <div class="campo">
+                <label>Nome Completo do(a) Assistido(a):</label>
+                <input type="text" id="desb_nome_assistido" placeholder="Ex: João da Silva">
+            </div>
+            <div class="campo">
+                <label>Título da Ação (em que ocorreu o bloqueio):</label>
+                <input type="text" id="desb_titulo_da_acao" placeholder="Ex: Ação de Execução de Título Extrajudicial">
+            </div>
+            <div class="campo">
+                <label>Nome da Parte Contrária (Exequente):</label>
+                <input type="text" id="desb_nome_parte_contraria" placeholder="Ex: Banco X S.A. ou Maria das Graças">
+            </div>
+            <div class="campo">
+                <label>Natureza do Crédito Executado:</label>
+                <input type="text" id="desb_natureza_credito_executado" placeholder="Ex: dívida de natureza cível e não alimentar">
+            </div>
+
+            <div class="section-title">Dados do Bloqueio e da Conta</div>
+            <div class="campo">
+                <label>Data do Bloqueio:</label>
+                <input type="text" id="desb_data_bloqueio" placeholder="Ex: 10/11/2026">
+            </div>
+            <div class="campo">
+                <label>Data da Intimação do Bloqueio:</label>
+                <input type="text" id="desb_data_intimacao_bloqueio" placeholder="Ex: 12/11/2026">
+            </div>
+            <div class="campo">
+                <label>Instituição Financeira (Banco):</label>
+                <input type="text" id="desb_banco" placeholder="Ex: Banco Itaú S.A.">
+            </div>
+            <div class="campo">
+                <label>Tipo de Conta (já com a palavra "conta"):</label>
+                <input type="text" id="desb_tipo_conta" placeholder="Ex: conta-corrente">
+            </div>
+            <div class="campo">
+                <label>Valor Total Bloqueado:</label>
+                <input type="text" id="desb_valor_total_bloqueado" placeholder="Ex: R$ 4.919,49">
+            </div>
+            <div class="campo">
+                <label>Proporção da Verba Bloqueada (já com artigo):</label>
+                <input type="text" id="desb_proporcao_verba_bloqueada" placeholder="Ex: a totalidade">
+            </div>
+
+            <div class="section-title">Origem da Verba e Subsistência</div>
+            <div class="campo">
+                <label>Natureza da Verba:</label>
+                <input type="text" id="desb_natureza_verba" placeholder="Ex: proventos de aposentadoria">
+            </div>
+            <div class="campo">
+                <label>Fonte Pagadora (Quem pagou):</label>
+                <input type="text" id="desb_fonte_pagadora" placeholder="Ex: INSS">
+            </div>
+            <div class="campo">
+                <label>Data do Crédito:</label>
+                <input type="text" id="desb_data_credito" placeholder="Ex: 05/11/2026">
+            </div>
+            <div class="campo">
+                <label>Valor Creditado:</label>
+                <input type="text" id="desb_valor_credito" placeholder="Ex: R$ 4.919,49">
+            </div>
+            <div class="campo">
+                <label>Descrição Literal do Crédito no Extrato:</label>
+                <input type="text" id="desb_descricao_credito_extrato" placeholder="Ex: PGTO INSS 05701121220">
+            </div>
+            <div class="campo">
+                <label>Valor de 40 Salários Mínimos na Data:</label>
+                <input type="text" id="desb_valor_40_salarios_minimos" placeholder="Ex: R$ 64.840,00">
+            </div>
+            <div class="campo">
+                <label>Localização do Extrato nos Autos:</label>
+                <input type="text" id="desb_doc_extrato" placeholder="Ex: Doc. 02 / ID 123456">
+            </div>
+            <div class="campo">
+                <label>Documentos de Despesas e Família nos Autos:</label>
+                <input type="text" id="desb_doc_comprovantes" placeholder="Ex: Docs. 03 a 07">
+            </div>
+            <div class="campo">
+                <label>Situação Familiar e Dependência da Renda:</label>
+                <input type="text" id="desb_situacao_familiar" placeholder="Ex: reside com a esposa e dois filhos menores, que dependem de sua renda">
+            </div>
+            <div class="campo">
+                <label>Despesas Essenciais:</label>
+                <input type="text" id="desb_despesas_essenciais" placeholder="Ex: aluguel, alimentação, medicamentos e transporte">
+            </div>
         </div>
-        <div class="campo">
-            <label>Estado Civil:</label>
-            <input type="text" id="hab_estado_civil" placeholder="solteiro(a)">
+
+        <!-- BLOCO 4: PEDIDO DE CITAÇÃO POR EDITAL -->
+        <div id="bloco_citacao_edital" class="bloco-peca">
+            <div class="section-title">Dados do Pedido de Citação por Edital</div>
+            <div class="campo">
+                <label>Vara (apenas o número, ex: 1):</label>
+                <input type="text" id="ced_vara" placeholder="1" onkeyup="verificarOrdem66(this)">
+            </div>
+            <div class="campo">
+                <label>Competência / Especialidade:</label>
+                <select id="ced_competencia">
+                    <option value="CÍVEL">CÍVEL</option>
+                    <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
+                    <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
+                    <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
+                </select>
+            </div>
+            <div class="campo">
+                <label>Processo nº:</label>
+                <input type="text" id="ced_numero" placeholder="0000000-00.0000.0.00.0000">
+            </div>
+            <div class="campo">
+                <label>Nome Completo do(a) Assistido(a):</label>
+                <input type="text" id="ced_nome_assistido" placeholder="Ex: Maria das Graças">
+            </div>
+            <div class="campo">
+                <label>Em atendimento a (decisão / despacho / ato ordinatório e fls.):</label>
+                <input type="text" id="ced_decisao_despacho" placeholder="Ex: à r. decisão de fls. 45 / ao ato ordinatório de fls. 22">
+            </div>
         </div>
-        <div class="campo">
-            <label>Profissão:</label>
-            <input type="text" id="hab_profissao" placeholder="engenheiro(a)">
+
+        <!-- BLOCO 5: PEDIDO DE INTIMAÇÃO PESSOAL -->
+        <div id="bloco_intimacao_pessoal" class="bloco-peca">
+            <div class="section-title">Dados do Pedido de Intimação Pessoal</div>
+            <div class="campo">
+                <label>Vara (apenas o número, ex: 1):</label>
+                <input type="text" id="int_vara" placeholder="1" onkeyup="verificarOrdem66(this)">
+            </div>
+            <div class="campo">
+                <label>Competência / Especialidade:</label>
+                <select id="int_competencia">
+                    <option value="CÍVEL">CÍVEL</option>
+                    <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
+                    <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
+                    <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
+                </select>
+            </div>
+            <div class="campo">
+                <label>Processo nº:</label>
+                <input type="text" id="int_numero" placeholder="0000000-00.0000.0.00.0000">
+            </div>
+            <div class="campo">
+                <label>Nome Completo do(a) Assistido(a):</label>
+                <input type="text" id="int_nome_assistido" placeholder="Ex: João da Silva">
+            </div>
+            <div class="campo">
+                <label>Motivo da necessidade de contato ("não conseguimos contato com a parte para..."):</label>
+                <textarea id="int_motivo_contato" placeholder="Ex: informar o endereço atualizado da parte contrária e apresentar documentos indispensáveis ao prosseguimento do feito."></textarea>
+            </div>
         </div>
-        <div class="campo">
-            <label>RG:</label>
-            <input type="text" id="hab_rg" placeholder="00.000.000-0">
+
+        <!-- BLOCO 6: PEDIDO DE PENHORA SISBAJUD -->
+        <div id="bloco_penhora_sisbajud" class="bloco-peca">
+            <div class="section-title">Dados do Pedido de Penhora SISBAJUD</div>
+            <div class="campo">
+                <label>Vara (apenas o número, ex: 1):</label>
+                <input type="text" id="sis_vara" placeholder="1" onkeyup="verificarOrdem66(this)">
+            </div>
+            <div class="campo">
+                <label>Competência / Especialidade:</label>
+                <select id="sis_competencia">
+                    <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
+                    <option value="CÍVEL">CÍVEL</option>
+                    <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
+                    <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
+                </select>
+            </div>
+            <div class="campo">
+                <label>Processo nº:</label>
+                <input type="text" id="sis_numero" placeholder="0000000-00.0000.0.00.0000">
+            </div>
+            <div class="campo">
+                <label>Nome da Criança / Exequente:</label>
+                <input type="text" id="sis_nome_crianca" placeholder="Ex: Enzo Gabriel da Silva">
+            </div>
+            <div class="campo">
+                <label>Nome da Genitora (Representante Legal):</label>
+                <input type="text" id="sis_nome_mae" placeholder="Ex: Maria da Silva">
+            </div>
+            <div class="campo">
+                <label>Período dos Alimentos Vencidos ("abranger os valores devidos de..."):</label>
+                <input type="text" id="sis_periodo_alimentos" placeholder="Ex: janeiro a novembro de 2026">
+            </div>
         </div>
-        <div class="campo">
-            <label>CPF:</label>
-            <input type="text" id="hab_cpf" placeholder="000.000.000-00">
+
+        <!-- BLOCO 7: PEDIDO DE EXPEDIÇÃO DE OFÍCIO -->
+        <div id="bloco_oficio_localizar" class="bloco-peca">
+            <div class="section-title">Dados do Pedido de Expedição de Ofício (Localizar Parte Contrária)</div>
+            <div class="campo">
+                <label>Vara (apenas o número, ex: 1):</label>
+                <input type="text" id="ofi_vara" placeholder="1" onkeyup="verificarOrdem66(this)">
+            </div>
+            <div class="campo">
+                <label>Competência / Especialidade:</label>
+                <select id="ofi_competencia">
+                    <option value="CÍVEL">CÍVEL</option>
+                    <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
+                    <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
+                    <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
+                </select>
+            </div>
+            <div class="campo">
+                <label>Processo nº:</label>
+                <input type="text" id="ofi_numero" placeholder="0000000-00.0000.0.00.0000">
+            </div>
+            <div class="campo">
+                <label>Nome Completo do(a) Assistido(a):</label>
+                <input type="text" id="ofi_nome_assistido" placeholder="Ex: João da Silva">
+            </div>
         </div>
-        <div class="campo">
-            <label>Endereço Completo:</label>
-            <input type="text" id="hab_endereco" placeholder="Rua Exemplo, 123, Centro, Ribeirão Preto/SP, CEP:">
+
+        <!-- BLOCO 8: PETIÇÃO INICIAL (MÃE) -->
+        <div id="bloco_inicial" class="bloco-peca">
+            <div class="nota-asterisco">
+                - Campos marcados com asterisco serão inseridos apenas na Petição Inicial.
+            </div>
+
+            <div class="section-title">Qualificação da Parte Autora</div>
+            <div class="campo">
+                <label>Nome Completo do Autor(a):</label>
+                <input type="text" id="ini_nome_autor" placeholder="Ex: Adrielle Gonçalves dos Santos">
+            </div>
+            <div class="campo">
+                <label>Nacionalidade:</label>
+                <input type="text" id="ini_nacionalidade" value="brasileiro(a)">
+            </div>
+            <div class="campo">
+                <label>Estado Civil:</label>
+                <input type="text" id="ini_estado_civil" placeholder="Ex: casada">
+            </div>
+            <div class="campo">
+                <label>Profissão:</label>
+                <input type="text" id="ini_profissao" placeholder="Ex: desempregada">
+            </div>
+            <div class="campo">
+                <label>RG:</label>
+                <input type="text" id="ini_rg" placeholder="00.000.000-0">
+            </div>
+            <div class="campo">
+                <label>CPF:</label>
+                <input type="text" id="ini_cpf" placeholder="000.000.000-00">
+            </div>
+            <div class="campo">
+                <label>Endereço Completo:</label>
+                <input type="text" id="ini_endereco" placeholder="Ex: Rua Paranapanema, 345, torre A, AP 608, Sumarezinho, Ribeirão Preto-SP">
+            </div>
+
+            <div class="section-title">Dados da Petição Inicial *</div>
+            <div class="campo">
+                <label>Vara* (ex: 1ª):</label>
+                <input type="text" id="ini_vara" placeholder="Deixe em branco se for a distribuir" onkeyup="verificarOrdem66(this)">
+            </div>
+            <div class="campo">
+                <label>Nome Completo do Requerido*:</label>
+                <input type="text" id="ini_nome_requerido" placeholder="Ex: Ericlis Gonçalves">
+            </div>
+            <div class="campo">
+                <label>Profissão do Requerido*:</label>
+                <input type="text" id="ini_profissao_requerido" placeholder="Ex: desenvolvedor de sistemas">
+            </div>
+            <div class="campo">
+                <label>RG do Requerido*:</label>
+                <input type="text" id="ini_rg_requerido" placeholder="00.000.000-0">
+            </div>
+            <div class="campo">
+                <label>CPF do Requerido*:</label>
+                <input type="text" id="ini_cpf_requerido" placeholder="000.000.000-00">
+            </div>
+            <div class="campo">
+                <label>Endereço do Requerido*:</label>
+                <input type="text" id="ini_endereco_requerido" placeholder="Ex: R. Des. Thrasybulo Pinheiro de Albuquerque, Cidade Kemel, São Paulo - SP">
+            </div>
+            <div class="campo">
+                <label>Data do Casamento*:</label>
+                <input type="text" id="ini_data_casamento" placeholder="Ex: 13 de maio de 2023">
+            </div>
+            <div class="campo">
+                <label>Regime de Bens*:</label>
+                <input type="text" id="ini_regime_bens" placeholder="Ex: comunhão parcial de bens">
+            </div>
+            <div class="campo">
+                <label>Cartório e Registro de Casamento (Livro/Fls/Nº)*:</label>
+                <input type="text" id="ini_registro_casamento" placeholder="Ex: Cartório de Registro Civil do Itaim Paulista, Livro B-0213, Fls. 227, nº 64797">
+            </div>
+            <div class="campo">
+                <label>Nome do Filho(a)*:</label>
+                <input type="text" id="ini_nome_filho" placeholder="Ex: Enzo Gabriel Monteiro dos Santos">
+            </div>
+            <div class="campo">
+                <label>Data de Nascimento do Filho(a)*:</label>
+                <input type="text" id="ini_nascimento_filho" placeholder="Ex: 17 de abril de 2016">
+            </div>
+            <div class="campo">
+                <label>RG do Filho(a)*:</label>
+                <input type="text" id="ini_rg_filho" placeholder="00.000.000-0">
+            </div>
+            <div class="campo">
+                <label>CPF do Filho(a)*:</label>
+                <input type="text" id="ini_cpf_filho" placeholder="000.000.000-00">
+            </div>
+            <div class="campo">
+                <label>Bens a Partilhar*:</label>
+                <input type="text" id="ini_bens_partilhar" placeholder="Ex: um imóvel em Ribeirão Preto/SP, um carro e uma moto">
+            </div>
+            <div class="campo">
+                <label>Nome de Solteira a retornar*:</label>
+                <input type="text" id="ini_nome_solteira" placeholder="Ex: Genilsa Nunes De Souza">
+            </div>
+            <div class="campo">
+                <label>Valor da Causa*:</label>
+                <input type="text" id="ini_valor_causa" placeholder="12x a pensão mensal - art. 292, III do CPC">
+            </div>
         </div>
-        <div class="campo">
-            <label>Valor da proposta de acordo:</label>
-            <input type="text" id="hab_valor_acordo" placeholder="R$ 5.000,00">
+
+        <!-- BLOCO 9: CONTESTAÇÃO (PAI) -->
+        <div id="bloco_contestacao_pai" class="bloco-peca">
+            <div class="section-title">Dados do Processo</div>
+            <div class="campo">
+                <label>Vara (ex: 1ª):</label>
+                <input type="text" id="cpai_vara" placeholder="Ex: 1ª" onkeyup="verificarOrdem66(this)">
+            </div>
+            <div class="campo">
+                <label>Número do Processo:</label>
+                <input type="text" id="cpai_numero" placeholder="0000000-00.0000.0.00.0000">
+            </div>
+            <div class="campo">
+                <label>Tipo de Ação:</label>
+                <input type="text" id="cpai_tipo_de_acao" placeholder="Ex: Ação de Guarda c/c Alimentos">
+            </div>
+            <div class="campo">
+                <label>Ofício Defensoria (Nº):</label>
+                <input type="text" id="cpai_n_oficio_defensoria" placeholder="Ex: 1234/2026">
+            </div>
+
+            <div class="section-title">Qualificação das Partes</div>
+            <div class="campo">
+                <label>Nome Completo do REQUERIDO (Seu Cliente):</label>
+                <input type="text" id="cpai_nome_reu" placeholder="Ex: João da Silva">
+            </div>
+            <div class="campo">
+                <label>Nacionalidade (Requerido):</label>
+                <input type="text" id="cpai_nacionalidade" value="brasileiro(a)">
+            </div>
+            <div class="campo">
+                <label>Estado Civil (Requerido):</label>
+                <input type="text" id="cpai_estado_civil" placeholder="Ex: divorciado">
+            </div>
+            <div class="campo">
+                <label>Profissão (Requerido):</label>
+                <input type="text" id="cpai_profissao" placeholder="Ex: autônomo">
+            </div>
+            <div class="campo">
+                <label>RG (Requerido):</label>
+                <input type="text" id="cpai_rg" placeholder="00.000.000-0">
+            </div>
+            <div class="campo">
+                <label>CPF (Requerido):</label>
+                <input type="text" id="cpai_cpf" placeholder="000.000.000-00">
+            </div>
+            <div class="campo">
+                <label>Endereço Completo (Requerido):</label>
+                <input type="text" id="cpai_endereco" placeholder="Rua, Número, Bairro, Cidade-UF, CEP">
+            </div>
+            <div class="campo">
+                <label>Nome Completo da AUTORA (Parte Contrária):</label>
+                <input type="text" id="cpai_nome_autor" placeholder="Ex: Maria das Graças">
+            </div>
+
+            <div class="section-title">Resumo dos Fatos e Filhos</div>
+            <div class="campo">
+                <label>Nome dos Filhos:</label>
+                <input type="text" id="cpai_nomes_filhos" placeholder="Ex: Enzo e Valentina Silva">
+            </div>
+            <div class="campo">
+                <label>Idade dos Filhos:</label>
+                <input type="text" id="cpai_idades_filhos" placeholder="Ex: 8 e 5 anos">
+            </div>
+            <div class="campo">
+                <label>O que a Autora pretende? (Síntese):</label>
+                <textarea id="cpai_sintese_pretensoes_autor" placeholder="Ex: a fixação de alimentos em 30% dos rendimentos líquidos..."></textarea>
+            </div>
+            
+            <div class="section-title">Situação Financeira e Emprego do Réu</div>
+            <div class="campo">
+                <label>Data de Desligamento:</label>
+                <input type="text" id="cpai_data_desligamento" placeholder="Ex: 15 de janeiro de 2026">
+            </div>
+            <div class="campo">
+                <label>Último Empregador:</label>
+                <input type="text" id="cpai_ultimo_empregador" placeholder="Ex: Construtora X">
+            </div>
+            <div class="campo">
+                <label>Cargo do Último Emprego:</label>
+                <input type="text" id="cpai_cargo_ultimo_emprego" placeholder="Ex: pedreiro">
+            </div>
+            <div class="campo">
+                <label>Motivo do Desligamento:</label>
+                <input type="text" id="cpai_motivo_desligamento" placeholder="Ex: corte de gastos da empresa">
+            </div>
+            <div class="campo">
+                <label>Último Salário:</label>
+                <input type="text" id="cpai_ultimo_salario" placeholder="Ex: R$ 2.500,00">
+            </div>
+            <div class="campo">
+                <label>Renda Atual do Requerido:</label>
+                <input type="text" id="cpai_renda_atual_requerido" placeholder="Ex: vive de bicos esporádicos recebendo cerca de R$ 800,00 mensais">
+            </div>
+
+            <div class="section-title">Teses de Defesa e Propostas</div>
+            <div class="campo">
+                <label>Impugnação às Alegações da Autora:</label>
+                <textarea id="cpai_impugnacao_alegacoes_autor" placeholder="Ex: A Autora alega sem provas que o Réu possui empresa oculta..."></textarea>
+            </div>
+            <div class="campo">
+                <label>Contribuições In Natura (O que o Réu já paga?):</label>
+                <textarea id="cpai_contribuicoes_in_natura" placeholder="Ex: compra material escolar, roupas e paga o plano de saúde"></textarea>
+            </div>
+            <div class="campo">
+                <label>Tese sobre a Guarda:</label>
+                <textarea id="cpai_tese_guarda_especifica" placeholder="Ex: a guarda compartilhada deve ser mantida pois atende o melhor interesse..."></textarea>
+            </div>
+            <div class="campo">
+                <label>Fundamento para o Estudo Social:</label>
+                <textarea id="cpai_fundamento_estudo_social" placeholder="Ex: a intensa animosidade entre as partes e as acusações recíprocas"></textarea>
+            </div>
+            <div class="campo">
+                <label>Percentual de Rendimentos Proposto (Se empregado):</label>
+                <input type="text" id="cpai_percentual_rendimentos_proposto" placeholder="Ex: 20">
+            </div>
+            <div class="campo">
+                <label>Percentual do Salário Mínimo (Se desempregado):</label>
+                <input type="text" id="cpai_percentual_salario_minimo_proposto" placeholder="Ex: 30">
+            </div>
         </div>
+
+        <button type="button" id="btnGerar" onclick="gerarDocumentos()">Forjar Petições</button>
     </div>
-
-    <!-- ===================================================================== -->
-    <!-- BLOCO 2: CONTESTAÇÃO POR NEGATIVA GERAL                               -->
-    <!-- ===================================================================== -->
-    <div id="bloco_negativa_geral" class="bloco-peca">
-        <div class="section-title">Dados da Contestação por Negativa Geral</div>
-        <div class="campo">
-            <label>Vara (ex: 1ª):</label>
-            <input type="text" id="neg_vara" placeholder="1ª" onkeyup="verificarOrdem66(this)">
-        </div>
-        <div class="campo">
-            <label>Competência / Especialidade:</label>
-            <select id="neg_competencia">
-                <option value="CÍVEL">CÍVEL</option>
-                <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
-                <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
-                <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
-            </select>
-        </div>
-        <div class="campo">
-            <label>Processo nº:</label>
-            <input type="text" id="neg_numero" placeholder="0000000-00.0000.0.00.0000">
-        </div>
-        <div class="campo">
-            <label>Nome Completo do Assistido:</label>
-            <input type="text" id="neg_nome_autor" placeholder="João da Silva">
-        </div>
-        <div class="campo">
-            <label>CPF:</label>
-            <input type="text" id="neg_cpf" placeholder="000.000.000-00">
-        </div>
-    </div>
-
-    <!-- ===================================================================== -->
-    <!-- BLOCO 3: PEDIDO DE DESBLOQUEIO                                        -->
-    <!-- ===================================================================== -->
-    <div id="bloco_desbloqueio" class="bloco-peca">
-        <div class="section-title">Dados do Processo e das Partes</div>
-        <div class="campo">
-            <label>Vara (apenas o número, ex: 1):</label>
-            <input type="text" id="desb_vara" placeholder="1" onkeyup="verificarOrdem66(this)">
-        </div>
-        <div class="campo">
-            <label>Competência / Especialidade:</label>
-            <select id="desb_competencia">
-                <option value="CÍVEL">CÍVEL</option>
-                <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
-                <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
-                <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
-            </select>
-        </div>
-        <div class="campo">
-            <label>Processo nº:</label>
-            <input type="text" id="desb_numero" placeholder="0000000-00.0000.0.00.0000">
-        </div>
-        <div class="campo">
-            <label>Nome Completo do(a) Assistido(a):</label>
-            <input type="text" id="desb_nome_assistido" placeholder="Ex: João da Silva">
-        </div>
-        <div class="campo">
-            <label>Título da Ação (em que ocorreu o bloqueio):</label>
-            <input type="text" id="desb_titulo_da_acao" placeholder="Ex: Ação de Execução de Título Extrajudicial">
-        </div>
-        <div class="campo">
-            <label>Nome da Parte Contrária (Exequente):</label>
-            <input type="text" id="desb_nome_parte_contraria" placeholder="Ex: Banco X S.A. ou Maria das Graças">
-        </div>
-        <div class="campo">
-            <label>Natureza do Crédito Executado:</label>
-            <input type="text" id="desb_natureza_credito_executado" placeholder="Ex: dívida de natureza cível e não alimentar">
-        </div>
-
-        <div class="section-title">Dados do Bloqueio e da Conta</div>
-        <div class="campo">
-            <label>Data do Bloqueio:</label>
-            <input type="text" id="desb_data_bloqueio" placeholder="Ex: 10/11/2026">
-        </div>
-        <div class="campo">
-            <label>Data da Intimação do Bloqueio:</label>
-            <input type="text" id="desb_data_intimacao_bloqueio" placeholder="Ex: 12/11/2026">
-        </div>
-        <div class="campo">
-            <label>Instituição Financeira (Banco):</label>
-            <input type="text" id="desb_banco" placeholder="Ex: Banco Itaú S.A.">
-        </div>
-        <div class="campo">
-            <label>Tipo de Conta (já com a palavra "conta"):</label>
-            <input type="text" id="desb_tipo_conta" placeholder="Ex: conta-corrente">
-        </div>
-        <div class="campo">
-            <label>Valor Total Bloqueado:</label>
-            <input type="text" id="desb_valor_total_bloqueado" placeholder="Ex: R$ 4.919,49">
-        </div>
-        <div class="campo">
-            <label>Proporção da Verba Bloqueada (já com artigo):</label>
-            <input type="text" id="desb_proporcao_verba_bloqueada" placeholder="Ex: a totalidade">
-        </div>
-
-        <div class="section-title">Origem da Verba e Subsistência</div>
-        <div class="campo">
-            <label>Natureza da Verba:</label>
-            <input type="text" id="desb_natureza_verba" placeholder="Ex: proventos de aposentadoria">
-        </div>
-        <div class="campo">
-            <label>Fonte Pagadora (Quem pagou):</label>
-            <input type="text" id="desb_fonte_pagadora" placeholder="Ex: INSS">
-        </div>
-        <div class="campo">
-            <label>Data do Crédito:</label>
-            <input type="text" id="desb_data_credito" placeholder="Ex: 05/11/2026">
-        </div>
-        <div class="campo">
-            <label>Valor Creditado:</label>
-            <input type="text" id="desb_valor_credito" placeholder="Ex: R$ 4.919,49">
-        </div>
-        <div class="campo">
-            <label>Descrição Literal do Crédito no Extrato:</label>
-            <input type="text" id="desb_descricao_credito_extrato" placeholder="Ex: PGTO INSS 05701121220">
-        </div>
-        <div class="campo">
-            <label>Valor de 40 Salários Mínimos na Data:</label>
-            <input type="text" id="desb_valor_40_salarios_minimos" placeholder="Ex: R$ 64.840,00">
-        </div>
-        <div class="campo">
-            <label>Localização do Extrato nos Autos:</label>
-            <input type="text" id="desb_doc_extrato" placeholder="Ex: Doc. 02 / ID 123456">
-        </div>
-        <div class="campo">
-            <label>Documentos de Despesas e Família nos Autos:</label>
-            <input type="text" id="desb_doc_comprovantes" placeholder="Ex: Docs. 03 a 07">
-        </div>
-        <div class="campo">
-            <label>Situação Familiar e Dependência da Renda:</label>
-            <input type="text" id="desb_situacao_familiar" placeholder="Ex: reside com a esposa e dois filhos menores, que dependem de sua renda">
-        </div>
-        <div class="campo">
-            <label>Despesas Essenciais:</label>
-            <input type="text" id="desb_despesas_essenciais" placeholder="Ex: aluguel, alimentação, medicamentos e transporte">
-        </div>
-    </div>
-
-    <!-- ===================================================================== -->
-    <!-- BLOCO 4: PEDIDO DE CITAÇÃO POR EDITAL                                 -->
-    <!-- ===================================================================== -->
-    <div id="bloco_citacao_edital" class="bloco-peca">
-        <div class="section-title">Dados do Pedido de Citação por Edital</div>
-        <div class="campo">
-            <label>Vara (apenas o número, ex: 1):</label>
-            <input type="text" id="ced_vara" placeholder="1" onkeyup="verificarOrdem66(this)">
-        </div>
-        <div class="campo">
-            <label>Competência / Especialidade:</label>
-            <select id="ced_competencia">
-                <option value="CÍVEL">CÍVEL</option>
-                <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
-                <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
-                <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
-            </select>
-        </div>
-        <div class="campo">
-            <label>Processo nº:</label>
-            <input type="text" id="ced_numero" placeholder="0000000-00.0000.0.00.0000">
-        </div>
-        <div class="campo">
-            <label>Nome Completo do(a) Assistido(a):</label>
-            <input type="text" id="ced_nome_assistido" placeholder="Ex: Maria das Graças">
-        </div>
-        <div class="campo">
-            <label>Em atendimento a (decisão / despacho / ato ordinatório e fls.):</label>
-            <input type="text" id="ced_decisao_despacho" placeholder="Ex: à r. decisão de fls. 45 / ao ato ordinatório de fls. 22">
-        </div>
-    </div>
-
-    <!-- ===================================================================== -->
-    <!-- BLOCO 5: PEDIDO DE INTIMAÇÃO PESSOAL                                  -->
-    <!-- ===================================================================== -->
-    <div id="bloco_intimacao_pessoal" class="bloco-peca">
-        <div class="section-title">Dados do Pedido de Intimação Pessoal</div>
-        <div class="campo">
-            <label>Vara (apenas o número, ex: 1):</label>
-            <input type="text" id="int_vara" placeholder="1" onkeyup="verificarOrdem66(this)">
-        </div>
-        <div class="campo">
-            <label>Competência / Especialidade:</label>
-            <select id="int_competencia">
-                <option value="CÍVEL">CÍVEL</option>
-                <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
-                <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
-                <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
-            </select>
-        </div>
-        <div class="campo">
-            <label>Processo nº:</label>
-            <input type="text" id="int_numero" placeholder="0000000-00.0000.0.00.0000">
-        </div>
-        <div class="campo">
-            <label>Nome Completo do(a) Assistido(a):</label>
-            <input type="text" id="int_nome_assistido" placeholder="Ex: João da Silva">
-        </div>
-        <div class="campo">
-            <label>Motivo da necessidade de contato ("não conseguimos contato com a parte para..."):</label>
-            <textarea id="int_motivo_contato" placeholder="Ex: informar o endereço atualizado da parte contrária e apresentar documentos indispensáveis ao prosseguimento do feito."></textarea>
-        </div>
-    </div>
-
-    <!-- ===================================================================== -->
-    <!-- BLOCO 6: PEDIDO DE PENHORA SISBAJUD                                   -->
-    <!-- ===================================================================== -->
-    <div id="bloco_penhora_sisbajud" class="bloco-peca">
-        <div class="section-title">Dados do Pedido de Penhora SISBAJUD</div>
-        <div class="campo">
-            <label>Vara (apenas o número, ex: 1):</label>
-            <input type="text" id="sis_vara" placeholder="1" onkeyup="verificarOrdem66(this)">
-        </div>
-        <div class="campo">
-            <label>Competência / Especialidade:</label>
-            <select id="sis_competencia">
-                <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
-                <option value="CÍVEL">CÍVEL</option>
-                <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
-                <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
-            </select>
-        </div>
-        <div class="campo">
-            <label>Processo nº:</label>
-            <input type="text" id="sis_numero" placeholder="0000000-00.0000.0.00.0000">
-        </div>
-        <div class="campo">
-            <label>Nome da Criança / Exequente:</label>
-            <input type="text" id="sis_nome_crianca" placeholder="Ex: Enzo Gabriel da Silva">
-        </div>
-        <div class="campo">
-            <label>Nome da Genitora (Representante Legal):</label>
-            <input type="text" id="sis_nome_mae" placeholder="Ex: Maria da Silva">
-        </div>
-        <div class="campo">
-            <label>Período dos Alimentos Vencidos ("abranger os valores devidos de..."):</label>
-            <input type="text" id="sis_periodo_alimentos" placeholder="Ex: janeiro a novembro de 2026">
-        </div>
-    </div>
-
-    <!-- ===================================================================== -->
-    <!-- BLOCO 7: PEDIDO DE EXPEDIÇÃO DE OFÍCIO (LOCALIZAR PARTE CONTRÁRIA)    -->
-    <!-- ===================================================================== -->
-    <div id="bloco_oficio_localizar" class="bloco-peca">
-        <div class="section-title">Dados do Pedido de Expedição de Ofício (Localizar Parte Contrária)</div>
-        <div class="campo">
-            <label>Vara (apenas o número, ex: 1):</label>
-            <input type="text" id="ofi_vara" placeholder="1" onkeyup="verificarOrdem66(this)">
-        </div>
-        <div class="campo">
-            <label>Competência / Especialidade:</label>
-            <select id="ofi_competencia">
-                <option value="CÍVEL">CÍVEL</option>
-                <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
-                <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
-                <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
-            </select>
-        </div>
-        <div class="campo">
-            <label>Processo nº:</label>
-            <input type="text" id="ofi_numero" placeholder="0000000-00.0000.0.00.0000">
-        </div>
-        <div class="campo">
-            <label>Nome Completo do(a) Assistido(a):</label>
-            <input type="text" id="ofi_nome_assistido" placeholder="Ex: João da Silva">
-        </div>
-    </div>
-
-    <!-- ===================================================================== -->
-    <!-- BLOCO 8: PETIÇÃO INICIAL (MÃE)                                        -->
-    <!-- ===================================================================== -->
-    <div id="bloco_inicial" class="bloco-peca">
-        <div class="nota-asterisco">
-- Campos marcados com asterisco serão inseridos apenas na Petição Inicial.
-        </div>
-
-        <div class="section-title">Qualificação da Parte Autora</div>
-        <div class="campo">
-            <label>Nome Completo do Autor(a):</label>
-            <input type="text" id="ini_nome_autor" placeholder="Ex: Adrielle Gonçalves dos Santos">
-        </div>
-        <div class="campo">
-            <label>Nacionalidade:</label>
-            <input type="text" id="ini_nacionalidade" value="brasileiro(a)">
-        </div>
-        <div class="campo">
-            <label>Estado Civil:</label>
-            <input type="text" id="ini_estado_civil" placeholder="Ex: casada">
-        </div>
-        <div class="campo">
-            <label>Profissão:</label>
-            <input type="text" id="ini_profissao" placeholder="Ex: desempregada">
-        </div>
-        <div class="campo">
-            <label>RG:</label>
-            <input type="text" id="ini_rg" placeholder="00.000.000-0">
-        </div>
-        <div class="campo">
-            <label>CPF:</label>
-            <input type="text" id="ini_cpf" placeholder="000.000.000-00">
-        </div>
-        <div class="campo">
-            <label>Endereço Completo:</label>
-            <input type="text" id="ini_endereco" placeholder="Ex: Rua Paranapanema, 345, torre A, AP 608, Sumarezinho, Ribeirão Preto-SP">
-        </div>
-
-        <div class="section-title">Dados da Petição Inicial *</div>
-        <div class="campo">
-            <label>Vara* (ex: 1ª):</label>
-            <input type="text" id="ini_vara" placeholder="Deixe em branco se for a distribuir" onkeyup="verificarOrdem66(this)">
-        </div>
-        <div class="campo">
-            <label>Nome Completo do Requerido*:</label>
-            <input type="text" id="ini_nome_requerido" placeholder="Ex: Ericlis Gonçalves">
-        </div>
-        <div class="campo">
-            <label>Profissão do Requerido*:</label>
-            <input type="text" id="ini_profissao_requerido" placeholder="Ex: desenvolvedor de sistemas">
-        </div>
-        <div class="campo">
-            <label>RG do Requerido*:</label>
-            <input type="text" id="ini_rg_requerido" placeholder="00.000.000-0">
-        </div>
-        <div class="campo">
-            <label>CPF do Requerido*:</label>
-            <input type="text" id="ini_cpf_requerido" placeholder="000.000.000-00">
-        </div>
-        <div class="campo">
-            <label>Endereço do Requerido*:</label>
-            <input type="text" id="ini_endereco_requerido" placeholder="Ex: R. Des. Thrasybulo Pinheiro de Albuquerque, Cidade Kemel, São Paulo - SP">
-        </div>
-        <div class="campo">
-            <label>Data do Casamento*:</label>
-            <input type="text" id="ini_data_casamento" placeholder="Ex: 13 de maio de 2023">
-        </div>
-        <div class="campo">
-            <label>Regime de Bens*:</label>
-            <input type="text" id="ini_regime_bens" placeholder="Ex: comunhão parcial de bens">
-        </div>
-        <div class="campo">
-            <label>Cartório e Registro de Casamento (Livro/Fls/Nº)*:</label>
-            <input type="text" id="ini_registro_casamento" placeholder="Ex: Cartório de Registro Civil do Itaim Paulista, Livro B-0213, Fls. 227, nº 64797">
-        </div>
-        <div class="campo">
-            <label>Nome do Filho(a)*:</label>
-            <input type="text" id="ini_nome_filho" placeholder="Ex: Enzo Gabriel Monteiro dos Santos">
-        </div>
-        <div class="campo">
-            <label>Data de Nascimento do Filho(a)*:</label>
-            <input type="text" id="ini_nascimento_filho" placeholder="Ex: 17 de abril de 2016">
-        </div>
-        <div class="campo">
-            <label>RG do Filho(a)*:</label>
-            <input type="text" id="ini_rg_filho" placeholder="00.000.000-0">
-        </div>
-        <div class="campo">
-            <label>CPF do Filho(a)*:</label>
-            <input type="text" id="ini_cpf_filho" placeholder="000.000.000-00">
-        </div>
-        <div class="campo">
-            <label>Bens a Partilhar*:</label>
-            <input type="text" id="ini_bens_partilhar" placeholder="Ex: um imóvel em Ribeirão Preto/SP, um carro e uma moto">
-        </div>
-        <div class="campo">
-            <label>Nome de Solteira a retornar*:</label>
-            <input type="text" id="ini_nome_solteira" placeholder="Ex: Genilsa Nunes De Souza">
-        </div>
-        <div class="campo">
-            <label>Valor da Causa*:</label>
-            <input type="text" id="ini_valor_causa" placeholder="12x a pensão mensal - art. 292, III do CPC">
-        </div>
-    </div>
-
-    <!-- ===================================================================== -->
-    <!-- BLOCO 9: CONTESTAÇÃO (PAI)                                            -->
-    <!-- ===================================================================== -->
-    <div id="bloco_contestacao_pai" class="bloco-peca">
-        <div class="section-title">Dados do Processo</div>
-        <div class="campo">
-            <label>Vara (ex: 1ª):</label>
-            <input type="text" id="cpai_vara" placeholder="Ex: 1ª" onkeyup="verificarOrdem66(this)">
-        </div>
-        <div class="campo">
-            <label>Número do Processo:</label>
-            <input type="text" id="cpai_numero" placeholder="0000000-00.0000.0.00.0000">
-        </div>
-        <div class="campo">
-            <label>Tipo de Ação:</label>
-            <input type="text" id="cpai_tipo_de_acao" placeholder="Ex: Ação de Guarda c/c Alimentos">
-        </div>
-        <div class="campo">
-            <label>Ofício Defensoria (Nº):</label>
-            <input type="text" id="cpai_n_oficio_defensoria" placeholder="Ex: 1234/2026">
-        </div>
-
-        <div class="section-title">Qualificação das Partes</div>
-        <div class="campo">
-            <label>Nome Completo do REQUERIDO (Seu Cliente):</label>
-            <input type="text" id="cpai_nome_reu" placeholder="Ex: João da Silva">
-        </div>
-        <div class="campo">
-            <label>Nacionalidade (Requerido):</label>
-            <input type="text" id="cpai_nacionalidade" value="brasileiro(a)">
-        </div>
-        <div class="campo">
-            <label>Estado Civil (Requerido):</label>
-            <input type="text" id="cpai_estado_civil" placeholder="Ex: divorciado">
-        </div>
-        <div class="campo">
-            <label>Profissão (Requerido):</label>
-            <input type="text" id="cpai_profissao" placeholder="Ex: autônomo">
-        </div>
-        <div class="campo">
-            <label>RG (Requerido):</label>
-            <input type="text" id="cpai_rg" placeholder="00.000.000-0">
-        </div>
-        <div class="campo">
-            <label>CPF (Requerido):</label>
-            <input type="text" id="cpai_cpf" placeholder="000.000.000-00">
-        </div>
-        <div class="campo">
-            <label>Endereço Completo (Requerido):</label>
-            <input type="text" id="cpai_endereco" placeholder="Rua, Número, Bairro, Cidade-UF, CEP">
-        </div>
-        <div class="campo">
-            <label>Nome Completo da AUTORA (Parte Contrária):</label>
-            <input type="text" id="cpai_nome_autor" placeholder="Ex: Maria das Graças">
-        </div>
-
-        <div class="section-title">Resumo dos Fatos e Filhos</div>
-        <div class="campo">
-            <label>Nome dos Filhos:</label>
-            <input type="text" id="cpai_nomes_filhos" placeholder="Ex: Enzo e Valentina Silva">
-        </div>
-        <div class="campo">
-            <label>Idade dos Filhos:</label>
-            <input type="text" id="cpai_idades_filhos" placeholder="Ex: 8 e 5 anos">
-        </div>
-        <div class="campo">
-            <label>O que a Autora pretende? (Síntese):</label>
-            <textarea id="cpai_sintese_pretensoes_autor" placeholder="Ex: a fixação de alimentos em 30% dos rendimentos líquidos..."></textarea>
-        </div>
-        
-        <div class="section-title">Situação Financeira e Emprego do Réu</div>
-        <div class="campo">
-            <label>Data de Desligamento:</label>
-            <input type="text" id="cpai_data_desligamento" placeholder="Ex: 15 de janeiro de 2026">
-        </div>
-        <div class="campo">
-            <label>Último Empregador:</label>
-            <input type="text" id="cpai_ultimo_empregador" placeholder="Ex: Construtora X">
-        </div>
-        <div class="campo">
-            <label>Cargo do Último Emprego:</label>
-            <input type="text" id="cpai_cargo_ultimo_emprego" placeholder="Ex: pedreiro">
-        </div>
-        <div class="campo">
-            <label>Motivo do Desligamento:</label>
-            <input type="text" id="cpai_motivo_desligamento" placeholder="Ex: corte de gastos da empresa">
-        </div>
-        <div class="campo">
-            <label>Último Salário:</label>
-            <input type="text" id="cpai_ultimo_salario" placeholder="Ex: R$ 2.500,00">
-        </div>
-        <div class="campo">
-            <label>Renda Atual do Requerido:</label>
-            <input type="text" id="cpai_renda_atual_requerido" placeholder="Ex: vive de bicos esporádicos recebendo cerca de R$ 800,00 mensais">
-        </div>
-
-        <div class="section-title">Teses de Defesa e Propostas</div>
-        <div class="campo">
-            <label>Impugnação às Alegações da Autora:</label>
-            <textarea id="cpai_impugnacao_alegacoes_autor" placeholder="Ex: A Autora alega sem provas que o Réu possui empresa oculta..."></textarea>
-        </div>
-        <div class="campo">
-            <label>Contribuições In Natura (O que o Réu já paga?):</label>
-            <textarea id="cpai_contribuicoes_in_natura" placeholder="Ex: compra material escolar, roupas e paga o plano de saúde"></textarea>
-        </div>
-        <div class="campo">
-            <label>Tese sobre a Guarda:</label>
-            <textarea id="cpai_tese_guarda_especifica" placeholder="Ex: a guarda compartilhada deve ser mantida pois atende o melhor interesse..."></textarea>
-        </div>
-        <div class="campo">
-            <label>Fundamento para o Estudo Social:</label>
-            <textarea id="cpai_fundamento_estudo_social" placeholder="Ex: a intensa animosidade entre as partes e as acusações recíprocas"></textarea>
-        </div>
-        <div class="campo">
-            <label>Percentual de Rendimentos Proposto (Se empregado):</label>
-            <input type="text" id="cpai_percentual_rendimentos_proposto" placeholder="Ex: 20">
-        </div>
-        <div class="campo">
-            <label>Percentual do Salário Mínimo (Se desempregado):</label>
-            <input type="text" id="cpai_percentual_salario_minimo_proposto" placeholder="Ex: 30">
-        </div>
-    </div>
-
-    <!-- ===================================================================== -->
-    <!-- ASSINATURA FIXA EM TODOS OS MODELOS                                   -->
-    <!-- ===================================================================== -->
-    <div class="section-title">Assinatura</div>
-    <div class="campo">
-        <label>Padawan autor da arte:</label>
-        <input type="text" id="nome_bad_boy" placeholder="Nome do estagiário(a)" oninput="atualizarBotao()">
-    </div>
-
-    <button type="button" id="btnGerar" onclick="gerarDocumentos()">Forjar Petições</button>
 </div>
 
 <div id="idle-toast" class="idle-toast" onclick="limparTimerCafe()">
@@ -900,7 +1471,7 @@
 <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
 
 <script>
-// --- URL DA SUA API GOOGLE SHEETS ---
+// --- URL DA SUA API GOOGLE APPS SCRIPT / PLANILHA JEDI ---
 const URL_PLANILHA_JEDI = "https://script.google.com/macros/s/AKfycbzvfsh-NOIrdvAVnTrTR7q1JurdLpnaPBjsn8NxcKy2WEWewcf11DSZDaGNz5V8-zqPpg/exec";
 
 const audioForja = new Audio('modelos/som-jedi.mp3');
@@ -946,6 +1517,28 @@ const DESCRICOES_PACOTE = {
     inicial: "📄 Documentos gerados: Petição Inicial + Procuração + Gratuidade",
     contestacao_pai: "📄 Documentos gerados: Contestação + Procuração + Gratuidade"
 };
+
+// --- ALTERNÂNCIA DE MODOS (CHAT vs MANUAL) ---
+function alternarModoVisual(modo) {
+    const btnChat = document.getElementById('btn_modo_chat');
+    const btnManual = document.getElementById('btn_modo_manual');
+    const painelChat = document.getElementById('painel_chat');
+    const painelManual = document.getElementById('painel_manual');
+
+    if (modo === 'chat') {
+        btnChat.classList.add('active');
+        btnManual.classList.remove('active');
+        painelChat.classList.add('ativo');
+        painelManual.classList.remove('ativo');
+        const inputChat = document.getElementById('chat_input');
+        if (inputChat) inputChat.focus();
+    } else {
+        btnManual.classList.add('active');
+        btnChat.classList.remove('active');
+        painelManual.classList.add('ativo');
+        painelChat.classList.remove('ativo');
+    }
+}
 
 function alternarFormulario() {
     const tipo = document.getElementById('tipo_peca').value;
@@ -1007,6 +1600,11 @@ function nomeEhPadawan() {
     return PADAWANS.some(padawan => nome.includes(padawan));
 }
 
+function obterPadawanAtual() {
+    const input = document.getElementById('nome_bad_boy');
+    return input ? input.value.trim() : "";
+}
+
 function obterVaraAtual() {
     const tipo = document.getElementById('tipo_peca').value;
     const mapaVara = {
@@ -1029,25 +1627,58 @@ function verificarOrdem66Ativa() {
     if (vara === "66" || vara === "66ª") {
         document.body.classList.add('sith-theme');
     } else if (nomeEhPadawan()) {
-        document.body.classList.remove('sith-theme');
+        const input = document.getElementById('nome_bad_boy');
+        const nome = normalizar(input ? input.value.trim() : "");
+        const ehSith = SITHS.some(sith => nome.includes(sith));
+        if (!ehSith) {
+            document.body.classList.remove('sith-theme');
+        }
     }
 }
 
 function atualizarBotao() {
     const input = document.getElementById('nome_bad_boy');
-    const botao = document.getElementById('btnGerar');
-    if (!input || !botao) return;
+    const botaoManual = document.getElementById('btnGerar');
+    const botaoChat = document.getElementById('btn_chat_enviar');
+    const badge = document.getElementById('padawan_badge');
+    if (!input) return;
 
-    const nome = normalizar(input.value.trim());
+    const valorOriginal = input.value.trim();
+    const nome = normalizar(valorOriginal);
     const ehSith = SITHS.some(sith => nome.includes(sith));
+    const ehPadawan = nomeEhPadawan();
 
-    botao.classList.toggle('sith-mode', ehSith);
+    if (botaoManual) botaoManual.classList.toggle('sith-mode', ehSith);
+    if (botaoChat) botaoChat.classList.toggle('sith-mode', ehSith);
 
-    if (nomeEhPadawan()) {
-        botao.innerText = TEXTO_BOTAO_PADRAO;
-        verificarOrdem66Ativa();
+    if (ehSith) {
+        document.body.classList.add('sith-theme');
+        if (badge) {
+            badge.className = 'padawan-badge-status sith';
+            badge.innerHTML = '🔴 Lado Sombrio (Sith Detectado)';
+        }
     } else {
-        botao.innerText = TEXTO_NAO_PADAWAN;
+        if (badge) {
+            if (valorOriginal === '') {
+                badge.className = 'padawan-badge-status vazio';
+                badge.innerHTML = '⚠️ Identifique-se para forjar';
+            } else if (ehPadawan) {
+                badge.className = 'padawan-badge-status padawan';
+                badge.innerHTML = `🟢 Padawan Autorizado: <strong>${valorOriginal}</strong>`;
+            } else {
+                badge.className = 'padawan-badge-status sith';
+                badge.innerHTML = '⛔ Nome não consta na Ordem Jedi';
+            }
+        }
+        verificarOrdem66Ativa();
+    }
+
+    if (botaoManual) {
+        if (ehPadawan) {
+            botaoManual.innerText = TEXTO_BOTAO_PADRAO;
+        } else {
+            botaoManual.innerText = TEXTO_NAO_PADAWAN;
+        }
     }
 }
 
@@ -1059,7 +1690,12 @@ function verificarOrdem66(inputEl) {
             alert("⚠️ ALERTA DO SENADO GALÁCTICO ⚠️\n\nExecutando Ordem 66...\n\nBrincadeira, padawan! Pode ir voltando ao trabalho.");
         }, 500);
     } else if (nomeEhPadawan()) {
-        document.body.classList.remove('sith-theme');
+        const input = document.getElementById('nome_bad_boy');
+        const nome = normalizar(input ? input.value.trim() : "");
+        const ehSith = SITHS.some(sith => nome.includes(sith));
+        if (!ehSith) {
+            document.body.classList.remove('sith-theme');
+        }
     }
 }
 
@@ -1091,29 +1727,436 @@ function inicializarEasterEggCafe() {
     });
 }
 
-async function gerarDocumentos() {
-    const btn = document.getElementById('btnGerar');
+// =====================================================================
+// LÓGICA DO CHAT COM O MESTRE JEDI
+// =====================================================================
+let historicoChat = [];
+let ultimoPacoteForjado = null;
 
-    if (!nomeEhPadawan()) {
-        document.body.classList.add('sith-theme');
-        alert("🚧 PROGRAMA EM TESTE 🚧\n\nEste é um programa em teste e está em fase de implementação. Por enquanto, a geração de documentos não está liberada para este usuário.");
-        return;
+const MENSAGEM_INICIAL_JEDI = `Saudações, jovem Padawan! Sou o Mestre Jedi da Forja de Documentos.
+
+Como posso orientar seu trabalho hoje? Você pode:
+1. **Colar anotações brutas** do seu atendimento;
+2. **Dizer qual peça deseja forjar** (ex: Habilitação, Inicial de Alimentos, Contestação do Pai, Desbloqueio etc.);
+3. **Tirar dúvidas jurídicas** com base no nosso livro de Prática Cível da Defensoria Pública (\`livro.pdf\`).
+
+Cole os fatos ou clique em um dos atalhos acima para começarmos! Que a Força esteja com você.`;
+
+function ajustarAlturaTextarea(textarea) {
+    textarea.style.height = 'auto';
+    textarea.style.height = Math.min(textarea.scrollHeight, 160) + 'px';
+}
+
+function tratarTeclaChat(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        enviarMensagemChat();
     }
-    
-    audioForja.currentTime = 0;
-    audioForja.play().catch(erro => console.log("Erro de Áudio:", erro));
+}
 
-    btn.disabled = true;
-    btn.innerText = "Acessando os Arquivos Jedi, aguarde...";
+function aplicarPromptChip(tipo) {
+    const input = document.getElementById('chat_input');
+    if (!input) return;
 
-    const getVal = id => {
-        const el = document.getElementById(id);
-        return el ? el.value : "";
+    const templates = {
+        habilitacao: "Preciso forjar uma Habilitação com Procuração e Gratuidade de Justiça. Aqui estão os dados do processo e do assistido:",
+        inicial: "Preciso forjar uma Petição Inicial (Alimentos, Guarda e Convivência). Seguem os dados do atendimento e as particularidades da família:",
+        contestacao_pai: "Preciso apresentar Contestação em favor do genitor (pai) que está desempregado/com renda reduzida. Seguem os fatos do caso:",
+        desbloqueio: "Houve bloqueio SISBAJUD na conta do assistido sobre verba impenhorável (aposentadoria/salário/poupança < 40 SM). Seguem os detalhes para o pedido de desbloqueio:",
+        penhora: "A parte devedora está com alimentos vencidos. Preciso requerer a penhora de valores via SISBAJUD. Dados:",
+        edital: "Foram esgotadas as tentativas de localização da parte contrária. Preciso requerer a Citação por Edital:"
     };
 
-    const tipo = document.getElementById('tipo_peca').value;
-    const padawan = getVal('nome_bad_boy').toUpperCase();
+    input.value = templates[tipo] || "";
+    ajustarAlturaTextarea(input);
+    input.focus();
+}
 
+function formatarTextoMarkdown(texto) {
+    if (!texto) return "";
+    let html = texto
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+
+    // Negrito
+    html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    // Itálico
+    html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+    // Código em linha / destaque
+    html = html.replace(/`([^`]+)`/g, '<code style="background:rgba(56,189,248,0.15);padding:2px 6px;border-radius:4px;color:var(--jedi-cyan);font-family:monospace;">$1</code>');
+    // Linhas de lista com bullet
+    html = html.replace(/^\s*[-*]\s+(.*)$/gm, '<li>$1</li>');
+    // Encapsular li em ul
+    html = html.replace(/(<li>[\s\S]*?<\/li>)/g, '<ul>$1</ul>');
+    html = html.replace(/<\/ul>\s*<ul>/g, '');
+    // Quebras de linha
+    html = html.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+
+    return html;
+}
+
+function adicionarMensagemUI(role, texto, extraHtml = "") {
+    const container = document.getElementById('chat_mensagens');
+    if (!container) return;
+
+    const divMsg = document.createElement('div');
+    divMsg.className = `chat-msg ${role}`;
+
+    const avatarIcon = role === 'jedi' ? '🧙‍♂️' : (role === 'user' ? '⚔️' : '⚡');
+    
+    divMsg.innerHTML = `
+        <div class="chat-avatar">${avatarIcon}</div>
+        <div class="chat-bubble">
+            ${formatarTextoMarkdown(texto)}
+            ${extraHtml}
+        </div>
+    `;
+
+    container.appendChild(divMsg);
+    container.scrollTop = container.scrollHeight;
+}
+
+function setDigitando(ativo) {
+    const el = document.getElementById('chat_digitando');
+    const container = document.getElementById('chat_mensagens');
+    if (el) {
+        el.classList.toggle('ativo', ativo);
+        if (ativo && container) {
+            container.scrollTop = container.scrollHeight;
+        }
+    }
+}
+
+function reiniciarChat() {
+    historicoChat = [];
+    const container = document.getElementById('chat_mensagens');
+    if (container) {
+        container.innerHTML = '';
+    }
+    adicionarMensagemUI('jedi', MENSAGEM_INICIAL_JEDI);
+    const input = document.getElementById('chat_input');
+    if (input) {
+        input.value = '';
+        ajustarAlturaTextarea(input);
+        input.focus();
+    }
+}
+
+// Normalizador de modelId retornado pelo Google Apps Script
+function normalizarModelId(id) {
+    if (!id) return 'habilitacao';
+    const s = id.toLowerCase().replace('.docx', '').replace(/\s+/g, '_').trim();
+    if (s.includes('habilitacao') || s.includes('hab')) return 'habilitacao';
+    if (s.includes('contestacao_pai') || s.includes('pai')) return 'contestacao_pai';
+    if (s.includes('negativa') || s.includes('contestacao')) return 'negativa_geral';
+    if (s.includes('desbloqueio')) return 'desbloqueio';
+    if (s.includes('edital') || s.includes('citacao')) return 'citacao_edital';
+    if (s.includes('intimacao')) return 'intimacao_pessoal';
+    if (s.includes('sisbajud') || s.includes('penhora')) return 'penhora_sisbajud';
+    if (s.includes('localizar') || s.includes('oficio')) return 'oficio_localizar';
+    if (s.includes('inicial')) return 'inicial';
+    return s;
+}
+
+// Preenche o formulário manual automaticamente com os campos extraídos pela IA
+function preencherFormularioManual(modelId, fields) {
+    if (!fields) return;
+
+    const setV = (id, val) => {
+        const el = document.getElementById(id);
+        if (el && val !== undefined && val !== null) {
+            el.value = val;
+        }
+    };
+
+    const tipoSelect = document.getElementById('tipo_peca');
+    if (tipoSelect) {
+        tipoSelect.value = modelId;
+        alternarFormulario();
+    }
+
+    if (modelId === 'habilitacao') {
+        setV('hab_vara', fields.vara);
+        setV('hab_competencia', fields.competencia);
+        setV('hab_numero', fields.numero);
+        setV('hab_nome_autor', fields.nome_autor || fields.nome_assistido);
+        setV('hab_nacionalidade', fields.nacionalidade);
+        setV('hab_estado_civil', fields.estado_civil);
+        setV('hab_profissao', fields.profissao);
+        setV('hab_rg', fields.rg);
+        setV('hab_cpf', fields.cpf);
+        setV('hab_endereco', fields.endereco);
+        setV('hab_valor_acordo', fields.valor_acordo);
+
+    } else if (modelId === 'negativa_geral') {
+        setV('neg_vara', fields.vara);
+        setV('neg_competencia', fields.competencia);
+        setV('neg_numero', fields.numero);
+        setV('neg_nome_autor', fields.nome_autor || fields.nome_assistido);
+        setV('neg_cpf', fields.cpf);
+
+    } else if (modelId === 'desbloqueio') {
+        setV('desb_vara', fields.vara);
+        setV('desb_competencia', fields.competencia);
+        setV('desb_numero', fields.numero);
+        setV('desb_nome_assistido', fields.nome_assistido || fields.nome_autor);
+        setV('desb_titulo_da_acao', fields.titulo_da_acao);
+        setV('desb_nome_parte_contraria', fields["nome_parte_contrária"] || fields.nome_parte_contraria);
+        setV('desb_natureza_credito_executado', fields.natureza_credito_executado);
+        setV('desb_data_bloqueio', fields.data_bloqueio);
+        setV('desb_data_intimacao_bloqueio', fields.data_intimacao_bloqueio);
+        setV('desb_banco', fields.banco);
+        setV('desb_tipo_conta', fields.tipo_conta);
+        setV('desb_valor_total_bloqueado', fields.valor_total_bloqueado);
+        setV('desb_proporcao_verba_bloqueada', fields.proporcao_verba_bloqueada);
+        setV('desb_natureza_verba', fields.natureza_verba);
+        setV('desb_fonte_pagadora', fields.fonte_pagadora);
+        setV('desb_data_credito', fields.data_credito);
+        setV('desb_valor_credito', fields.valor_credito);
+        setV('desb_descricao_credito_extrato', fields.descricao_credito_extrato);
+        setV('desb_valor_40_salarios_minimos', fields.valor_40_salarios_minimos);
+        setV('desb_doc_extrato', fields.doc_extrato);
+        setV('desb_doc_comprovantes', fields.doc_comprovantes);
+        setV('desb_situacao_familiar', fields.situacao_familiar);
+        setV('desb_despesas_essenciais', fields.despesas_essenciais);
+
+    } else if (modelId === 'citacao_edital') {
+        setV('ced_vara', fields.vara);
+        setV('ced_competencia', fields.competencia);
+        setV('ced_numero', fields.numero);
+        setV('ced_nome_assistido', fields.nome_assistido || fields.nome_autor);
+        setV('ced_decisao_despacho', fields["decisão_despacho_ato_ordinatorio_fls"] || fields.decisao_despacho);
+
+    } else if (modelId === 'intimacao_pessoal') {
+        setV('int_vara', fields.vara);
+        setV('int_competencia', fields.competencia);
+        setV('int_numero', fields.numero);
+        setV('int_nome_assistido', fields.nome_assistido || fields.nome_autor);
+        setV('int_motivo_contato', fields.motivo_da_necessidade_de_contato || fields.motivo_contato);
+
+    } else if (modelId === 'penhora_sisbajud') {
+        setV('sis_vara', fields.vara);
+        setV('sis_competencia', fields.competencia);
+        setV('sis_numero', fields.numero);
+        setV('sis_nome_crianca', fields["nome_criança"] || fields.nome_crianca);
+        setV('sis_nome_mae', fields.nome_mae || fields.nome_assistido);
+        setV('sis_periodo_alimentos', fields["período_dos_alimentos_vencidos"] || fields.periodo_alimentos);
+
+    } else if (modelId === 'oficio_localizar') {
+        setV('ofi_vara', fields.vara);
+        setV('ofi_competencia', fields.competencia);
+        setV('ofi_numero', fields.numero);
+        setV('ofi_nome_assistido', fields.nome_assistido || fields.nome_autor);
+
+    } else if (modelId === 'inicial') {
+        setV('ini_nome_autor', fields.nome_autor || fields.nome_assistido);
+        setV('ini_nacionalidade', fields.nacionalidade);
+        setV('ini_estado_civil', fields.estado_civil);
+        setV('ini_profissao', fields.profissao);
+        setV('ini_rg', fields.rg);
+        setV('ini_cpf', fields.cpf);
+        setV('ini_endereco', fields.endereco);
+        setV('ini_vara', fields.vara);
+        setV('ini_nome_requerido', fields.nome_requerido);
+        setV('ini_profissao_requerido', fields.profissao_requerido);
+        setV('ini_rg_requerido', fields.rg_requerido);
+        setV('ini_cpf_requerido', fields.cpf_requerido);
+        setV('ini_endereco_requerido', fields.endereco_requerido);
+        setV('ini_data_casamento', fields.data_casamento);
+        setV('ini_regime_bens', fields.regime_bens);
+        setV('ini_registro_casamento', fields.registro_casamento);
+        setV('ini_nome_filho', fields.nome_filho);
+        setV('ini_nascimento_filho', fields.nascimento_filho);
+        setV('ini_rg_filho', fields.rg_filho);
+        setV('ini_cpf_filho', fields.cpf_filho);
+        setV('ini_bens_partilhar', fields.bens_partilhar);
+        setV('ini_nome_solteira', fields.nome_solteira);
+        setV('ini_valor_causa', fields.valor_causa);
+
+    } else if (modelId === 'contestacao_pai') {
+        setV('cpai_vara', fields.vara);
+        setV('cpai_numero', fields.numero);
+        setV('cpai_tipo_de_acao', fields.tipo_de_acao);
+        setV('cpai_n_oficio_defensoria', fields.n_oficio_defensoria);
+        setV('cpai_nome_reu', fields.nome_reu || fields.nome_assistido);
+        setV('cpai_nacionalidade', fields.nacionalidade);
+        setV('cpai_estado_civil', fields.estado_civil);
+        setV('cpai_profissao', fields.profissao);
+        setV('cpai_rg', fields.rg);
+        setV('cpai_cpf', fields.cpf);
+        setV('cpai_endereco', fields.endereco);
+        setV('cpai_nome_autor', fields.nome_autor);
+        setV('cpai_nomes_filhos', fields.nomes_filhos);
+        setV('cpai_idades_filhos', fields.idades_filhos);
+        setV('cpai_sintese_pretensoes_autor', fields.sintese_pretensoes_autor);
+        setV('cpai_data_desligamento', fields.data_desligamento);
+        setV('cpai_ultimo_empregador', fields.ultimo_empregador);
+        setV('cpai_cargo_ultimo_emprego', fields.cargo_ultimo_emprego);
+        setV('cpai_motivo_desligamento', fields.motivo_desligamento);
+        setV('cpai_ultimo_salario', fields.ultimo_salario);
+        setV('cpai_renda_atual_requerido', fields.renda_atual_requerido);
+        setV('cpai_impugnacao_alegacoes_autor', fields.impugnacao_alegacoes_autor);
+        setV('cpai_contribuicoes_in_natura', fields.contribuicoes_in_natura);
+        setV('cpai_tese_guarda_especifica', fields.tese_guarda_especifica);
+        setV('cpai_fundamento_estudo_social', fields.fundamento_estudo_social);
+        setV('cpai_percentual_rendimentos_proposto', fields.percentual_rendimentos_proposto);
+        setV('cpai_percentual_salario_minimo_proposto', fields.percentual_salario_minimo_proposto);
+    }
+}
+
+// Envia mensagem para o Google Apps Script respeitando a regra crítica de CORS
+async function enviarMensagemChat() {
+    const input = document.getElementById('chat_input');
+    const btnEnviar = document.getElementById('btn_chat_enviar');
+    if (!input || !btnEnviar) return;
+
+    const textoUsuario = input.value.trim();
+    if (!textoUsuario) return;
+
+    // Easter egg Ordem 66 no chat
+    if (textoUsuario.includes("66") || textoUsuario.toLowerCase().includes("ordem 66")) {
+        document.body.classList.add('sith-theme');
+    }
+
+    // Renderiza a mensagem do usuário no chat
+    adicionarMensagemUI('user', textoUsuario);
+    input.value = '';
+    ajustarAlturaTextarea(input);
+
+    // Registra no histórico
+    historicoChat.push({
+        role: "user",
+        content: textoUsuario
+    });
+
+    btnEnviar.disabled = true;
+    setDigitando(true);
+
+    try {
+        // REGRA CRÍTICA DE CORS: NÃO adicionar headers: { "Content-Type": "application/json" }
+        // Sem esse header, a requisição é simples (text/plain) e o Google Apps Script não bloqueia preflight OPTIONS!
+        const resposta = await fetch(URL_PLANILHA_JEDI, {
+            method: "POST",
+            body: JSON.stringify({
+                action: "chat",
+                messages: historicoChat
+            })
+        });
+
+        if (!resposta.ok) {
+            throw new Error(`O Holocron respondeu com código de erro: ${resposta.status}`);
+        }
+
+        const textoResposta = await resposta.text();
+        let dadosJson;
+        try {
+            dadosJson = JSON.parse(textoResposta);
+        } catch (e) {
+            dadosJson = { reply: textoResposta, ready: false };
+        }
+
+        const respostaMestre = dadosJson.reply || dadosJson.message || dadosJson.text || dadosJson.resposta || "A Força está em silêncio. Tente novamente.";
+        
+        historicoChat.push({
+            role: "assistant",
+            content: respostaMestre
+        });
+
+        setDigitando(false);
+
+        // Se a IA reuniu todos os campos e sinalizou pronto
+        if (dadosJson.ready === true || dadosJson.ready === "true") {
+            const rawModelId = dadosJson.modelId || dadosJson.model || dadosJson.tipo || 'habilitacao';
+            const modelId = normalizarModelId(rawModelId);
+            const fields = dadosJson.fields || dadosJson.dados || {};
+
+            // Atualiza campos do formulário manual
+            preencherFormularioManual(modelId, fields);
+
+            // Obtém nome do padawan
+            const padawan = (obterPadawanAtual() || fields.nome_bad_boy || "Padawan").toUpperCase();
+
+            // Validação de Padawan
+            if (!nomeEhPadawan()) {
+                document.body.classList.add('sith-theme');
+                adicionarMensagemUI('jedi', respostaMestre);
+                alert("🚧 PROGRAMA EM TESTE 🚧\n\nEste é um programa em teste e está em fase de implementação. Por enquanto, a geração de documentos não está liberada para este usuário.");
+                btnEnviar.disabled = false;
+                atualizarBotao();
+                return;
+            }
+
+            // Executa a geração do(s) documento(s) com PizZip e Docxtemplater
+            const resultadoForja = await executarGeracaoDocumentosPacote(modelId, fields, padawan);
+
+            if (resultadoForja.sucesso) {
+                ultimoPacoteForjado = {
+                    modelId: modelId,
+                    fields: fields,
+                    padawan: padawan
+                };
+
+                const cardSucesso = `
+                    <div class="forja-sucesso-card">
+                        <h4>🎉 Petições Forjadas com Sucesso!</h4>
+                        <p>O Mestre Jedi reuniu todos os dados e os arquivos foram baixados automaticamente.</p>
+                        <div class="forja-pecas-lista">
+                            ${resultadoForja.arquivos.map(a => `<span class="forja-peca-tag">📄 ${a.id}</span>`).join('')}
+                        </div>
+                        <button type="button" class="btn-redownload" onclick="baixarNovamente()">
+                            📥 Baixar Novamente
+                        </button>
+                    </div>
+                `;
+
+                adicionarMensagemUI('jedi', respostaMestre, cardSucesso);
+
+                // Envia log para o Google Apps Script (action: "log") sem preflight CORS
+                fetch(URL_PLANILHA_JEDI, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        action: "log",
+                        padawan: padawan,
+                        processo: resultadoForja.processo,
+                        acao: resultadoForja.acao,
+                        pecas: resultadoForja.arquivos.map(a => a.id).join(", ")
+                    })
+                }).catch(err => console.log("Erro ao salvar log no Holocron:", err));
+
+            } else {
+                adicionarMensagemUI('jedi', respostaMestre);
+                adicionarMensagemUI('system', `⚠️ Ocorreu uma perturbação na Força ao forjar os documentos: ${resultadoForja.erro}`);
+            }
+
+        } else {
+            adicionarMensagemUI('jedi', respostaMestre);
+        }
+
+    } catch (erro) {
+        console.error("Erro na comunicação com o Mestre Jedi:", erro);
+        setDigitando(false);
+        adicionarMensagemUI('jedi', "Houve um distúrbio na comunicação com os Arquivos Jedi (Google Apps Script). Verifique sua conexão e tente novamente.");
+    } finally {
+        btnEnviar.disabled = false;
+        input.focus();
+    }
+}
+
+async function baixarNovamente() {
+    if (ultimoPacoteForjado) {
+        await executarGeracaoDocumentosPacote(
+            ultimoPacoteForjado.modelId,
+            ultimoPacoteForjado.fields,
+            ultimoPacoteForjado.padawan
+        );
+    }
+}
+
+// =====================================================================
+// MOTOR DE GERAÇÃO CLIENT-SIDE (PizZip + Docxtemplater + FileSaver)
+// =====================================================================
+async function executarGeracaoDocumentosPacote(tipo, fields, padawan) {
     let arquivosSelecionados = [];
     let dadosPrincipal = {};
     let dadosCliente = {};
@@ -1121,19 +2164,27 @@ async function gerarDocumentos() {
     let processoPlanilha = "Não informado";
     let acaoPlanilha = "";
 
+    const DocxConstructor = window.docxtemplater || window.Docxtemplater;
+    if (typeof PizZip === 'undefined' || typeof DocxConstructor === 'undefined') {
+        return { sucesso: false, erro: "Bibliotecas PizZip ou Docxtemplater não carregadas." };
+    }
+
+    audioForja.currentTime = 0;
+    audioForja.play().catch(erro => console.log("Erro de Áudio:", erro));
+
     if (tipo === 'habilitacao') {
         dadosPrincipal = {
-            vara: getVal('hab_vara'),
-            competencia: getVal('hab_competencia'),
-            numero: getVal('hab_numero'),
-            nome_autor: getVal('hab_nome_autor').toUpperCase(),
-            nacionalidade: getVal('hab_nacionalidade'),
-            estado_civil: getVal('hab_estado_civil'),
-            profissao: getVal('hab_profissao'),
-            rg: getVal('hab_rg'),
-            cpf: getVal('hab_cpf'),
-            endereco: getVal('hab_endereco'),
-            valor_acordo: getVal('hab_valor_acordo'),
+            vara: fields.vara || "1ª",
+            competencia: fields.competencia || "CÍVEL",
+            numero: fields.numero || "",
+            nome_autor: (fields.nome_autor || fields.nome_assistido || "PARTE").toUpperCase(),
+            nacionalidade: fields.nacionalidade || "brasileiro(a)",
+            estado_civil: fields.estado_civil || "solteiro(a)",
+            profissao: fields.profissao || "autônomo(a)",
+            rg: fields.rg || "",
+            cpf: fields.cpf || "",
+            endereco: fields.endereco || "",
+            valor_acordo: fields.valor_acordo || "",
             nome_bad_boy: padawan
         };
         dadosCliente = dadosPrincipal;
@@ -1149,11 +2200,12 @@ async function gerarDocumentos() {
 
     } else if (tipo === 'negativa_geral') {
         dadosPrincipal = {
-            vara: getVal('neg_vara'),
-            competencia: getVal('neg_competencia'),
-            numero: getVal('neg_numero'),
-            nome_autor: getVal('neg_nome_autor').toUpperCase(),
-            cpf: getVal('neg_cpf'),
+            vara: fields.vara || "1ª",
+            competencia: fields.competencia || "CÍVEL",
+            numero: fields.numero || "",
+            nome_autor: (fields.nome_autor || fields.nome_assistido || "PARTE").toUpperCase(),
+            nacionalidade: fields.nacionalidade || "brasileiro(a)",
+            cpf: fields.cpf || "",
             nome_bad_boy: padawan
         };
         nomeBase = dadosPrincipal.nome_autor ? dadosPrincipal.nome_autor.split(" ")[0] : "Cliente";
@@ -1166,29 +2218,29 @@ async function gerarDocumentos() {
 
     } else if (tipo === 'desbloqueio') {
         dadosPrincipal = {
-            vara: getVal('desb_vara'),
-            competencia: getVal('desb_competencia'),
-            numero: getVal('desb_numero'),
-            nome_assistido: getVal('desb_nome_assistido').toUpperCase(),
-            titulo_da_acao: getVal('desb_titulo_da_acao'),
-            "nome_parte_contrária": getVal('desb_nome_parte_contraria').toUpperCase(),
-            natureza_credito_executado: getVal('desb_natureza_credito_executado'),
-            data_bloqueio: getVal('desb_data_bloqueio'),
-            data_intimacao_bloqueio: getVal('desb_data_intimacao_bloqueio'),
-            banco: getVal('desb_banco'),
-            tipo_conta: getVal('desb_tipo_conta'),
-            valor_total_bloqueado: getVal('desb_valor_total_bloqueado'),
-            proporcao_verba_bloqueada: getVal('desb_proporcao_verba_bloqueada'),
-            natureza_verba: getVal('desb_natureza_verba'),
-            fonte_pagadora: getVal('desb_fonte_pagadora'),
-            data_credito: getVal('desb_data_credito'),
-            valor_credito: getVal('desb_valor_credito'),
-            descricao_credito_extrato: getVal('desb_descricao_credito_extrato'),
-            valor_40_salarios_minimos: getVal('desb_valor_40_salarios_minimos'),
-            doc_extrato: getVal('desb_doc_extrato'),
-            doc_comprovantes: getVal('desb_doc_comprovantes'),
-            situacao_familiar: getVal('desb_situacao_familiar'),
-            despesas_essenciais: getVal('desb_despesas_essenciais'),
+            vara: fields.vara || "1",
+            competencia: fields.competencia || "CÍVEL",
+            numero: fields.numero || "",
+            nome_assistido: (fields.nome_assistido || fields.nome_autor || "PARTE").toUpperCase(),
+            titulo_da_acao: fields.titulo_da_acao || "Ação de Execução de Título Extrajudicial",
+            "nome_parte_contrária": (fields["nome_parte_contrária"] || fields.nome_parte_contraria || "").toUpperCase(),
+            natureza_credito_executado: fields.natureza_credito_executado || "dívida de natureza cível e não alimentar",
+            data_bloqueio: fields.data_bloqueio || "",
+            data_intimacao_bloqueio: fields.data_intimacao_bloqueio || "",
+            banco: fields.banco || "",
+            tipo_conta: fields.tipo_conta || "conta-corrente",
+            valor_total_bloqueado: fields.valor_total_bloqueado || "",
+            proporcao_verba_bloqueada: fields.proporcao_verba_bloqueada || "a totalidade",
+            natureza_verba: fields.natureza_verba || "proventos de aposentadoria/salário",
+            fonte_pagadora: fields.fonte_pagadora || "",
+            data_credito: fields.data_credito || "",
+            valor_credito: fields.valor_credito || "",
+            descricao_credito_extrato: fields.descricao_credito_extrato || "",
+            valor_40_salarios_minimos: fields.valor_40_salarios_minimos || "R$ 64.840,00",
+            doc_extrato: fields.doc_extrato || "extrato anexo",
+            doc_comprovantes: fields.doc_comprovantes || "comprovantes anexos",
+            situacao_familiar: fields.situacao_familiar || "",
+            despesas_essenciais: fields.despesas_essenciais || "alimentação, moradia e saúde",
             nome_bad_boy: padawan
         };
         nomeBase = dadosPrincipal.nome_assistido ? dadosPrincipal.nome_assistido.split(" ")[0] : "Cliente";
@@ -1201,11 +2253,11 @@ async function gerarDocumentos() {
 
     } else if (tipo === 'citacao_edital') {
         dadosPrincipal = {
-            vara: getVal('ced_vara'),
-            competencia: getVal('ced_competencia'),
-            numero: getVal('ced_numero'),
-            nome_assistido: getVal('ced_nome_assistido').toUpperCase(),
-            "decisão_despacho_ato_ordinatorio_fls": getVal('ced_decisao_despacho'),
+            vara: fields.vara || "1",
+            competencia: fields.competencia || "CÍVEL",
+            numero: fields.numero || "",
+            nome_assistido: (fields.nome_assistido || fields.nome_autor || "PARTE").toUpperCase(),
+            "decisão_despacho_ato_ordinatorio_fls": fields["decisão_despacho_ato_ordinatorio_fls"] || fields.decisao_despacho || "",
             nome_bad_boy: padawan
         };
         nomeBase = dadosPrincipal.nome_assistido ? dadosPrincipal.nome_assistido.split(" ")[0] : "Cliente";
@@ -1218,11 +2270,11 @@ async function gerarDocumentos() {
 
     } else if (tipo === 'intimacao_pessoal') {
         dadosPrincipal = {
-            vara: getVal('int_vara'),
-            competencia: getVal('int_competencia'),
-            numero: getVal('int_numero'),
-            nome_assistido: getVal('int_nome_assistido').toUpperCase(),
-            motivo_da_necessidade_de_contato: getVal('int_motivo_contato'),
+            vara: fields.vara || "1",
+            competencia: fields.competencia || "CÍVEL",
+            numero: fields.numero || "",
+            nome_assistido: (fields.nome_assistido || fields.nome_autor || "PARTE").toUpperCase(),
+            motivo_da_necessidade_de_contato: fields.motivo_da_necessidade_de_contato || fields.motivo_contato || "",
             nome_bad_boy: padawan
         };
         nomeBase = dadosPrincipal.nome_assistido ? dadosPrincipal.nome_assistido.split(" ")[0] : "Cliente";
@@ -1235,12 +2287,13 @@ async function gerarDocumentos() {
 
     } else if (tipo === 'penhora_sisbajud') {
         dadosPrincipal = {
-            vara: getVal('sis_vara'),
-            competencia: getVal('sis_competencia'),
-            numero: getVal('sis_numero'),
-            "nome_criança": getVal('sis_nome_crianca').toUpperCase(),
-            nome_mae: getVal('sis_nome_mae').toUpperCase(),
-            "período_dos_alimentos_vencidos": getVal('sis_periodo_alimentos'),
+            vara: fields.vara || "1",
+            competencia: fields.competencia || "DE FAMÍLIA E SUCESSÕES",
+            numero: fields.numero || "",
+            "nome_criança": (fields["nome_criança"] || fields.nome_crianca || "Menor").toUpperCase(),
+            nome_mae: (fields.nome_mae || fields.nome_assistido || "Genitora").toUpperCase(),
+            qualificacao_representante: fields.qualificacao_representante || ("por sua genitora " + (fields.nome_mae || fields.nome_assistido || "Genitora")),
+            "período_dos_alimentos_vencidos": fields["período_dos_alimentos_vencidos"] || fields.periodo_alimentos || "",
             nome_bad_boy: padawan
         };
         nomeBase = dadosPrincipal["nome_criança"]
@@ -1255,10 +2308,10 @@ async function gerarDocumentos() {
 
     } else if (tipo === 'oficio_localizar') {
         dadosPrincipal = {
-            vara: getVal('ofi_vara'),
-            competencia: getVal('ofi_competencia'),
-            numero: getVal('ofi_numero'),
-            nome_assistido: getVal('ofi_nome_assistido').toUpperCase(),
+            vara: fields.vara || "1",
+            competencia: fields.competencia || "CÍVEL",
+            numero: fields.numero || "",
+            nome_assistido: (fields.nome_assistido || fields.nome_autor || "PARTE").toUpperCase(),
             nome_bad_boy: padawan
         };
         nomeBase = dadosPrincipal.nome_assistido ? dadosPrincipal.nome_assistido.split(" ")[0] : "Cliente";
@@ -1271,29 +2324,30 @@ async function gerarDocumentos() {
 
     } else if (tipo === 'inicial') {
         dadosPrincipal = {
-            nome_autor: getVal('ini_nome_autor').toUpperCase(),
-            nacionalidade: getVal('ini_nacionalidade'),
-            estado_civil: getVal('ini_estado_civil'),
-            profissao: getVal('ini_profissao'),
-            rg: getVal('ini_rg'),
-            cpf: getVal('ini_cpf'),
-            endereco: getVal('ini_endereco'),
-            vara: getVal('ini_vara'),
-            nome_requerido: getVal('ini_nome_requerido').toUpperCase(),
-            profissao_requerido: getVal('ini_profissao_requerido'),
-            rg_requerido: getVal('ini_rg_requerido'),
-            cpf_requerido: getVal('ini_cpf_requerido'),
-            endereco_requerido: getVal('ini_endereco_requerido'),
-            data_casamento: getVal('ini_data_casamento'),
-            regime_bens: getVal('ini_regime_bens'),
-            registro_casamento: getVal('ini_registro_casamento'),
-            nome_filho: getVal('ini_nome_filho'),
-            nascimento_filho: getVal('ini_nascimento_filho'),
-            rg_filho: getVal('ini_rg_filho'),
-            cpf_filho: getVal('ini_cpf_filho'),
-            bens_partilhar: getVal('ini_bens_partilhar'),
-            nome_solteira: getVal('ini_nome_solteira'),
-            valor_causa: getVal('ini_valor_causa'),
+            titulo_acao: fields.titulo_acao || "AÇÃO DE FIXAÇÃO DE ALIMENTOS, GUARDA, REGIME DE CONVIVÊNCIA COM PEDIDO DE TUTELA ANTECIPADA",
+            nome_autor: (fields.nome_autor || fields.nome_assistido || "AUTORA").toUpperCase(),
+            nacionalidade: fields.nacionalidade || "brasileiro(a)",
+            estado_civil: fields.estado_civil || "casada",
+            profissao: fields.profissao || "do lar",
+            rg: fields.rg || "",
+            cpf: fields.cpf || "",
+            endereco: fields.endereco || "",
+            vara: fields.vara || "",
+            nome_requerido: (fields.nome_requerido || "").toUpperCase(),
+            profissao_requerido: fields.profissao_requerido || "",
+            rg_requerido: fields.rg_requerido || "",
+            cpf_requerido: fields.cpf_requerido || "",
+            endereco_requerido: fields.endereco_requerido || "",
+            data_casamento: fields.data_casamento || "",
+            regime_bens: fields.regime_bens || "comunhão parcial de bens",
+            registro_casamento: fields.registro_casamento || "",
+            nome_filho: fields.nome_filho || "",
+            nascimento_filho: fields.nascimento_filho || "",
+            rg_filho: fields.rg_filho || "",
+            cpf_filho: fields.cpf_filho || "",
+            bens_partilhar: fields.bens_partilhar || "inexistem bens a partilhar",
+            nome_solteira: fields.nome_solteira || "",
+            valor_causa: fields.valor_causa || "12x a pensão mensal - art. 292, III do CPC",
             nome_bad_boy: padawan
         };
         dadosCliente = dadosPrincipal;
@@ -1309,33 +2363,41 @@ async function gerarDocumentos() {
 
     } else if (tipo === 'contestacao_pai') {
         dadosPrincipal = {
-            vara: getVal('cpai_vara'),
-            numero: getVal('cpai_numero'),
-            nome_reu: getVal('cpai_nome_reu').toUpperCase(),
-            nacionalidade: getVal('cpai_nacionalidade'),
-            estado_civil: getVal('cpai_estado_civil'),
-            profissao: getVal('cpai_profissao'),
-            rg: getVal('cpai_rg'),
-            cpf: getVal('cpai_cpf'),
-            endereco: getVal('cpai_endereco'),
-            tipo_de_acao: getVal('cpai_tipo_de_acao'),
-            nome_autor: getVal('cpai_nome_autor').toUpperCase(),
-            n_oficio_defensoria: getVal('cpai_n_oficio_defensoria'),
-            nomes_filhos: getVal('cpai_nomes_filhos'),
-            idades_filhos: getVal('cpai_idades_filhos'),
-            sintese_pretensoes_autor: getVal('cpai_sintese_pretensoes_autor'),
-            data_desligamento: getVal('cpai_data_desligamento'),
-            ultimo_empregador: getVal('cpai_ultimo_empregador'),
-            cargo_ultimo_emprego: getVal('cpai_cargo_ultimo_emprego'),
-            motivo_desligamento: getVal('cpai_motivo_desligamento'),
-            ultimo_salario: getVal('cpai_ultimo_salario'),
-            renda_atual_requerido: getVal('cpai_renda_atual_requerido'),
-            impugnacao_alegacoes_autor: getVal('cpai_impugnacao_alegacoes_autor'),
-            contribuicoes_in_natura: getVal('cpai_contribuicoes_in_natura'),
-            tese_guarda_especifica: getVal('cpai_tese_guarda_especifica'),
-            fundamento_estudo_social: getVal('cpai_fundamento_estudo_social'),
-            percentual_rendimentos_proposto: getVal('cpai_percentual_rendimentos_proposto'),
-            percentual_salario_minimo_proposto: getVal('cpai_percentual_salario_minimo_proposto'),
+            polo_assistido: fields.polo_assistido || "O Requerido, genitor",
+            vara: fields.vara || "1ª",
+            numero: fields.numero || "",
+            tipo_de_acao: fields.tipo_de_acao || "Ação de Alimentos c/c Guarda",
+            n_oficio_defensoria: fields.n_oficio_defensoria || "",
+            nome_reu: (fields.nome_reu || fields.nome_assistido || "REQUERIDO").toUpperCase(),
+            nacionalidade: fields.nacionalidade || "brasileiro(a)",
+            estado_civil: fields.estado_civil || "solteiro(a)",
+            profissao: fields.profissao || "autônomo(a)",
+            rg: fields.rg || "",
+            cpf: fields.cpf || "",
+            endereco: fields.endereco || "",
+            nome_autor: (fields.nome_autor || "").toUpperCase(),
+            nomes_filhos: fields.nomes_filhos || "",
+            idades_filhos: fields.idades_filhos || "",
+            sintese_pretensoes_autor: fields.sintese_pretensoes_autor || "",
+            data_desligamento: fields.data_desligamento || "",
+            ultimo_empregador: fields.ultimo_empregador || "",
+            cargo_ultimo_emprego: fields.cargo_ultimo_emprego || "",
+            motivo_desligamento: fields.motivo_desligamento || "",
+            ultimo_salario: fields.ultimo_salario || "",
+            renda_atual_requerido: fields.renda_atual_requerido || "",
+            impugnacao_alegacoes_autor: fields.impugnacao_alegacoes_autor || "",
+            contribuicoes_in_natura: fields.contribuicoes_in_natura || "",
+            tese_guarda_especifica: fields.tese_guarda_especifica || "",
+            fundamento_estudo_social: fields.fundamento_estudo_social || "",
+            percentual_rendimentos_proposto: fields.percentual_rendimentos_proposto || "20",
+            percentual_salario_minimo_proposto: fields.percentual_salario_minimo_proposto || "30",
+            pedido_alimentos_provisorios: fields.pedido_alimentos_provisorios || "fixação proporcional à capacidade do genitor",
+            pedido_guarda: fields.pedido_guarda || "a manutenção da guarda compartilhada",
+            pedido_visitas: fields.pedido_visitas || "a fixação de regime de convivência regular",
+            fixacao_alimentos: fields.fixacao_alimentos || "fixação de alimentos",
+            fixacao_modificacao_guarda: fields.fixacao_modificacao_guarda || "guarda unilateral",
+            estipulacao_visitas: fields.estipulacao_visitas || "regime restritivo de visitas",
+            docs_desemprego: fields.docs_desemprego || "TRCT e CTPS anexos",
             nome_bad_boy: padawan
         };
 
@@ -1355,27 +2417,16 @@ async function gerarDocumentos() {
         ];
     }
 
-    let sucessoTotal = true;
-
-    const DocxConstructor = window.docxtemplater || window.Docxtemplater;
-    if (typeof PizZip === 'undefined' || typeof DocxConstructor === 'undefined') {
-        alert("Erro nas bibliotecas Jedi (PizZip/Docxtemplater não carregaram). Verifique a internet.");
-        btn.disabled = false;
-        atualizarBotao();
-        return;
-    }
-
-    for (const arquivo of arquivosSelecionados) {
-        try {
+    try {
+        for (const arquivo of arquivosSelecionados) {
             const resposta = await fetch(arquivo.caminho);
-            
             if (!resposta.ok) {
                 throw new Error(`Holocron não encontrado: O ficheiro ${arquivo.caminho} não está acessível.`);
             }
-            
+
             const conteudoBinario = await resposta.arrayBuffer();
             const zip = new PizZip(conteudoBinario);
-            
+
             const doc = new DocxConstructor(zip, {
                 paragraphLoop: true,
                 linebreaks: true,
@@ -1387,57 +2438,245 @@ async function gerarDocumentos() {
                 type: "blob",
                 mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             });
-            
+
             saveAs(blobDocumento, `${arquivo.id}_${nomeBase}.docx`);
             await new Promise(resolve => setTimeout(resolve, 500));
-
-        } catch (erro) {
-            console.error(erro);
-            alert(`Ocorreu um distúrbio na Força (${arquivo.id}): ${erro.message}`);
-            sucessoTotal = false;
         }
-    }
 
-    // --- REGISTRO NA PLANILHA ---
-    if (sucessoTotal) {
-        const nomesPecasGeradas = arquivosSelecionados.map(arq => arq.id).join(", ");
-        
-        const dadosRegistro = {
-            padawan: padawan || "Desconhecido",
+        return {
+            sucesso: true,
+            arquivos: arquivosSelecionados,
             processo: processoPlanilha,
-            acao: acaoPlanilha,
-            pecas: nomesPecasGeradas
+            acao: acaoPlanilha
         };
 
+    } catch (erro) {
+        console.error("Erro na renderização docxtemplater:", erro);
+        return { sucesso: false, erro: erro.message };
+    }
+}
+
+// Geração acionada pelo Formulário Manual
+async function gerarDocumentos() {
+    const btn = document.getElementById('btnGerar');
+
+    if (!nomeEhPadawan()) {
+        document.body.classList.add('sith-theme');
+        alert("🚧 PROGRAMA EM TESTE 🚧\n\nEste é um programa em teste e está em fase de implementação. Por enquanto, a geração de documentos não está liberada para este usuário.");
+        return;
+    }
+    
+    btn.disabled = true;
+    btn.innerText = "Acessando os Arquivos Jedi, aguarde...";
+
+    const getVal = id => {
+        const el = document.getElementById(id);
+        return el ? el.value : "";
+    };
+
+    const tipo = document.getElementById('tipo_peca').value;
+    const padawan = (obterPadawanAtual() || "PADAWAN").toUpperCase();
+
+    // Monta o objeto de campos lendo os inputs do formulário manual
+    let fields = {};
+
+    if (tipo === 'habilitacao') {
+        fields = {
+            vara: getVal('hab_vara'),
+            competencia: getVal('hab_competencia'),
+            numero: getVal('hab_numero'),
+            nome_autor: getVal('hab_nome_autor'),
+            nacionalidade: getVal('hab_nacionalidade'),
+            estado_civil: getVal('hab_estado_civil'),
+            profissao: getVal('hab_profissao'),
+            rg: getVal('hab_rg'),
+            cpf: getVal('hab_cpf'),
+            endereco: getVal('hab_endereco'),
+            valor_acordo: getVal('hab_valor_acordo'),
+            nome_bad_boy: padawan
+        };
+    } else if (tipo === 'negativa_geral') {
+        fields = {
+            vara: getVal('neg_vara'),
+            competencia: getVal('neg_competencia'),
+            numero: getVal('neg_numero'),
+            nome_autor: getVal('neg_nome_autor'),
+            nacionalidade: "brasileiro(a)",
+            cpf: getVal('neg_cpf'),
+            nome_bad_boy: padawan
+        };
+    } else if (tipo === 'desbloqueio') {
+        fields = {
+            vara: getVal('desb_vara'),
+            competencia: getVal('desb_competencia'),
+            numero: getVal('desb_numero'),
+            nome_assistido: getVal('desb_nome_assistido'),
+            titulo_da_acao: getVal('desb_titulo_da_acao'),
+            "nome_parte_contrária": getVal('desb_nome_parte_contraria'),
+            natureza_credito_executado: getVal('desb_natureza_credito_executado'),
+            data_bloqueio: getVal('desb_data_bloqueio'),
+            data_intimacao_bloqueio: getVal('desb_data_intimacao_bloqueio'),
+            banco: getVal('desb_banco'),
+            tipo_conta: getVal('desb_tipo_conta'),
+            valor_total_bloqueado: getVal('desb_valor_total_bloqueado'),
+            proporcao_verba_bloqueada: getVal('desb_proporcao_verba_bloqueada'),
+            natureza_verba: getVal('desb_natureza_verba'),
+            fonte_pagadora: getVal('desb_fonte_pagadora'),
+            data_credito: getVal('desb_data_credito'),
+            valor_credito: getVal('desb_valor_credito'),
+            descricao_credito_extrato: getVal('desb_descricao_credito_extrato'),
+            valor_40_salarios_minimos: getVal('desb_valor_40_salarios_minimos'),
+            doc_extrato: getVal('desb_doc_extrato'),
+            doc_comprovantes: getVal('desb_doc_comprovantes'),
+            situacao_familiar: getVal('desb_situacao_familiar'),
+            despesas_essenciais: getVal('desb_despesas_essenciais'),
+            nome_bad_boy: padawan
+        };
+    } else if (tipo === 'citacao_edital') {
+        fields = {
+            vara: getVal('ced_vara'),
+            competencia: getVal('ced_competencia'),
+            numero: getVal('ced_numero'),
+            nome_assistido: getVal('ced_nome_assistido'),
+            "decisão_despacho_ato_ordinatorio_fls": getVal('ced_decisao_despacho'),
+            nome_bad_boy: padawan
+        };
+    } else if (tipo === 'intimacao_pessoal') {
+        fields = {
+            vara: getVal('int_vara'),
+            competencia: getVal('int_competencia'),
+            numero: getVal('int_numero'),
+            nome_assistido: getVal('int_nome_assistido'),
+            motivo_da_necessidade_de_contato: getVal('int_motivo_contato'),
+            nome_bad_boy: padawan
+        };
+    } else if (tipo === 'penhora_sisbajud') {
+        fields = {
+            vara: getVal('sis_vara'),
+            competencia: getVal('sis_competencia'),
+            numero: getVal('sis_numero'),
+            "nome_criança": getVal('sis_nome_crianca'),
+            nome_mae: getVal('sis_nome_mae'),
+            qualificacao_representante: "por sua genitora " + getVal('sis_nome_mae'),
+            "período_dos_alimentos_vencidos": getVal('sis_periodo_alimentos'),
+            nome_bad_boy: padawan
+        };
+    } else if (tipo === 'oficio_localizar') {
+        fields = {
+            vara: getVal('ofi_vara'),
+            competencia: getVal('ofi_competencia'),
+            numero: getVal('ofi_numero'),
+            nome_assistido: getVal('ofi_nome_assistido'),
+            nome_bad_boy: padawan
+        };
+    } else if (tipo === 'inicial') {
+        fields = {
+            titulo_acao: "AÇÃO DE FIXAÇÃO DE ALIMENTOS, GUARDA, REGIME DE CONVIVÊNCIA COM PEDIDO DE TUTELA ANTECIPADA",
+            nome_autor: getVal('ini_nome_autor'),
+            nacionalidade: getVal('ini_nacionalidade'),
+            estado_civil: getVal('ini_estado_civil'),
+            profissao: getVal('ini_profissao'),
+            rg: getVal('ini_rg'),
+            cpf: getVal('ini_cpf'),
+            endereco: getVal('ini_endereco'),
+            vara: getVal('ini_vara'),
+            nome_requerido: getVal('ini_nome_requerido'),
+            profissao_requerido: getVal('ini_profissao_requerido'),
+            rg_requerido: getVal('ini_rg_requerido'),
+            cpf_requerido: getVal('ini_cpf_requerido'),
+            endereco_requerido: getVal('ini_endereco_requerido'),
+            data_casamento: getVal('ini_data_casamento'),
+            regime_bens: getVal('ini_regime_bens'),
+            registro_casamento: getVal('ini_registro_casamento'),
+            nome_filho: getVal('ini_nome_filho'),
+            nascimento_filho: getVal('ini_nascimento_filho'),
+            rg_filho: getVal('ini_rg_filho'),
+            cpf_filho: getVal('ini_cpf_filho'),
+            bens_partilhar: getVal('ini_bens_partilhar'),
+            nome_solteira: getVal('ini_nome_solteira'),
+            valor_causa: getVal('ini_valor_causa'),
+            nome_bad_boy: padawan
+        };
+    } else if (tipo === 'contestacao_pai') {
+        fields = {
+            polo_assistido: "O Requerido, genitor",
+            vara: getVal('cpai_vara'),
+            numero: getVal('cpai_numero'),
+            tipo_de_acao: getVal('cpai_tipo_de_acao'),
+            n_oficio_defensoria: getVal('cpai_n_oficio_defensoria'),
+            nome_reu: getVal('cpai_nome_reu'),
+            nacionalidade: getVal('cpai_nacionalidade'),
+            estado_civil: getVal('cpai_estado_civil'),
+            profissao: getVal('cpai_profissao'),
+            rg: getVal('cpai_rg'),
+            cpf: getVal('cpai_cpf'),
+            endereco: getVal('cpai_endereco'),
+            nome_autor: getVal('cpai_nome_autor'),
+            nomes_filhos: getVal('cpai_nomes_filhos'),
+            idades_filhos: getVal('cpai_idades_filhos'),
+            sintese_pretensoes_autor: getVal('cpai_sintese_pretensoes_autor'),
+            data_desligamento: getVal('cpai_data_desligamento'),
+            ultimo_empregador: getVal('cpai_ultimo_empregador'),
+            cargo_ultimo_emprego: getVal('cpai_cargo_ultimo_emprego'),
+            motivo_desligamento: getVal('cpai_motivo_desligamento'),
+            ultimo_salario: getVal('cpai_ultimo_salario'),
+            renda_atual_requerido: getVal('cpai_renda_atual_requerido'),
+            impugnacao_alegacoes_autor: getVal('cpai_impugnacao_alegacoes_autor'),
+            contribuicoes_in_natura: getVal('cpai_contribuicoes_in_natura'),
+            tese_guarda_especifica: getVal('cpai_tese_guarda_especifica'),
+            fundamento_estudo_social: getVal('cpai_fundamento_estudo_social'),
+            percentual_rendimentos_proposto: getVal('cpai_percentual_rendimentos_proposto'),
+            percentual_salario_minimo_proposto: getVal('cpai_percentual_salario_minimo_proposto'),
+            nome_bad_boy: padawan
+        };
+    }
+
+    const resultado = await executarGeracaoDocumentosPacote(tipo, fields, padawan);
+
+    if (resultado.sucesso) {
+        // Envio do log para Google Apps Script sem preflight OPTIONS (CORS safe)
         fetch(URL_PLANILHA_JEDI, {
             method: "POST",
-            mode: "no-cors",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(dadosRegistro)
+            body: JSON.stringify({
+                action: "log",
+                padawan: padawan,
+                processo: resultado.processo,
+                acao: resultado.acao,
+                pecas: resultado.arquivos.map(a => a.id).join(", ")
+            })
         }).catch(err => console.log("Erro ao salvar no holocron (planilha):", err));
 
         alert("Documentos forjados com sucesso! O Conselho Jedi ainda precisa aprovar.");
+    } else {
+        alert(`Ocorreu um distúrbio na Força: ${resultado.erro}`);
     }
 
     btn.disabled = false;
-    atualizarBotao(); 
+    atualizarBotao();
 }
 
+window.alternarModoVisual = alternarModoVisual;
 window.alternarFormulario = alternarFormulario;
 window.revelarSegredo = revelarSegredo;
 window.normalizar = normalizar;
 window.nomeEhPadawan = nomeEhPadawan;
+window.obterPadawanAtual = obterPadawanAtual;
 window.atualizarBotao = atualizarBotao;
 window.verificarOrdem66 = verificarOrdem66;
 window.gerarDocumentos = gerarDocumentos;
 window.limparTimerCafe = limparTimerCafe;
+window.reiniciarChat = reiniciarChat;
+window.enviarMensagemChat = enviarMensagemChat;
+window.tratarTeclaChat = tratarTeclaChat;
+window.ajustarAlturaTextarea = ajustarAlturaTextarea;
+window.aplicarPromptChip = aplicarPromptChip;
+window.baixarNovamente = baixarNovamente;
 
 document.addEventListener('DOMContentLoaded', () => {
     alternarFormulario();
     atualizarBotao();
     inicializarEasterEggCafe();
+    reiniciarChat();
 });
 </script>
 
