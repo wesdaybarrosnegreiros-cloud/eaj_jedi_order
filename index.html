@@ -277,7 +277,7 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
             transition: all 0.3s ease;
         }
-        .padawan-auth-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .padawan-auth-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
         .padawan-auth-header label {
             font-family: 'Cinzel', serif;
             font-size: 0.95em;
@@ -757,6 +757,375 @@
             .chat-input-box { flex-direction: column; }
             .btn-enviar-chat { width: 100%; }
         }
+
+        /* --- ESTILOS DO HOLOCRON GEMINI API --- */
+        .btn-api-settings {
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid var(--jedi-cyan);
+            color: var(--jedi-cyan);
+            font-size: 0.82em;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Inter', sans-serif;
+            text-transform: none;
+            letter-spacing: 0.3px;
+            width: auto;
+            margin: 0;
+            transition: all 0.25s ease;
+        }
+        .btn-api-settings:hover {
+            background: rgba(56, 189, 248, 0.25);
+            box-shadow: 0 0 12px var(--jedi-cyan-glow);
+            transform: translateY(-1px);
+        }
+        .btn-api-settings.ativo {
+            border-color: #10b981;
+            color: #34d399;
+            background: rgba(16, 185, 129, 0.15);
+        }
+
+        /* Scanner Multimodal no Formulário Manual */
+        .holocron-scanner-banner {
+            background: linear-gradient(135deg, rgba(8, 25, 45, 0.9), rgba(11, 23, 46, 0.95));
+            border: 1.5px dashed var(--jedi-cyan);
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+        }
+        .holocron-scanner-banner:hover, .holocron-scanner-banner.dragover {
+            border-color: var(--jedi-gold);
+            background: linear-gradient(135deg, rgba(14, 38, 70, 0.95), rgba(16, 32, 64, 0.95));
+            box-shadow: 0 0 20px var(--jedi-cyan-glow);
+            transform: scale(1.01);
+        }
+        .scanner-icon {
+            font-size: 2em;
+            line-height: 1;
+        }
+        .scanner-text {
+            flex: 1;
+        }
+        .scanner-text strong {
+            display: block;
+            color: var(--jedi-gold-bright);
+            font-family: 'Cinzel', serif;
+            font-size: 0.96em;
+            margin-bottom: 3px;
+        }
+        .scanner-text span {
+            font-size: 0.82em;
+            color: var(--text-muted);
+        }
+        .scanner-badge {
+            background: rgba(56, 189, 248, 0.2);
+            color: var(--jedi-cyan);
+            border: 1px solid var(--jedi-cyan);
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.78em;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* Botão Anexo e Clip no Chat */
+        .btn-anexo-chat {
+            background: rgba(56, 189, 248, 0.12);
+            color: var(--jedi-cyan);
+            border: 1px solid var(--border-subtle);
+            padding: 6px 12px;
+            font-size: 0.8em;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: auto;
+            margin: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+        .btn-anexo-chat:hover {
+            background: rgba(56, 189, 248, 0.25);
+            border-color: var(--jedi-cyan);
+            color: #ffffff;
+        }
+        .btn-icon-clip {
+            background: var(--panel-inner);
+            border: 1.5px solid var(--border-subtle);
+            color: var(--jedi-gold-bright);
+            font-size: 1.2em;
+            border-radius: 8px;
+            padding: 0 14px;
+            cursor: pointer;
+            width: auto;
+            margin: 0;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+        }
+        .btn-icon-clip:hover {
+            border-color: var(--jedi-cyan);
+            box-shadow: 0 0 10px var(--jedi-cyan-glow);
+        }
+
+        /* Auditor da Força */
+        .btn-auditar-forca {
+            background: linear-gradient(135deg, #1e3a8a, #0369a1);
+            color: #ffffff;
+            border: 1px solid var(--jedi-cyan);
+            padding: 14px;
+            font-size: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-weight: 700;
+            font-family: 'Cinzel', serif;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 14px rgba(3, 105, 161, 0.3);
+        }
+        .btn-auditar-forca:hover {
+            background: linear-gradient(135deg, #2563eb, #0284c7);
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45);
+            transform: translateY(-2px);
+        }
+
+        .resultado-auditoria-box {
+            background: var(--panel-inner);
+            border: 1.5px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 18px;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            animation: fadeInPanel 0.3s ease;
+        }
+        .resultado-auditoria-box h4 {
+            margin: 0 0 12px 0;
+            font-family: 'Cinzel', serif;
+            font-size: 1.05em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .resultado-auditoria-box.equilibrio {
+            border-color: #10b981;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+        }
+        .resultado-auditoria-box.equilibrio h4 {
+            color: #34d399;
+        }
+        .resultado-auditoria-box.alerta {
+            border-color: var(--jedi-gold);
+            box-shadow: 0 0 15px rgba(229, 184, 75, 0.2);
+        }
+        .resultado-auditoria-box.alerta h4 {
+            color: var(--jedi-gold-bright);
+        }
+        .auditoria-checklist {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 12px 0;
+            font-size: 0.9em;
+        }
+        .auditoria-checklist li {
+            padding: 6px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .auditoria-parecer {
+            font-size: 0.88em;
+            color: var(--text-main);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 14px;
+            border-radius: 6px;
+            line-height: 1.5;
+            border-left: 3px solid var(--jedi-cyan);
+        }
+
+        /* Botão Voz do Mestre no Chat */
+        .chat-msg-actions {
+            margin-top: 8px;
+            display: flex;
+            gap: 8px;
+        }
+        .btn-ouvir-mestre {
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid var(--border-subtle);
+            color: var(--jedi-cyan);
+            font-size: 0.76em;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            width: auto;
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+        }
+        .btn-ouvir-mestre:hover {
+            background: rgba(56, 189, 248, 0.3);
+            border-color: var(--jedi-cyan);
+            color: #ffffff;
+        }
+
+        /* Modal de Configuração da API Gemini */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(4, 9, 20, 0.85);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            padding: 20px;
+            animation: fadeInPanel 0.2s ease;
+        }
+        .modal-content {
+            background: var(--panel-bg);
+            border: 2px solid var(--jedi-gold);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8), 0 0 30px var(--jedi-cyan-glow);
+            border-radius: 14px;
+            width: 100%;
+            max-width: 560px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-header {
+            background: #040914;
+            padding: 18px 24px;
+            border-bottom: 1.5px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h3 {
+            margin: 0;
+            font-family: 'Cinzel', serif;
+            color: var(--jedi-gold-bright);
+            font-size: 1.15em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-modal-fechar {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.4em;
+            cursor: pointer;
+            padding: 0;
+            width: auto;
+            margin: 0;
+            line-height: 1;
+        }
+        .btn-modal-fechar:hover {
+            color: #ffffff;
+        }
+        .modal-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            font-size: 0.92em;
+        }
+        .modal-body p {
+            margin: 0;
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+        .modal-aviso-seguranca {
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px solid var(--border-subtle);
+            border-left: 3px solid var(--jedi-cyan);
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 0.84em;
+            color: var(--text-muted);
+            line-height: 1.45;
+        }
+        .modal-footer {
+            background: #040914;
+            padding: 16px 24px;
+            border-top: 1.5px solid var(--border-subtle);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        .btn-modal-salvar {
+            background: linear-gradient(135deg, #d4af37, #b48811);
+            color: #050b18;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 6px;
+            width: auto;
+            margin: 0;
+            font-size: 0.9em;
+        }
+        .btn-modal-cancelar {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border-subtle);
+            padding: 10px 18px;
+            border-radius: 6px;
+            width: auto;
+            margin: 0;
+            font-size: 0.9em;
+        }
+        .btn-modal-cancelar:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+        }
+        .btn-modal-testar {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--jedi-cyan);
+            border: 1px solid var(--jedi-cyan);
+            padding: 10px 18px;
+            border-radius: 6px;
+            width: auto;
+            margin: 0;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        .status-teste-api {
+            font-size: 0.84em;
+            padding: 6px 10px;
+            border-radius: 4px;
+            display: none;
+        }
+        .status-teste-api.sucesso {
+            display: block;
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid #10b981;
+        }
+        .status-teste-api.erro {
+            display: block;
+            background: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+            border: 1px solid #ef4444;
+        }
     </style>
 </head>
 <body>
@@ -821,8 +1190,13 @@
 
         <div class="padawan-auth-card">
             <div class="padawan-auth-header">
-                <span>⚔️</span>
-                <label for="nome_bad_boy">IDENTIFICAÇÃO DO PADAWAN (CONFIRME SEU NOME PARA FORJAR)</label>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span>⚔️</span>
+                    <label for="nome_bad_boy">IDENTIFICAÇÃO DO PADAWAN (CONFIRME SEU NOME PARA FORJAR)</label>
+                </div>
+                <button type="button" id="btn_gemini_config" class="btn-api-settings" onclick="abrirModalConfigGemini()" title="Configurações da Conexão Gemini AI">
+                    ⚡ Conectar Gemini API
+                </button>
             </div>
             <div class="padawan-auth-body">
                 <input type="text" id="nome_bad_boy" placeholder="Repita seu nome de Padawan para assinar as peças..." oninput="atualizarBotao()">
@@ -860,9 +1234,14 @@
                             <span class="chat-subtitle-badge">UNAERP</span>
                         </div>
                     </div>
-                    <button type="button" class="btn-reset-chat" onclick="reiniciarChat()" title="Limpar conversa e iniciar novo atendimento">
-                        🔄 Novo Atendimento
-                    </button>
+                    <div style="display: flex; gap: 8px;">
+                        <button type="button" class="btn-anexo-chat" onclick="acionarUploadArquivo()" title="Anexar Decisão Judicial, Despacho ou Anotações (PDF ou Imagem)">
+                            📎 Anexar Decisão/Foto (OCR)
+                        </button>
+                        <button type="button" class="btn-reset-chat" onclick="reiniciarChat()" title="Limpar conversa e iniciar novo atendimento">
+                            🔄 Novo Atendimento
+                        </button>
+                    </div>
                 </div>
 
                 <div class="chat-chips-bar">
@@ -887,6 +1266,7 @@
 
                 <div class="chat-input-wrapper">
                     <div class="chat-input-box">
+                        <button type="button" class="btn-icon-clip" onclick="acionarUploadArquivo()" title="Anexar Foto/PDF de Decisão ou Despacho">📎</button>
                         <textarea 
                             id="chat_input" 
                             class="chat-textarea" 
@@ -898,7 +1278,7 @@
                         </button>
                     </div>
                     <div class="chat-hint-bar">
-                        <span>💡 O Mestre Jedi responde dúvidas, pede dados faltantes e cria novos tópicos livremente</span>
+                        <span>💡 O Mestre Jedi responde dúvidas, cria novas teses e lê anexos (📎) livremente</span>
                         <span>Shift + Enter para quebra de linha</span>
                     </div>
                 </div>
@@ -925,6 +1305,16 @@
                 <div id="info_pacote" class="pecas-badge">
                     📄 Documentos gerados: Habilitação + Procuração + Gratuidade
                 </div>
+            </div>
+
+            <!-- SCANNER MULTIMODAL HOLOCRON VISION -->
+            <div class="holocron-scanner-banner" id="banner_scanner_manual" onclick="acionarUploadArquivo()" title="Arraste ou clique para enviar foto ou PDF de decisão judicial">
+                <div class="scanner-icon">🔮</div>
+                <div class="scanner-text">
+                    <strong>Visão Holocron (Gemini Multimodal OCR)</strong>
+                    <span>Clique aqui ou arraste uma foto/PDF de despacho, extrato ou decisão para preencher este formulário automaticamente.</span>
+                </div>
+                <span class="scanner-badge">Gemini Vision</span>
             </div>
 
             <!-- BLOCO 1: HABILITAÇÃO -->
@@ -1138,6 +1528,10 @@
                 <div class="campo"><label>Percentual do Salário Mínimo (Se desempregado):</label><input type="text" id="cpai_percentual_salario_minimo_proposto" placeholder="Ex: 30"></div>
             </div>
 
+            <button type="button" id="btnAuditar" class="btn-auditar-forca" onclick="auditarCamposComGemini()">
+                🛡️ Auditar Requisitos com a Força (Gemini AI)
+            </button>
+            <div id="resultado_auditoria" class="resultado-auditoria-box" style="display:none;"></div>
             <button type="button" id="btnGerar" onclick="gerarDocumentos()">Forjar Petições</button>
         </div>
     </div>
@@ -1146,6 +1540,47 @@
         ☕ Muita calma nessa Força... Precisa de ajuda ou um café, padawan? 
     </div>
 </div>
+
+<!-- MODAL DE CONFIGURAÇÃO GEMINI API -->
+<div id="modal_gemini_config" class="modal-overlay" style="display:none;" onclick="if(event.target === this) fecharModalConfigGemini()">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>⚡ Conexão Holocron (Gemini API)</h3>
+            <button type="button" class="btn-modal-fechar" onclick="fecharModalConfigGemini()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>O Holocron pode utilizar a inteligência artificial <strong>Gemini (Google DeepMind)</strong> diretamente para ler decisões judiciais e despachos (visão multimodal OCR), responder dúvidas e forjar petições dinâmicas personalizadas.</p>
+            
+            <div class="campo">
+                <label for="input_gemini_api_key">Sua Chave da API Gemini (Google AI Studio):</label>
+                <input type="password" id="input_gemini_api_key" placeholder="AIzaSy..." autocomplete="off">
+            </div>
+
+            <div class="campo">
+                <label for="select_gemini_model">Modelo Gemini:</label>
+                <select id="select_gemini_model">
+                    <option value="gemini-2.5-flash">Gemini 2.5 Flash (Recomendado • Multimodal Rápido e Preciso)</option>
+                    <option value="gemini-2.5-pro">Gemini 2.5 Pro (Raciocínio Jurídico Complexo & Análise Aprofundada)</option>
+                    <option value="gemini-1.5-flash">Gemini 1.5 Flash (Ultra Rápido e Estável)</option>
+                </select>
+            </div>
+
+            <div class="modal-aviso-seguranca">
+                🛡️ <strong>Segurança GitHub Pages (Regra 4):</strong> Sua chave é armazenada exclusivamente na memória local do seu navegador (<code>localStorage</code>). Nenhuma chave é gravada no código-fonte ou enviada ao GitHub. Se preferir não usar chave própria, o sistema continuará operando normalmente através da ponte Google Apps Script.
+            </div>
+
+            <div id="status_teste_conexao" class="status-teste-api"></div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-modal-testar" onclick="testarConexaoGemini()">Testar Sintonia</button>
+            <button type="button" class="btn-modal-cancelar" onclick="fecharModalConfigGemini()">Cancelar</button>
+            <button type="button" class="btn-modal-salvar" onclick="salvarConfigGemini()">Salvar Conexão</button>
+        </div>
+    </div>
+</div>
+
+<!-- INPUT DE ARQUIVO OCULTO PARA VISÃO MULTIMODAL -->
+<input type="file" id="input_arquivo_holocron" accept="image/*,application/pdf" style="display:none;" onchange="processarArquivoComGemini(event)">
 
 <script src="https://cdn.jsdelivr.net/npm/pizzip@3.1.7/dist/pizzip.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/docxtemplater@3.37.11/build/docxtemplater.js"></script>
@@ -1323,7 +1758,6 @@ function validarEntradaPortal() {
         hiperespaco.classList.remove('ativo');
         siteWrapper.classList.add('liberado');
 
-        // Garante que o campo interno comece vazio para exigir a repetição do nome
         const campoInterno = document.getElementById('nome_bad_boy');
         if (campoInterno) {
             campoInterno.value = "";
@@ -1466,7 +1900,7 @@ const MENSAGEM_INICIAL_JEDI = `Saudações, jovem Padawan! Sou o **Mestre Jedi**
 
 Estou pronto para ajudar de duas formas:
 1. **Tirar dúvidas jurídicas ou processuais** sobre qualquer caso do escritório;
-2. **Redigir petições completas e personalizadas** (iniciais, contestações, pedidos intermediários ou novas teses/tópicos criados do zero).
+2. **Redigir petições completas e personalizadas** (iniciais, contestações, pedidos intermediários ou novas teses/tópicos criados livremente).
 
 Lembre-se de repetir seu nome no campo **Identificação do Padawan** acima para liberar a assinatura e o download das peças! Conte-me sua dúvida ou cole os dados do atendimento abaixo.`;
 
@@ -1517,18 +1951,29 @@ function adicionarMensagemUI(role, texto, extraHtml = "") {
     const divMsg = document.createElement('div');
     divMsg.className = `chat-msg ${role}`;
     const avatarIcon = role === 'jedi' ? '🧙‍♂️' : (role === 'user' ? '⚔️' : '⚡');
+    const audioBtnHtml = role === 'jedi' ? `
+        <div class="chat-msg-actions">
+            <button type="button" class="btn-ouvir-mestre" onclick="ouvirMensagemMestre(this)">🔊 Ouvir Mestre</button>
+        </div>
+    ` : '';
     divMsg.innerHTML = `
         <div class="chat-avatar">${avatarIcon}</div>
-        <div class="chat-bubble">${formatarTextoMarkdown(texto)}${extraHtml}</div>
+        <div class="chat-bubble">
+            ${formatarTextoMarkdown(texto)}
+            ${extraHtml}
+            ${audioBtnHtml}
+        </div>
     `;
     container.appendChild(divMsg);
     container.scrollTop = container.scrollHeight;
 }
 
-function setDigitando(ativo) {
+function setDigitando(ativo, textoCustom = "Mestre Jedi está analisando o caso na Força") {
     const el = document.getElementById('chat_digitando');
     const container = document.getElementById('chat_mensagens');
     if (el) {
+        const textoSpan = el.querySelector('span');
+        if (textoSpan) textoSpan.innerText = textoCustom;
         el.classList.toggle('ativo', ativo);
         if (ativo && container) container.scrollTop = container.scrollHeight;
     }
@@ -1558,6 +2003,661 @@ function registrarLogPlanilha(padawan, processo, acao, pecas) {
             pecas: pecas
         })
     }).catch(err => console.log("Erro ao salvar no holocron (planilha):", err));
+}
+
+// =====================================================================
+// INTEGRAÇÃO NATIVA GEMINI API (GOOGLE DEEPMIND) - REDAÇÃO LIVRE & VISÃO
+// =====================================================================
+const PROMPT_SISTEMA_JEDI = `Você é o Mestre Jedi da Forja de Documentos do Escritório de Assistência Jurídica (EAJ/UNAERP) na Comarca de Ribeirão Preto/SP.
+Você é um especialista em Direito Civil, Direito de Família e Processo Civil (CPC/2015).
+Você ajuda e orienta estagiários (padawans) de Direito a tirarem dúvidas jurídicas e a redigirem petições completas e personalizadas.
+
+DIRETRIZES DE ATUAÇÃO (SEM LIMITADORES RÍGIDOS):
+1. LIBERDADE DE CRIAÇÃO E REDAÇÃO: Você NÃO está restrito a modelos engessados. Você pode responder dúvidas práticas ou teóricas sobre o caso, criar novas teses, redigir petições completas (iniciais, contestações, pedidos de desbloqueio, agravos, embargos, petições intermediárias) com a estrutura formal do CPC:
+   - Endereçamento (ex: EXCELENTÍSSIMO SENHOR DOUTOR JUIZ DE DIREITO DA ... VARA CÍVEL / DE FAMÍLIA E SUCESSÕES DA COMARCA DE RIBEIRÃO PRETO/SP)
+   - Qualificação completa das partes
+   - Fatos bem narrados
+   - Fundamentação jurídica sólida (legislação aplicável e jurisprudência pacífica)
+   - Pedidos claros e requerimentos finais (citação, gratuidade da justiça, produção de provas).
+
+2. GERAÇÃO DINÂMICA DO DOCUMENTO WORD (.docx):
+Quando o usuário solicitar a redação/forja da petição e você tiver reunido os fatos e dados necessários (ou quando ele pedir "redija a petição", "gere o documento", "forjar peça"), forneça um resumo ao padawan e inclua no final da resposta um bloco JSON delimitado exatamente por:
+\`\`\`json_ia
+{
+  "ready": true,
+  "titulo_peca": "Nome_Da_Peticao",
+  "numero_processo": "0000000-00.0000.0.00.0000 ou A Distribuir",
+  "vara": "1ª Vara de Família e Sucessões",
+  "competencia": "Ribeirão Preto/SP",
+  "incluir_anexos": true,
+  "dados_cliente": {
+    "nome_autor": "Nome Completo do Assistido",
+    "nacionalidade": "brasileiro(a)",
+    "estado_civil": "solteiro(a)",
+    "profissao": "profissao",
+    "rg": "00.000.000-0",
+    "cpf": "000.000.000-00",
+    "endereco": "Rua..., nº..., Bairro..., Ribeirão Preto/SP"
+  },
+  "paragrafos": [
+    { "texto": "EXCELENTÍSSIMO(A) SENHOR(A) DOUTOR(A) JUIZ(A) DE DIREITO DA [VARA] DA COMARCA DE RIBEIRÃO PRETO/SP" },
+    { "texto": "[NOME DO ASSISTIDO], já devidamente qualificado(a)..." },
+    { "texto": "I. DOS FATOS" },
+    { "texto": "Texto narrando os fatos do caso..." },
+    { "texto": "II. DO DIREITO" },
+    { "texto": "Texto da fundamentação jurídica..." },
+    { "texto": "III. DOS PEDIDOS" },
+    { "texto": "Diante do exposto, requer a Vossa Excelência: a) ..., b) ..." }
+  ]
+}
+\`\`\`
+Se o usuário estiver apenas tirando dúvidas ou se ainda faltarem dados indispensáveis para redigir a petição, NÃO envie o bloco json_ia; responda em tom solene, amigável e instrutivo de Mestre Jedi.`;
+
+function abrirModalConfigGemini() {
+    const modal = document.getElementById('modal_gemini_config');
+    if (!modal) return;
+    const inputKey = document.getElementById('input_gemini_api_key');
+    const selectModel = document.getElementById('select_gemini_model');
+    const statusEl = document.getElementById('status_teste_conexao');
+
+    if (inputKey) inputKey.value = localStorage.getItem('jedi_gemini_api_key') || '';
+    if (selectModel) selectModel.value = localStorage.getItem('jedi_gemini_model') || 'gemini-2.5-flash';
+    if (statusEl) statusEl.style.display = 'none';
+
+    modal.style.display = 'flex';
+}
+
+function fecharModalConfigGemini() {
+    const modal = document.getElementById('modal_gemini_config');
+    if (modal) modal.style.display = 'none';
+}
+
+function salvarConfigGemini() {
+    const inputKey = document.getElementById('input_gemini_api_key');
+    const selectModel = document.getElementById('select_gemini_model');
+
+    const key = inputKey ? inputKey.value.trim() : '';
+    const model = selectModel ? selectModel.value : 'gemini-2.5-flash';
+
+    if (key) {
+        localStorage.setItem('jedi_gemini_api_key', key);
+    } else {
+        localStorage.removeItem('jedi_gemini_api_key');
+    }
+    localStorage.setItem('jedi_gemini_model', model);
+
+    atualizarStatusBotaoGemini();
+    fecharModalConfigGemini();
+
+    if (key) {
+        alert("✨ Conexão Gemini API configurada com sucesso!\n\nAgora o Holocron opera com inteligência e visão multimodal direta.");
+    } else {
+        alert("ℹ️ Chave removida. O sistema continuará operando através da ponte Google Apps Script.");
+    }
+}
+
+async function testarConexaoGemini() {
+    const inputKey = document.getElementById('input_gemini_api_key');
+    const selectModel = document.getElementById('select_gemini_model');
+    const statusEl = document.getElementById('status_teste_conexao');
+    if (!inputKey || !statusEl) return;
+
+    const key = inputKey.value.trim();
+    const model = selectModel ? selectModel.value : 'gemini-2.5-flash';
+
+    if (!key) {
+        statusEl.className = 'status-teste-api erro';
+        statusEl.style.display = 'block';
+        statusEl.textContent = '❌ Digite sua chave antes de testar a sintonia.';
+        return;
+    }
+
+    statusEl.className = 'status-teste-api';
+    statusEl.style.display = 'block';
+    statusEl.style.color = 'var(--jedi-cyan)';
+    statusEl.textContent = '⚡ Testando sintonia com os Arquivos Jedi...';
+
+    try {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: 'Responda estritamente: A Força está com você!' }] }]
+            })
+        });
+
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error ? err.error.message : `Erro HTTP ${res.status}`);
+        }
+
+        statusEl.className = 'status-teste-api sucesso';
+        statusEl.textContent = `✅ Sintonia confirmada! Conexão ativa com o modelo ${model}.`;
+    } catch (e) {
+        statusEl.className = 'status-teste-api erro';
+        statusEl.textContent = `❌ Perturbação na Força: ${e.message}`;
+    }
+}
+
+function atualizarStatusBotaoGemini() {
+    const btn = document.getElementById('btn_gemini_config');
+    if (!btn) return;
+    const key = localStorage.getItem('jedi_gemini_api_key');
+    if (key) {
+        btn.classList.add('ativo');
+        btn.innerHTML = '🟢 Gemini Direto Ativo';
+    } else {
+        btn.classList.remove('ativo');
+        btn.innerHTML = '⚡ Conectar Gemini API';
+    }
+}
+
+function acionarUploadArquivo() {
+    const input = document.getElementById('input_arquivo_holocron');
+    if (input) input.click();
+}
+
+function ouvirMensagemMestre(btn) {
+    const bubble = btn.closest('.chat-bubble');
+    if (!bubble) return;
+
+    const clone = bubble.cloneNode(true);
+    const actions = clone.querySelector('.chat-msg-actions');
+    if (actions) actions.remove();
+    const card = clone.querySelector('.forja-sucesso-card');
+    if (card) card.remove();
+    const textoLimpo = clone.innerText.replace(/[\*#_`~>]/g, '').trim();
+
+    if (!('speechSynthesis' in window)) {
+        alert("Seu navegador não possui suporte para síntese de voz.");
+        return;
+    }
+
+    if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+        btn.innerHTML = '🔊 Ouvir Mestre';
+        return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(textoLimpo);
+    utterance.lang = 'pt-BR';
+    utterance.rate = 1.0;
+    utterance.pitch = 0.92;
+
+    const vozes = window.speechSynthesis.getVoices();
+    const vozPt = vozes.find(v => v.lang === 'pt-BR' || v.lang.startsWith('pt'));
+    if (vozPt) utterance.voice = vozPt;
+
+    btn.innerHTML = '⏹️ Parar Voz';
+    utterance.onend = () => { btn.innerHTML = '🔊 Ouvir Mestre'; };
+    utterance.onerror = () => { btn.innerHTML = '🔊 Ouvir Mestre'; };
+    window.speechSynthesis.speak(utterance);
+}
+
+async function chamarGeminiAPI({ prompt, fileBase64, mimeType, jsonMode = false, historico = [] }) {
+    const apiKey = localStorage.getItem('jedi_gemini_api_key');
+    if (!apiKey) {
+        throw new Error("Chave da API Gemini não configurada.");
+    }
+    const modelo = localStorage.getItem('jedi_gemini_model') || 'gemini-2.5-flash';
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent?key=${apiKey}`;
+
+    const contents = [];
+
+    if (historico && historico.length > 0) {
+        for (const msg of historico) {
+            const role = (msg.role === 'jedi' || msg.role === 'assistant' || msg.role === 'model') ? 'model' : 'user';
+            const cleanContent = (msg.content || "").replace(/```json_ia[\s\S]*?```/g, '').trim();
+            if (cleanContent) {
+                contents.push({
+                    role: role,
+                    parts: [{ text: cleanContent }]
+                });
+            }
+        }
+    }
+
+    const userParts = [];
+    if (fileBase64 && mimeType) {
+        userParts.push({
+            inlineData: {
+                mimeType: mimeType,
+                data: fileBase64
+            }
+        });
+    }
+    if (prompt) {
+        userParts.push({ text: prompt });
+    }
+
+    contents.push({
+        role: "user",
+        parts: userParts
+    });
+
+    const payload = {
+        contents: contents,
+        systemInstruction: {
+            parts: [{ text: PROMPT_SISTEMA_JEDI }]
+        }
+    };
+
+    if (jsonMode) {
+        payload.generationConfig = {
+            responseMimeType: "application/json"
+        };
+    }
+
+    const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+        const errJson = await response.json().catch(() => ({}));
+        const msg = errJson.error ? errJson.error.message : `Status ${response.status}`;
+        throw new Error(msg);
+    }
+
+    const data = await response.json();
+    const candidate = data.candidates && data.candidates[0];
+    if (!candidate || !candidate.content || !candidate.content.parts) {
+        throw new Error("O Holocron não retornou resposta legível.");
+    }
+
+    return candidate.content.parts.map(p => p.text).join("");
+}
+
+function normalizarModelId(id) {
+    if (!id) return 'habilitacao';
+    const s = id.toLowerCase().replace('.docx', '').replace(/\s+/g, '_').trim();
+    if (s.includes('habilitacao') || s.includes('hab')) return 'habilitacao';
+    if (s.includes('contestacao_pai') || s.includes('pai')) return 'contestacao_pai';
+    if (s.includes('negativa') || s.includes('contestacao')) return 'negativa_geral';
+    if (s.includes('desbloqueio')) return 'desbloqueio';
+    if (s.includes('edital') || s.includes('citacao')) return 'citacao_edital';
+    if (s.includes('intimacao')) return 'intimacao_pessoal';
+    if (s.includes('sisbajud') || s.includes('penhora')) return 'penhora_sisbajud';
+    if (s.includes('localizar') || s.includes('oficio')) return 'oficio_localizar';
+    if (s.includes('inicial')) return 'inicial';
+    return s;
+}
+
+function preencherFormularioManual(modelId, fields) {
+    if (!fields) return;
+    const setV = (id, val) => {
+        const el = document.getElementById(id);
+        if (el && val !== undefined && val !== null) el.value = val;
+    };
+
+    const tipoSelect = document.getElementById('tipo_peca');
+    if (tipoSelect) {
+        tipoSelect.value = modelId;
+        alternarFormulario();
+    }
+
+    if (modelId === 'habilitacao') {
+        setV('hab_vara', fields.vara);
+        setV('hab_competencia', fields.competencia);
+        setV('hab_numero', fields.numero);
+        setV('hab_nome_autor', fields.nome_autor || fields.nome_assistido);
+        setV('hab_nacionalidade', fields.nacionalidade);
+        setV('hab_estado_civil', fields.estado_civil);
+        setV('hab_profissao', fields.profissao);
+        setV('hab_rg', fields.rg);
+        setV('hab_cpf', fields.cpf);
+        setV('hab_endereco', fields.endereco);
+        setV('hab_valor_acordo', fields.valor_acordo);
+    } else if (modelId === 'negativa_geral') {
+        setV('neg_vara', fields.vara);
+        setV('neg_competencia', fields.competencia);
+        setV('neg_numero', fields.numero);
+        setV('neg_nome_autor', fields.nome_autor || fields.nome_assistido);
+        setV('neg_cpf', fields.cpf);
+    } else if (modelId === 'desbloqueio') {
+        setV('desb_vara', fields.vara);
+        setV('desb_competencia', fields.competencia);
+        setV('desb_numero', fields.numero);
+        setV('desb_nome_assistido', fields.nome_assistido || fields.nome_autor);
+        setV('desb_titulo_da_acao', fields.titulo_da_acao);
+        setV('desb_nome_parte_contraria', fields["nome_parte_contrária"] || fields.nome_parte_contraria);
+        setV('desb_natureza_credito_executado', fields.natureza_credito_executado);
+        setV('desb_data_bloqueio', fields.data_bloqueio);
+        setV('desb_data_intimacao_bloqueio', fields.data_intimacao_bloqueio);
+        setV('desb_banco', fields.banco);
+        setV('desb_tipo_conta', fields.tipo_conta);
+        setV('desb_valor_total_bloqueado', fields.valor_total_bloqueado);
+        setV('desb_proporcao_verba_bloqueada', fields.proporcao_verba_bloqueada);
+        setV('desb_natureza_verba', fields.natureza_verba);
+        setV('desb_fonte_pagadora', fields.fonte_pagadora);
+        setV('desb_data_credito', fields.data_credito);
+        setV('desb_valor_credito', fields.valor_credito);
+        setV('desb_descricao_credito_extrato', fields.descricao_credito_extrato);
+        setV('desb_valor_40_salarios_minimos', fields.valor_40_salarios_minimos);
+        setV('desb_doc_extrato', fields.doc_extrato);
+        setV('desb_doc_comprovantes', fields.doc_comprovantes);
+        setV('desb_situacao_familiar', fields.situacao_familiar);
+        setV('desb_despesas_essenciais', fields.despesas_essenciais);
+    } else if (modelId === 'citacao_edital') {
+        setV('ced_vara', fields.vara);
+        setV('ced_competencia', fields.competencia);
+        setV('ced_numero', fields.numero);
+        setV('ced_nome_assistido', fields.nome_assistido || fields.nome_autor);
+        setV('ced_decisao_despacho', fields["decisão_despacho_ato_ordinatorio_fls"] || fields.decisao_despacho);
+    } else if (modelId === 'intimacao_pessoal') {
+        setV('int_vara', fields.vara);
+        setV('int_competencia', fields.competencia);
+        setV('int_numero', fields.numero);
+        setV('int_nome_assistido', fields.nome_assistido || fields.nome_autor);
+        setV('int_motivo_contato', fields.motivo_da_necessidade_de_contato || fields.motivo_contato);
+    } else if (modelId === 'penhora_sisbajud') {
+        setV('sis_vara', fields.vara);
+        setV('sis_competencia', fields.competencia);
+        setV('sis_numero', fields.numero);
+        setV('sis_nome_crianca', fields["nome_criança"] || fields.nome_crianca);
+        setV('sis_nome_mae', fields.nome_mae || fields.nome_assistido);
+        setV('sis_periodo_alimentos', fields["período_dos_alimentos_vencidos"] || fields.periodo_alimentos);
+    } else if (modelId === 'oficio_localizar') {
+        setV('ofi_vara', fields.vara);
+        setV('ofi_competencia', fields.competencia);
+        setV('ofi_numero', fields.numero);
+        setV('ofi_nome_assistido', fields.nome_assistido || fields.nome_autor);
+    } else if (modelId === 'inicial') {
+        setV('ini_nome_autor', fields.nome_autor || fields.nome_assistido);
+        setV('ini_nacionalidade', fields.nacionalidade);
+        setV('ini_estado_civil', fields.estado_civil);
+        setV('ini_profissao', fields.profissao);
+        setV('ini_rg', fields.rg);
+        setV('ini_cpf', fields.cpf);
+        setV('ini_endereco', fields.endereco);
+        setV('ini_vara', fields.vara);
+        setV('ini_nome_requerido', fields.nome_requerido);
+        setV('ini_profissao_requerido', fields.profissao_requerido);
+        setV('ini_rg_requerido', fields.rg_requerido);
+        setV('ini_cpf_requerido', fields.cpf_requerido);
+        setV('ini_endereco_requerido', fields.endereco_requerido);
+        setV('ini_data_casamento', fields.data_casamento);
+        setV('ini_regime_bens', fields.regime_bens);
+        setV('ini_registro_casamento', fields.registro_casamento);
+        setV('ini_nome_filho', fields.nome_filho);
+        setV('ini_nascimento_filho', fields.nascimento_filho);
+        setV('ini_rg_filho', fields.rg_filho);
+        setV('ini_cpf_filho', fields.cpf_filho);
+        setV('ini_bens_partilhar', fields.bens_partilhar);
+        setV('ini_nome_solteira', fields.nome_solteira);
+        setV('ini_valor_causa', fields.valor_causa);
+    } else if (modelId === 'contestacao_pai') {
+        setV('cpai_vara', fields.vara);
+        setV('cpai_numero', fields.numero);
+        setV('cpai_tipo_de_acao', fields.tipo_de_acao);
+        setV('cpai_n_oficio_defensoria', fields.n_oficio_defensoria);
+        setV('cpai_nome_reu', fields.nome_reu || fields.nome_assistido);
+        setV('cpai_nacionalidade', fields.nacionalidade);
+        setV('cpai_estado_civil', fields.estado_civil);
+        setV('cpai_profissao', fields.profissao);
+        setV('cpai_rg', fields.rg);
+        setV('cpai_cpf', fields.cpf);
+        setV('cpai_endereco', fields.endereco);
+        setV('cpai_nome_autor', fields.nome_autor);
+        setV('cpai_nomes_filhos', fields.nomes_filhos);
+        setV('cpai_idades_filhos', fields.idades_filhos);
+        setV('cpai_sintese_pretensoes_autor', fields.sintese_pretensoes_autor);
+        setV('cpai_data_desligamento', fields.data_desligamento);
+        setV('cpai_ultimo_empregador', fields.ultimo_empregador);
+        setV('cpai_cargo_ultimo_emprego', fields.cargo_ultimo_emprego);
+        setV('cpai_motivo_desligamento', fields.motivo_desligamento);
+        setV('cpai_ultimo_salario', fields.ultimo_salario);
+        setV('cpai_renda_atual_requerido', fields.renda_atual_requerido);
+        setV('cpai_impugnacao_alegacoes_autor', fields.impugnacao_alegacoes_autor);
+        setV('cpai_contribuicoes_in_natura', fields.contribuicoes_in_natura);
+        setV('cpai_tese_guarda_especifica', fields.tese_guarda_especifica);
+        setV('cpai_fundamento_estudo_social', fields.fundamento_estudo_social);
+        setV('cpai_percentual_rendimentos_proposto', fields.percentual_rendimentos_proposto);
+        setV('cpai_percentual_salario_minimo_proposto', fields.percentual_salario_minimo_proposto);
+    }
+}
+
+async function processarArquivoComGemini(event) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+
+    event.target.value = '';
+
+    const apiKey = localStorage.getItem('jedi_gemini_api_key');
+    if (!apiKey) {
+        abrirModalConfigGemini();
+        alert("🔮 VISÃO HOLOCRON (GEMINI AI)\n\nPara analisar imagens ou PDFs de decisões judiciais com visão multimodal do Gemini, por favor insira sua chave da API Gemini do Google AI Studio.");
+        return;
+    }
+
+    if (file.size > 15 * 1024 * 1024) {
+        alert("O arquivo é muito grande para o Holocron (máximo 15MB).");
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = async () => {
+        const dataUrl = reader.result;
+        const base64Data = dataUrl.split(',')[1];
+        const mimeType = file.type || (file.name.toLowerCase().endsWith('.pdf') ? 'application/pdf' : 'image/jpeg');
+
+        alternarModoVisual('chat');
+        adicionarMensagemUI('user', `📄 [Anexo Enviado: ${file.name}] - Mestre Jedi, por favor analise este documento judicial e identifique a situação e os dados necessários.`);
+        setDigitando(true, "Holocron Vision: Analisando documento com Gemini Multimodal...");
+
+        const promptAnalise = `Analise atentamente este documento judicial anexo (${file.name}).
+Sua tarefa é:
+1. Identificar o tipo do documento (despacho, intimação, sentença, extrato de bloqueio, certidão etc.).
+2. Identificar a Comarca, Vara, Número do Processo e Partes envolvidas.
+3. Se for uma situação que se enquadre em um dos modelos padrão do formulário manual (habilitacao, negativa_geral, desbloqueio, citacao_edital, intimacao_pessoal, penhora_sisbajud, oficio_localizar, inicial, contestacao_pai), extraia os campos para esse modelo.
+4. Retornar um JSON estrito com o seguinte formato:
+{
+  "ready": true,
+  "modelId": "nome_do_modelo_ou_dinamico",
+  "fields": {
+     // campos mapeados caso se aplique a um modelo manual
+  },
+  "resumo_documento": "resumo claro de 2 a 3 frases sobre o que o documento trata",
+  "orientacao_padawan": "orientação ao estagiário sobre a estratégia processual e próximos passos"
+}`;
+
+        try {
+            const rawResponse = await chamarGeminiAPI({
+                prompt: promptAnalise,
+                fileBase64: base64Data,
+                mimeType: mimeType,
+                jsonMode: true
+            });
+
+            let dados;
+            try {
+                dados = JSON.parse(rawResponse);
+            } catch (err) {
+                const match = rawResponse.match(/\{[\s\S]*\}/);
+                if (match) {
+                    dados = JSON.parse(match[0]);
+                } else {
+                    throw new Error("Não foi possível decodificar os dados extraídos pelo Holocron.");
+                }
+            }
+
+            setDigitando(false);
+
+            if (dados.modelId && dados.fields) {
+                const modelId = normalizarModelId(dados.modelId);
+                preencherFormularioManual(modelId, dados.fields);
+            }
+
+            const cardInfo = `
+                <div class="forja-sucesso-card" style="border-color: var(--jedi-gold);">
+                    <h4>🔮 Holocron Vision: Análise Concluída</h4>
+                    <p><strong>Síntese do Documento:</strong> ${dados.resumo_documento || 'Documento analisado com sucesso.'}</p>
+                    <p><strong>Estratégia Processual:</strong> ${dados.orientacao_padawan || 'Verifique os dados preenchidos no formulário.'}</p>
+                    <div style="display:flex; gap:10px; margin-top:10px;">
+                        <button type="button" class="btn-redownload" onclick="alternarModoVisual('manual')" style="background:linear-gradient(135deg, #1e3a8a, #0369a1); border-color:var(--jedi-cyan);">
+                            📜 Conferir no Formulário Manual
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            adicionarMensagemUI('jedi', `Saudações, padawan! Analisei o documento **${file.name}** através da Visão Multimodal do Gemini. Todos os dados identificados foram lidos e processados pela Forja.`, cardInfo);
+
+        } catch (erro) {
+            console.error("Erro na Visão Holocron:", erro);
+            setDigitando(false);
+            adicionarMensagemUI('jedi', `Houve uma perturbação na Força ao tentar analisar o arquivo anexo: ${erro.message}`);
+        }
+    };
+    reader.readAsDataURL(file);
+}
+
+async function auditarCamposComGemini() {
+    const btn = document.getElementById('btnAuditar');
+    const container = document.getElementById('resultado_auditoria');
+    if (!container) return;
+
+    const apiKey = localStorage.getItem('jedi_gemini_api_key');
+    if (!apiKey) {
+        abrirModalConfigGemini();
+        alert("🛡️ AUDITOR DA FORÇA (GEMINI AI)\n\nPara auditar os requisitos da petição com inteligência artificial, configure sua chave da API Gemini.");
+        return;
+    }
+
+    const tipo = document.getElementById('tipo_peca').value;
+
+    const getVal = id => {
+        const el = document.getElementById(id);
+        return el ? el.value.trim() : "";
+    };
+
+    let campos = {};
+    if (tipo === 'habilitacao') {
+        campos = { vara: getVal('hab_vara'), competencia: getVal('hab_competencia'), numero: getVal('hab_numero'), nome_autor: getVal('hab_nome_autor'), cpf: getVal('hab_cpf'), rg: getVal('hab_rg'), endereco: getVal('hab_endereco'), valor_acordo: getVal('hab_valor_acordo') };
+    } else if (tipo === 'negativa_geral') {
+        campos = { vara: getVal('neg_vara'), competencia: getVal('neg_competencia'), numero: getVal('neg_numero'), nome_autor: getVal('neg_nome_autor'), cpf: getVal('neg_cpf') };
+    } else if (tipo === 'desbloqueio') {
+        campos = { vara: getVal('desb_vara'), competencia: getVal('desb_competencia'), numero: getVal('desb_numero'), nome_assistido: getVal('desb_nome_assistido'), titulo_da_acao: getVal('desb_titulo_da_acao'), nome_parte_contraria: getVal('desb_nome_parte_contraria'), banco: getVal('desb_banco'), valor_total_bloqueado: getVal('desb_valor_total_bloqueado'), natureza_verba: getVal('desb_natureza_verba'), valor_40_salarios_minimos: getVal('desb_valor_40_salarios_minimos') };
+    } else if (tipo === 'citacao_edital') {
+        campos = { vara: getVal('ced_vara'), competencia: getVal('ced_competencia'), numero: getVal('ced_numero'), nome_assistido: getVal('ced_nome_assistido'), decisao_despacho: getVal('ced_decisao_despacho') };
+    } else if (tipo === 'intimacao_pessoal') {
+        campos = { vara: getVal('int_vara'), competencia: getVal('int_competencia'), numero: getVal('int_numero'), nome_assistido: getVal('int_nome_assistido'), motivo_contato: getVal('int_motivo_contato') };
+    } else if (tipo === 'penhora_sisbajud') {
+        campos = { vara: getVal('sis_vara'), competencia: getVal('sis_competencia'), numero: getVal('sis_numero'), nome_crianca: getVal('sis_nome_crianca'), nome_mae: getVal('sis_nome_mae'), periodo_alimentos: getVal('sis_periodo_alimentos') };
+    } else if (tipo === 'oficio_localizar') {
+        campos = { vara: getVal('ofi_vara'), competencia: getVal('ofi_competencia'), numero: getVal('ofi_numero'), nome_assistido: getVal('ofi_nome_assistido') };
+    } else if (tipo === 'inicial') {
+        campos = { vara: getVal('ini_vara'), nome_autor: getVal('ini_nome_autor'), cpf: getVal('ini_cpf'), endereco: getVal('ini_endereco'), nome_requerido: getVal('ini_nome_requerido'), nome_filho: getVal('ini_nome_filho'), nascimento_filho: getVal('ini_nascimento_filho'), valor_causa: getVal('ini_valor_causa') };
+    } else if (tipo === 'contestacao_pai') {
+        campos = { vara: getVal('cpai_vara'), numero: getVal('cpai_numero'), nome_reu: getVal('cpai_nome_reu'), cpf: getVal('cpai_cpf'), nome_autor: getVal('cpai_nome_autor'), nomes_filhos: getVal('cpai_nomes_filhos'), renda_atual_requerido: getVal('cpai_renda_atual_requerido'), percentual_salario_minimo_proposto: getVal('cpai_percentual_salario_minimo_proposto') };
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '🔮 Consultando a Força...';
+    container.style.display = 'block';
+    container.className = 'resultado-auditoria-box';
+    container.innerHTML = '<div style="color:var(--jedi-cyan); text-align:center; padding:10px;">⚡ O Mestre Jedi está auditando os requisitos processuais do seu modelo...</div>';
+
+    const promptAuditoria = `Audite o preenchimento da peça jurídica abaixo segundo as regras do Código de Processo Civil (CPC/2015).
+
+Peça selecionada: "${tipo}"
+Dados preenchidos pelo padawan:
+${JSON.stringify(campos, null, 2)}
+
+Sua tarefa:
+1. Verificar se o número do processo segue o formato padrão CNJ (NNNNNNN-DD.AAAA.J.TR.OOOO).
+2. Verificar se faltam campos essenciais para a validade da petição (${tipo}).
+3. Avaliar requisitos específicos da peça (ex: no desbloqueio, se há indicação de proventos/40 salários mínimos impenhoráveis; na citação por edital, se houve esgotamento; na penhora, se o período dos alimentos foi informado).
+4. Retornar um JSON no formato:
+{
+  "status_geral": "EQUILIBRIO" ou "ALERTA",
+  "titulo": "Mensagem curta do Mestre Jedi",
+  "itens_checklist": [
+    { "status": "ok" ou "atencao" ou "erro", "descricao": "..." }
+  ],
+  "parecer_doutrinario": "Parágrafo com parecer técnico e recomendações práticas"
+}`;
+
+    try {
+        const rawJson = await chamarGeminiAPI({
+            prompt: promptAuditoria,
+            jsonMode: true
+        });
+
+        let resultado;
+        try {
+            resultado = JSON.parse(rawJson);
+        } catch (e) {
+            const m = rawJson.match(/\{[\s\S]*\}/);
+            resultado = m ? JSON.parse(m[0]) : { status_geral: "ALERTA", titulo: "Resultado da Auditoria", itens_checklist: [], parecer_doutrinario: rawJson };
+        }
+
+        const ehEquilibrio = resultado.status_geral === "EQUILIBRIO";
+
+        container.className = `resultado-auditoria-box ${ehEquilibrio ? 'equilibrio' : 'alerta'}`;
+        container.innerHTML = `
+            <h4>${ehEquilibrio ? '🛡️ A Força está em Equilíbrio nesta Peça!' : '⚠️ Perturbações Detectadas pelo Holocron'}</h4>
+            <div style="font-size:0.92em; margin-bottom:10px; color:${ehEquilibrio ? '#a7f3d0' : 'var(--jedi-gold-bright)'};">
+                ${resultado.titulo || 'Auditoria concluída com sucesso.'}
+            </div>
+            <ul class="auditoria-checklist">
+                ${(resultado.itens_checklist || []).map(item => `
+                    <li>
+                        <span>${item.status === 'ok' ? '✅' : (item.status === 'erro' ? '❌' : '⚠️')}</span>
+                        <span>${item.descricao}</span>
+                    </li>
+                `).join('')}
+            </ul>
+            <div class="auditoria-parecer">
+                <strong>📜 Parecer do Mestre Jedi:</strong><br>
+                ${resultado.parecer_doutrinario || 'Tudo pronto para protocolo.'}
+            </div>
+        `;
+
+    } catch (err) {
+        console.error("Erro na auditoria:", err);
+        container.className = 'resultado-auditoria-box alerta';
+        container.innerHTML = `<h4>⚠️ Falha na Auditoria</h4><p style="color:#fca5a5;">${err.message}</p>`;
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '🛡️ Auditar Requisitos com a Força (Gemini AI)';
+    }
+}
+
+function configurarDragAndDrop() {
+    const banners = [
+        document.getElementById('banner_scanner_manual'),
+        document.getElementById('painel_chat')
+    ];
+
+    banners.forEach(el => {
+        if (!el) return;
+        ['dragenter', 'dragover'].forEach(eventName => {
+            el.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                el.classList.add('dragover');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            el.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                el.classList.remove('dragover');
+            }, false);
+        });
+
+        el.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files && files.length > 0) {
+                const fakeEvent = { target: { files: files, value: '' } };
+                processarArquivoComGemini(fakeEvent);
+            }
+        }, false);
+    });
 }
 
 async function gerarDocumentoDinamicoIA(dadosIA, padawan) {
@@ -1685,6 +2785,90 @@ async function enviarMensagemChat() {
 
     btnEnviar.disabled = true;
     setDigitando(true);
+
+    // Rota Direta Gemini API (se chave estiver configurada no navegador)
+    const apiKey = localStorage.getItem('jedi_gemini_api_key');
+    if (apiKey) {
+        try {
+            const rawResposta = await chamarGeminiAPI({
+                prompt: textoUsuario,
+                historico: historicoChat.slice(0, -1)
+            });
+
+            setDigitando(false);
+
+            const matchIA = rawResposta.match(/```json_ia([\s\S]*?)```/);
+            let respostaMestre = rawResposta.replace(/```json_ia[\s\S]*?```/g, '').trim();
+
+            historicoChat.push({ role: "assistant", content: respostaMestre });
+
+            if (matchIA) {
+                let dadosJson;
+                try {
+                    dadosJson = JSON.parse(matchIA[1]);
+                } catch (e) {
+                    console.error("Erro ao analisar dados da IA:", e);
+                }
+
+                if (dadosJson && (dadosJson.ready === true || dadosJson.ready === "true")) {
+                    const padawanAtual = (obterPadawanAtual() || "PADAWAN").toUpperCase();
+
+                    if (!obterPadawanAtual() || !nomeEhPadawan()) {
+                        adicionarMensagemUI('jedi', respostaMestre);
+                        adicionarMensagemUI('system', "⚠️ Repita seu nome de Padawan autorizado no campo 'Identificação do Padawan' no topo e clique em Baixar ou peça para gerar novamente.");
+                        const campoInterno = document.getElementById('nome_bad_boy');
+                        if (campoInterno) campoInterno.focus();
+                        btnEnviar.disabled = false;
+                        atualizarBotao();
+                        return;
+                    }
+
+                    const resultadoForja = await gerarDocumentoDinamicoIA(dadosJson, padawanAtual);
+
+                    if (resultadoForja.sucesso) {
+                        ultimoPacoteIA = { dadosIA: dadosJson, padawan: padawanAtual };
+
+                        const cardSucesso = `
+                            <div class="forja-sucesso-card">
+                                <h4>🎉 ${dadosJson.titulo_peca || "Petição Forjada com Sucesso!"}</h4>
+                                <p><strong>Juízo:</strong> ${dadosJson.vara || "A distribuir"} • ${dadosJson.competencia || "Ribeirão Preto/SP"}</p>
+                                <div class="forja-pecas-lista">
+                                    ${resultadoForja.arquivos.map(a => `<span class="forja-peca-tag">📄 ${a.nomeArquivo}</span>`).join('')}
+                                </div>
+                                <button type="button" class="btn-redownload" onclick="baixarNovamenteIA()">
+                                    📥 Baixar Novamente
+                                </button>
+                            </div>
+                        `;
+
+                        adicionarMensagemUI('jedi', respostaMestre, cardSucesso);
+                        registrarLogPlanilha(
+                            padawanAtual,
+                            resultadoForja.processo,
+                            resultadoForja.acao,
+                            resultadoForja.arquivos.map(a => a.id).join(", ")
+                        );
+                    } else {
+                        adicionarMensagemUI('jedi', respostaMestre);
+                        adicionarMensagemUI('system', `⚠️ Erro ao montar o arquivo Word: ${resultadoForja.erro}`);
+                    }
+
+                    btnEnviar.disabled = false;
+                    input.focus();
+                    return;
+                }
+            }
+
+            adicionarMensagemUI('jedi', respostaMestre);
+            btnEnviar.disabled = false;
+            input.focus();
+            return;
+
+        } catch (errDirect) {
+            console.warn("Distúrbio na conexão direta com Gemini, tentando ponte Apps Script:", errDirect);
+            // Continua para o fetch(URL_IA_JEDI) abaixo como fallback
+        }
+    }
 
     try {
         const padawanAtual = (obterPadawanAtual() || "ESTAGIÁRIO(A)").toUpperCase();
@@ -2236,12 +3420,25 @@ window.tratarTeclaChat = tratarTeclaChat;
 window.ajustarAlturaTextarea = ajustarAlturaTextarea;
 window.aplicarPromptChip = aplicarPromptChip;
 window.baixarNovamenteIA = baixarNovamenteIA;
+window.abrirModalConfigGemini = abrirModalConfigGemini;
+window.fecharModalConfigGemini = fecharModalConfigGemini;
+window.salvarConfigGemini = salvarConfigGemini;
+window.testarConexaoGemini = testarConexaoGemini;
+window.atualizarStatusBotaoGemini = atualizarStatusBotaoGemini;
+window.acionarUploadArquivo = acionarUploadArquivo;
+window.ouvirMensagemMestre = ouvirMensagemMestre;
+window.chamarGeminiAPI = chamarGeminiAPI;
+window.processarArquivoComGemini = processarArquivoComGemini;
+window.auditarCamposComGemini = auditarCamposComGemini;
+window.configurarDragAndDrop = configurarDragAndDrop;
 
 document.addEventListener('DOMContentLoaded', () => {
     alternarFormulario();
     atualizarBotao();
     inicializarEasterEggCafe();
     reiniciarChat();
+    atualizarStatusBotaoGemini();
+    configurarDragAndDrop();
     const portalInput = document.getElementById('portal_nome_input');
     if (portalInput) portalInput.focus();
 });
