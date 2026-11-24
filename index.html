@@ -3,726 +3,499 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forja de Documentos - The Jedi Order</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <title>The Jedi Order • Forja de Documentos (EAJ/UNAERP)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-space: #050b18;
-            --panel-bg: #0b172e;
-            --panel-inner: #081123;
-            --jedi-gold: #e5b84b;
-            --jedi-gold-bright: #f7d774;
+            --panel-bg: #0b132b;
+            --panel-inner: #111c3a;
+            --jedi-gold: #d4af37;
+            --jedi-gold-bright: #facc15;
             --jedi-cyan: #38bdf8;
-            --jedi-cyan-glow: rgba(56, 189, 248, 0.25);
+            --jedi-cyan-glow: rgba(56, 189, 248, 0.35);
+            --border-subtle: #1e293b;
             --text-main: #e2e8f0;
             --text-muted: #94a3b8;
-            --border-subtle: rgba(56, 189, 248, 0.35);
-            --user-bubble-bg: rgba(229, 184, 75, 0.12);
-            --jedi-bubble-bg: #081329;
+            --sith-red: #ef4444;
+            --sith-red-glow: rgba(239, 68, 68, 0.45);
         }
 
         body.sith-theme {
-            --bg-space: #090204;
-            --panel-bg: #18060a;
-            --panel-inner: #100306;
             --jedi-gold: #ef4444;
             --jedi-gold-bright: #f87171;
-            --jedi-cyan: #dc2626;
-            --jedi-cyan-glow: rgba(239, 68, 68, 0.3);
-            --text-main: #f1f5f9;
-            --text-muted: #fca5a5;
-            --border-subtle: rgba(239, 68, 68, 0.45);
-            --user-bubble-bg: rgba(239, 68, 68, 0.15);
-            --jedi-bubble-bg: #1f060b;
-        }
-        
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: var(--bg-space);
-            background-image: 
-                radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.08) 0%, transparent 45%),
-                radial-gradient(circle at 80% 80%, rgba(229, 184, 75, 0.07) 0%, transparent 45%);
-            margin: 0; 
-            padding: 20px; 
-            color: var(--text-main);
-            transition: background-color 0.8s ease, color 0.8s ease;
+            --jedi-cyan: #ef4444;
+            --jedi-cyan-glow: rgba(239, 68, 68, 0.45);
         }
 
-        body.sith-theme {
-            background-image: 
-                radial-gradient(circle at 20% 20%, rgba(220, 38, 38, 0.14) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(127, 29, 29, 0.18) 0%, transparent 50%);
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(circle at top, #0f1c3f 0%, var(--bg-space) 70%);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            transition: all 0.4s ease;
         }
 
         /* ===================================================================== */
-        /* PORTAL DE ENTRADA JEDI (TELA INICIAL COM OS 2 GIFS)                   */
+        /* PORTAL DE ENTRADA JEDI                                                */
         /* ===================================================================== */
         .portal-overlay {
             position: fixed;
             inset: 0;
-            z-index: 9999;
-            background: radial-gradient(circle at center, #0a162e 0%, #030711 100%);
+            background: radial-gradient(circle at center, #0d1936 0%, #030711 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
-            transition: opacity 0.6s ease;
+            z-index: 10000;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
         }
+
         .portal-overlay.oculto {
-            display: none;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
         }
+
         .portal-card {
-            background: #081123;
-            border: 2px solid var(--jedi-cyan);
-            border-radius: 16px;
-            max-width: 460px;
-            width: 100%;
-            padding: 28px 26px;
-            text-align: center;
-            box-shadow: 0 0 40px rgba(56, 189, 248, 0.25), 0 20px 50px rgba(0, 0, 0, 0.85);
-            transition: all 0.35s ease;
-        }
-        .portal-card.portal-sith-alerta {
-            border-color: #ef4444;
-            background: #180509;
-            box-shadow: 0 0 45px rgba(239, 68, 68, 0.45), 0 20px 50px rgba(0, 0, 0, 0.9);
-        }
-        .portal-gif-box {
-            width: 220px;
-            height: 220px;
-            margin: 0 auto 18px auto;
-            border-radius: 14px;
-            overflow: hidden;
+            background: var(--panel-bg);
             border: 2px solid var(--jedi-gold);
-            box-shadow: 0 0 22px rgba(229, 184, 75, 0.3);
+            border-radius: 16px;
+            max-width: 480px;
+            width: 100%;
+            padding: 28px 24px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 25px var(--jedi-cyan-glow);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .portal-card.portal-sith-alerta {
+            border-color: var(--sith-red);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 35px var(--sith-red-glow);
+        }
+
+        .portal-gif-box {
+            width: 100%;
+            max-height: 230px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1.5px solid var(--border-subtle);
+            margin-bottom: 18px;
             background: #040914;
         }
-        .portal-card.portal-sith-alerta .portal-gif-box {
-            border-color: #ef4444;
-            box-shadow: 0 0 22px rgba(239, 68, 68, 0.5);
-        }
+
         .portal-gif-box img {
             width: 100%;
-            height: 100%;
+            height: 220px;
             object-fit: cover;
             display: block;
         }
+
         .portal-titulo {
             font-family: 'Cinzel', serif;
             color: var(--jedi-gold-bright);
-            font-size: 1.4em;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            margin: 0 0 8px 0;
+            font-size: 1.25em;
+            margin: 0 0 10px 0;
+            letter-spacing: 0.5px;
         }
+
         .portal-subtitulo {
             color: var(--text-muted);
             font-size: 0.92em;
-            line-height: 1.45;
+            line-height: 1.5;
             margin: 0 0 18px 0;
         }
+
         .portal-input {
-            text-align: center;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            margin-bottom: 12px;
-        }
-        .portal-feedback {
-            display: none;
-            margin-top: 14px;
-            padding: 10px 14px;
+            width: 100%;
+            padding: 13px 15px;
             border-radius: 8px;
+            border: 1.5px solid var(--border-subtle);
+            background: #050b18;
+            color: #ffffff;
+            font-size: 0.96em;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 14px;
+            outline: none;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .portal-input:focus {
+            border-color: var(--jedi-cyan);
+            box-shadow: 0 0 12px var(--jedi-cyan-glow);
+        }
+
+        #btn_entrar_portal {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #d4af37, #b48811);
+            color: #050b18;
+            font-family: 'Cinzel', serif;
+            font-weight: 800;
+            font-size: 1em;
+            letter-spacing: 0.8px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        #btn_entrar_portal:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.45);
+        }
+
+        #btn_entrar_portal.sith-mode {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: #ffffff;
+        }
+
+        .portal-feedback {
+            margin-top: 14px;
             font-size: 0.88em;
-            font-weight: 600;
-            line-height: 1.4;
+            line-height: 1.45;
+            border-radius: 8px;
+            display: none;
         }
-        .portal-feedback.erro-sith {
-            display: block;
-            background: rgba(239, 68, 68, 0.18);
-            border: 1px solid #ef4444;
-            color: #fca5a5;
-        }
+
         .portal-feedback.erro-padawan {
             display: block;
-            background: rgba(229, 184, 75, 0.14);
+            padding: 10px 12px;
+            background: rgba(250, 204, 21, 0.12);
             border: 1px solid var(--jedi-gold);
             color: var(--jedi-gold-bright);
         }
 
-        /* TELA DE SALTO NO HIPERESPAÇO (SEGUNDO GIF) */
+        .portal-feedback.erro-sith {
+            display: block;
+            padding: 10px 12px;
+            background: rgba(239, 68, 68, 0.16);
+            border: 1px solid var(--sith-red);
+            color: #fca5a5;
+        }
+
+        /* ===================================================================== */
+        /* TRANSIÇÃO NO HIPERESPAÇO                                              */
+        /* ===================================================================== */
         .hiperespaco-stage {
             position: fixed;
             inset: 0;
-            width: 100vw;
-            height: 100vh;
             background: #000000;
             display: none;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 10000;
+            z-index: 9999;
         }
+
         .hiperespaco-stage.ativo {
             display: flex;
         }
+
         .hiperespaco-stage img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            opacity: 0.85;
         }
+
         .hiperespaco-legenda {
             position: absolute;
-            bottom: 42px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(4, 9, 20, 0.78);
-            border: 1px solid var(--jedi-cyan);
+            bottom: 45px;
+            background: rgba(5, 11, 24, 0.85);
+            border: 1.5px solid var(--jedi-cyan);
             color: var(--jedi-gold-bright);
+            padding: 12px 24px;
+            border-radius: 999px;
             font-family: 'Cinzel', serif;
-            padding: 10px 24px;
-            border-radius: 30px;
-            font-size: 0.95em;
-            letter-spacing: 1.5px;
-            white-space: nowrap;
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+            font-weight: 700;
+            letter-spacing: 1px;
+            box-shadow: 0 0 25px var(--jedi-cyan-glow);
+            text-align: center;
         }
 
-        /* CONTEÚDO PRINCIPAL DO SITE (OCULTO ATÉ PASSAR PELO PORTAL) */
+        /* ===================================================================== */
+        /* CONTEÚDO PRINCIPAL DA FORJA                                           */
+        /* ===================================================================== */
         #site_principal_wrapper {
             display: none;
+            padding: 25px 15px 60px 15px;
         }
+
         #site_principal_wrapper.liberado {
             display: block;
-            animation: revelarForja 0.7s ease;
-        }
-        @keyframes revelarForja {
-            from { opacity: 0; transform: scale(0.985); }
-            to { opacity: 1; transform: scale(1); }
+            animation: fadeInPanel 0.45s ease;
         }
 
-        .container { 
-            max-width: 840px; 
-            margin: 20px auto; 
-            background: var(--panel-bg); 
-            padding: 0 40px 40px 40px; 
-            border-radius: 14px; 
-            border: 1.5px solid var(--border-subtle);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.65), 0 0 25px var(--jedi-cyan-glow); 
-            overflow: hidden;
-            transition: background-color 0.8s ease, border-color 0.8s ease, box-shadow 0.8s ease;
-        }
-
-        .banner-wrapper {
-            margin: 0 -40px 25px -40px;
-            border-bottom: 2px solid var(--jedi-gold);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            background: #040914;
-        }
-        
-        .header-img { width: 100%; display: block; object-fit: cover; }
-
-        .header-text {
-            font-family: 'Cinzel', serif;
-            text-align: center;
-            color: var(--jedi-gold-bright);
-            font-size: 1.75em;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 6px;
-            text-shadow: 0 0 14px rgba(229, 184, 75, 0.35);
-            transition: color 0.8s ease;
-        }
-        
-        h2 { 
-            color: var(--jedi-cyan); 
-            text-align: center; 
-            margin: 0 0 20px 0;
-            font-size: 1.1em;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            transition: color 0.8s ease;
-        }
-        
-        .padawan-greeting {
-            text-align: center;
-            background: var(--panel-inner);
-            color: var(--text-main);
-            padding: 16px 20px;
-            border-radius: 10px;
-            font-size: 0.95em;
-            font-weight: 600;
-            margin-bottom: 20px;
-            border: 1px solid var(--border-subtle);
-            border-left: 4px solid var(--jedi-gold);
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.4);
-            cursor: crosshair; 
-            transition: all 0.3s ease;
-        }
-        .padawan-greeting em { color: var(--jedi-gold-bright); }
-        .padawan-greeting:hover {
-            transform: scale(1.012);
-            border-color: var(--jedi-gold);
-            box-shadow: 0 0 18px var(--jedi-cyan-glow);
-        }
-
-        .padawan-auth-card {
-            background: var(--panel-inner);
-            border: 1.5px solid var(--border-subtle);
-            border-radius: 10px;
-            padding: 16px 20px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
-            transition: all 0.3s ease;
-        }
-        .padawan-auth-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
-        .padawan-auth-header label {
-            font-family: 'Cinzel', serif;
-            font-size: 0.95em;
-            color: var(--jedi-gold-bright);
-            letter-spacing: 0.8px;
-            margin-bottom: 0;
-        }
-        .padawan-auth-body { display: flex; gap: 15px; align-items: center; }
-        .padawan-auth-body input[type="text"] { flex: 1; margin-bottom: 0; }
-        .padawan-badge-status {
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-size: 0.82em;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            white-space: nowrap;
-            transition: all 0.3s ease;
-        }
-        .padawan-badge-status.padawan {
-            background: rgba(56, 189, 248, 0.15);
-            color: var(--jedi-cyan);
-            border: 1px solid var(--jedi-cyan);
-        }
-        .padawan-badge-status.sith {
-            background: rgba(239, 68, 68, 0.2);
-            color: #fca5a5;
-            border: 1px solid #ef4444;
-        }
-        .padawan-badge-status.vazio {
-            background: rgba(148, 163, 184, 0.12);
-            color: var(--text-muted);
-            border: 1px solid rgba(148, 163, 184, 0.25);
-        }
-
-        .mode-selector-wrapper {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 28px;
-        }
-        .mode-tab-btn {
-            background: var(--panel-inner);
-            color: var(--text-muted);
-            border: 1.5px solid var(--border-subtle);
-            padding: 16px 18px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-family: 'Inter', sans-serif;
-            text-align: left;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            margin-top: 0;
-            text-transform: none;
-            letter-spacing: 0;
-        }
-        .mode-tab-btn:hover {
-            color: var(--text-main);
-            border-color: var(--jedi-cyan);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px var(--jedi-cyan-glow);
-        }
-        .mode-tab-btn.active {
-            background: linear-gradient(135deg, rgba(8, 17, 35, 0.95), rgba(11, 23, 46, 0.95));
-            border-color: var(--jedi-gold);
-            color: #ffffff;
-            box-shadow: 0 0 20px rgba(229, 184, 75, 0.25), inset 0 0 15px rgba(56, 189, 248, 0.1);
-        }
-        .mode-tab-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--jedi-cyan), var(--jedi-gold-bright));
-        }
-        .mode-tab-icon { font-size: 1.8em; line-height: 1; }
-        .mode-tab-text strong {
-            display: block;
-            font-family: 'Cinzel', serif;
-            font-size: 0.98em;
-            letter-spacing: 0.5px;
-            color: var(--jedi-gold-bright);
-        }
-        .mode-tab-btn:not(.active) .mode-tab-text strong { color: var(--text-main); }
-        .mode-tab-text small { display: block; font-size: 0.82em; color: var(--text-muted); margin-top: 3px; }
-
-        .painel-modo { display: none; animation: fadeInPanel 0.4s ease; }
-        .painel-modo.ativo { display: block; }
         @keyframes fadeInPanel {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .chat-terminal {
-            background: var(--panel-inner);
-            border: 1.5px solid var(--border-subtle);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 0, 0, 0.6);
-            display: flex;
-            flex-direction: column;
-        }
-        .chat-terminal-header {
-            background: #040914;
-            padding: 12px 18px;
-            border-bottom: 1.5px solid var(--border-subtle);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .chat-status-indicator { display: flex; align-items: center; gap: 10px; }
-        .status-dot {
-            width: 10px; height: 10px; border-radius: 50%;
-            background-color: #10b981;
-            box-shadow: 0 0 10px #10b981;
-            animation: pulseDot 2s infinite;
-        }
-        @keyframes pulseDot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(0.85); }
-        }
-        .chat-title-text {
-            font-family: 'Cinzel', serif;
-            font-size: 0.9em;
-            color: var(--jedi-gold-bright);
-            font-weight: 700;
-            letter-spacing: 0.8px;
-        }
-        .chat-subtitle-badge { font-size: 0.78em; color: var(--jedi-cyan); display: block; }
-        .btn-reset-chat {
-            background: transparent;
-            color: var(--text-muted);
-            border: 1px solid var(--border-subtle);
-            padding: 6px 12px;
-            font-size: 0.8em;
-            border-radius: 6px;
-            cursor: pointer;
-            font-family: 'Inter', sans-serif;
-            text-transform: none;
-            letter-spacing: 0;
-            width: auto;
-            margin: 0;
-            box-shadow: none;
-        }
-        .btn-reset-chat:hover {
-            color: var(--jedi-gold-bright);
-            border-color: var(--jedi-gold);
-            transform: none;
-            background: rgba(229, 184, 75, 0.1);
-        }
-
-        .chat-chips-bar {
-            background: rgba(4, 9, 20, 0.65);
-            padding: 10px 16px;
-            border-bottom: 1px solid rgba(56, 189, 248, 0.15);
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            scrollbar-width: thin;
-        }
-        .chat-chip {
-            background: rgba(56, 189, 248, 0.08);
-            border: 1px solid var(--border-subtle);
-            color: var(--text-main);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.8em;
-            white-space: nowrap;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .chat-chip:hover {
-            background: rgba(56, 189, 248, 0.22);
-            color: var(--jedi-gold-bright);
-            border-color: var(--jedi-gold);
-            transform: translateY(-1px);
-        }
-
-        .chat-messages-container {
-            height: 440px;
-            overflow-y: auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            background: linear-gradient(180deg, #070e1c 0%, #050b18 100%);
-            scrollbar-width: thin;
-            scrollbar-color: var(--jedi-cyan) var(--panel-inner);
-        }
-        .chat-messages-container::-webkit-scrollbar { width: 7px; }
-        .chat-messages-container::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 4px; }
-
-        .chat-msg { max-width: 85%; display: flex; gap: 12px; animation: msgIn 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        @keyframes msgIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .chat-msg.jedi { align-self: flex-start; }
-        .chat-msg.user { align-self: flex-end; flex-direction: row-reverse; }
-        .chat-msg.system { align-self: center; max-width: 95%; }
 
-        .chat-avatar {
-            width: 38px; height: 38px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.25em; flex-shrink: 0;
-            border: 1.5px solid var(--border-subtle);
+        .container {
+            max-width: 820px;
+            margin: 0 auto;
+            background: var(--panel-bg);
+            border: 1.5px solid var(--jedi-gold);
+            border-radius: 16px;
+            padding: 0 32px 36px 32px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 25px var(--jedi-cyan-glow);
+            overflow: hidden;
+        }
+
+        .banner-wrapper {
+            margin: 0 -32px 22px -32px;
+            border-bottom: 2px solid var(--jedi-gold);
             background: #040914;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
-        .chat-msg.jedi .chat-avatar { border-color: var(--jedi-cyan); box-shadow: 0 0 10px var(--jedi-cyan-glow); }
-        .chat-msg.user .chat-avatar { border-color: var(--jedi-gold); box-shadow: 0 0 10px rgba(229, 184, 75, 0.3); }
 
-        .chat-bubble {
-            padding: 14px 18px;
-            border-radius: 12px;
-            font-size: 0.93em;
-            line-height: 1.55;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-            word-break: break-word;
-        }
-        .chat-msg.jedi .chat-bubble {
-            background: var(--jedi-bubble-bg);
-            border: 1px solid var(--border-subtle);
-            color: var(--text-main);
-            border-top-left-radius: 2px;
-        }
-        .chat-msg.user .chat-bubble {
-            background: var(--user-bubble-bg);
-            border: 1px solid var(--jedi-gold);
-            color: #ffffff;
-            border-top-right-radius: 2px;
-        }
-        .chat-msg.system .chat-bubble {
-            background: rgba(16, 185, 129, 0.12);
-            border: 1px dashed #10b981;
-            color: #a7f3d0;
-            text-align: center;
-            font-size: 0.88em;
+        .header-img {
             width: 100%;
+            max-height: 210px;
+            object-fit: cover;
+            display: block;
         }
 
-        .chat-bubble strong { color: var(--jedi-gold-bright); }
-        .chat-bubble ul { margin: 8px 0; padding-left: 20px; }
-        .chat-bubble li { margin-bottom: 4px; }
-
-        .typing-indicator {
-            display: none;
-            align-self: flex-start;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 16px;
-            background: var(--jedi-bubble-bg);
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            color: var(--jedi-cyan);
-            font-size: 0.86em;
-            font-style: italic;
-        }
-        .typing-indicator.ativo { display: flex; }
-        .typing-dots { display: inline-flex; gap: 4px; }
-        .typing-dot {
-            width: 6px; height: 6px; border-radius: 50%;
-            background: var(--jedi-cyan);
-            animation: bounceDot 1.4s infinite ease-in-out both;
-        }
-        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
-        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
-        @keyframes bounceDot {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
-        }
-
-        .chat-input-wrapper {
-            background: #040914;
-            padding: 14px 18px;
-            border-top: 1.5px solid var(--border-subtle);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .chat-input-box { display: flex; gap: 12px; align-items: flex-end; }
-        .chat-textarea {
-            flex: 1;
-            min-height: 52px;
-            max-height: 160px;
-            resize: none;
-            padding: 12px 14px;
-            border: 1.5px solid var(--border-subtle);
-            border-radius: 8px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.94em;
-            background: var(--panel-inner);
-            color: #ffffff;
-            box-sizing: border-box;
-            transition: all 0.25s ease;
-        }
-        .chat-textarea:focus {
-            border-color: var(--jedi-cyan);
-            outline: none;
-            box-shadow: 0 0 0 3px var(--jedi-cyan-glow);
-        }
-        .btn-enviar-chat { width: auto; min-width: 130px; padding: 14px 22px; margin-top: 0; font-size: 0.95em; flex-shrink: 0; }
-        .chat-hint-bar { display: flex; justify-content: space-between; font-size: 0.78em; color: var(--text-muted); padding: 0 4px; }
-
-        .forja-sucesso-card {
-            background: linear-gradient(135deg, rgba(8, 25, 45, 0.95), rgba(11, 35, 60, 0.95));
-            border: 2px solid var(--jedi-cyan);
-            border-radius: 10px;
-            padding: 16px;
-            margin-top: 12px;
-            box-shadow: 0 0 20px var(--jedi-cyan-glow);
-            text-align: left;
-        }
-        .forja-sucesso-card h4 {
-            margin: 0 0 8px 0;
-            color: var(--jedi-gold-bright);
+        .header-text {
+            text-align: center;
             font-family: 'Cinzel', serif;
-            font-size: 1.05em;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .forja-sucesso-card p { margin: 4px 0 12px 0; font-size: 0.9em; color: var(--text-main); }
-        .forja-pecas-lista { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-        .forja-peca-tag {
-            background: rgba(56, 189, 248, 0.2);
-            border: 1px solid var(--jedi-cyan);
-            color: #ffffff;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.82em;
-            font-weight: 600;
-        }
-        .btn-redownload {
-            background: linear-gradient(135deg, #10b981, #059669);
-            border-color: #34d399;
-            color: #ffffff;
-            font-size: 0.88em;
-            padding: 10px 16px;
-            margin-top: 6px;
-            width: auto;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .btn-redownload:hover {
-            background: linear-gradient(135deg, #34d399, #10b981);
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+            font-size: 0.92em;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--jedi-cyan);
+            margin-bottom: 4px;
         }
 
+        h2 {
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            font-size: 1.9em;
+            color: var(--jedi-gold-bright);
+            margin: 0 0 16px 0;
+            text-shadow: 0 0 18px rgba(212, 175, 55, 0.3);
+        }
+
+        .padawan-greeting {
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px solid var(--border-subtle);
+            border-left: 4px solid var(--jedi-cyan);
+            border-radius: 8px;
+            padding: 12px 16px;
+            text-align: center;
+            font-size: 0.93em;
+            color: var(--text-main);
+            margin-bottom: 22px;
+            cursor: pointer;
+            user-select: none;
+            line-height: 1.5;
+        }
+
+        .padawan-greeting em {
+            color: var(--jedi-gold-bright);
+        }
+
+        /* IDENTIFICAÇÃO DO PADAWAN */
+        .padawan-auth-card {
+            background: var(--panel-inner);
+            border: 1.5px solid var(--jedi-gold);
+            border-radius: 10px;
+            padding: 16px 18px;
+            margin-bottom: 22px;
+        }
+
+        .padawan-auth-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.85em;
+            font-weight: 700;
+            color: var(--jedi-gold-bright);
+            letter-spacing: 0.5px;
+        }
+
+        .padawan-auth-body {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .padawan-auth-body input {
+            flex: 1;
+            margin: 0;
+        }
+
+        .padawan-badge-status {
+            padding: 9px 14px;
+            border-radius: 8px;
+            font-size: 0.84em;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .padawan-badge-status.vazio {
+            background: rgba(250, 204, 21, 0.12);
+            border: 1px solid var(--jedi-gold);
+            color: var(--jedi-gold-bright);
+        }
+
+        .padawan-badge-status.padawan {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid #10b981;
+            color: #34d399;
+        }
+
+        .padawan-badge-status.sith {
+            background: rgba(239, 68, 68, 0.18);
+            border: 1px solid var(--sith-red);
+            color: #fca5a5;
+        }
+
+        /* SELETOR DE PEÇAS */
         .selector-box {
             background: var(--panel-inner);
-            padding: 20px;
+            border: 1px solid var(--border-subtle);
             border-radius: 10px;
-            border: 1.5px solid var(--jedi-gold);
-            margin-bottom: 25px;
-            box-shadow: 0 0 15px rgba(229, 184, 75, 0.12);
+            padding: 18px;
+            margin-bottom: 24px;
         }
-        .selector-box label { color: var(--jedi-gold-bright); font-size: 1em; margin-bottom: 10px; }
-        .pecas-badge { margin-top: 12px; font-size: 0.88em; color: var(--jedi-cyan); font-weight: 600; }
+
+        .selector-box label {
+            display: block;
+            font-weight: 700;
+            color: var(--jedi-gold-bright);
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .pecas-badge {
+            margin-top: 10px;
+            padding: 9px 12px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            border-radius: 6px;
+            color: var(--jedi-cyan);
+            font-size: 0.86em;
+            font-weight: 600;
+        }
+
+        /* BLOCOS DO FORMULÁRIO */
+        .bloco-peca {
+            display: none;
+        }
+
+        .bloco-peca.ativo {
+            display: block;
+            animation: fadeInPanel 0.3s ease;
+        }
 
         .section-title {
             font-family: 'Cinzel', serif;
-            font-size: 1.1em;
-            color: var(--jedi-gold-bright);
-            border-bottom: 1.5px solid var(--border-subtle);
-            padding-bottom: 6px;
-            margin-top: 32px;
-            margin-bottom: 18px;
+            color: var(--jedi-cyan);
+            font-size: 1.05em;
             font-weight: 700;
-            letter-spacing: 0.8px;
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 6px;
+            margin: 22px 0 14px 0;
+            letter-spacing: 0.5px;
         }
-        
-        .campo { margin-bottom: 20px; }
-        label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--text-main); font-size: 0.94em; }
-        input[type="text"], select, textarea { 
-            width: 100%; 
-            padding: 12px 15px; 
-            border: 1.5px solid var(--border-subtle); 
-            border-radius: 8px; 
-            box-sizing: border-box; 
-            font-size: 15px;
+
+        .nota-asterisco {
+            font-size: 0.84em;
+            color: var(--jedi-gold-bright);
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 14px;
+        }
+
+        .campo {
+            margin-bottom: 14px;
+        }
+
+        .campo label {
+            display: block;
+            font-size: 0.88em;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 11px 14px;
+            background: #060d1f;
+            border: 1.5px solid var(--border-subtle);
+            border-radius: 8px;
+            color: #ffffff;
             font-family: 'Inter', sans-serif;
-            background-color: var(--panel-inner);
-            color: #ffffff;
-            transition: all 0.25s ease;
-        }
-        input[type="text"]::placeholder, textarea::placeholder { color: #64748b; }
-        select option { background-color: #0b172e; color: #ffffff; }
-        textarea { resize: vertical; min-height: 80px; }
-        input[type="text"]:focus, select:focus, textarea:focus {
-            border-color: var(--jedi-cyan);
+            font-size: 0.94em;
             outline: none;
-            box-shadow: 0 0 0 3px var(--jedi-cyan-glow);
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
         }
 
-        .nota-asterisco { font-size: 0.85em; color: var(--text-muted); margin-bottom: 15px; font-style: italic; }
-        .bloco-peca { display: none; }
-        .bloco-peca.ativo { display: block; }
-        
-        button { 
-            background: linear-gradient(135deg, #d4af37, #b48811); 
-            color: #050b18; 
-            border: 1px solid var(--jedi-gold-bright); 
-            padding: 16px; 
-            font-size: 17px; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            width: 100%; 
-            margin-top: 15px; 
-            font-weight: 700; 
+        input[type="text"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--jedi-cyan);
+            box-shadow: 0 0 10px var(--jedi-cyan-glow);
+        }
+
+        textarea {
+            min-height: 85px;
+            resize: vertical;
+        }
+
+        /* BOTÃO FORJAR */
+        #btnGerar {
+            width: 100%;
+            margin-top: 24px;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #d4af37, #b48811);
+            color: #050b18;
             font-family: 'Cinzel', serif;
-            transition: all 0.3s ease;
+            font-size: 1.08em;
+            font-weight: 800;
+            letter-spacing: 1px;
             text-transform: uppercase;
-            letter-spacing: 1.2px;
-            box-shadow: 0 4px 18px rgba(229, 184, 75, 0.25);
-        }
-        button:hover { 
-            transform: translateY(-2px); 
-            background: linear-gradient(135deg, #f7d774, #d4af37);
-            box-shadow: 0 8px 25px rgba(229, 184, 75, 0.45);
-        }
-        button:disabled { 
-            background: #334155; 
-            color: #94a3b8;
-            border-color: #475569;
-            cursor: not-allowed; 
-            transform: none;
-            box-shadow: none;
-        }
-        button.sith-mode {
-            background: linear-gradient(135deg, #e50914, #8b0000);
-            color: #ffffff;
-            border-color: #f87171;
-            box-shadow: 0 0 18px rgba(229, 9, 20, 0.6);
-        }
-        button.sith-mode:hover {
-            background: linear-gradient(135deg, #ff1e27, #a30000);
-            box-shadow: 0 0 28px rgba(229, 9, 20, 0.9);
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.35);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
         }
 
+        #btnGerar:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(212, 175, 55, 0.55);
+        }
+
+        #btnGerar:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        #btnGerar.sith-mode {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: #ffffff;
+            box-shadow: 0 8px 25px var(--sith-red-glow);
+        }
+
+        /* TOAST DO CAFÉ */
         .idle-toast {
             position: fixed;
             bottom: -100px;
@@ -741,7 +514,12 @@
             z-index: 1000;
             cursor: pointer;
         }
-        .idle-toast.show { bottom: 30px; animation: pulse-toast 2s infinite 1s; }
+
+        .idle-toast.show {
+            bottom: 30px;
+            animation: pulse-toast 2s infinite 1s;
+        }
+
         @keyframes pulse-toast {
             0% { transform: scale(1); }
             50% { transform: scale(1.03); }
@@ -751,380 +529,7 @@
         @media (max-width: 650px) {
             .container { padding: 0 16px 25px 16px; }
             .banner-wrapper { margin: 0 -16px 20px -16px; }
-            .mode-selector-wrapper { grid-template-columns: 1fr; }
             .padawan-auth-body { flex-direction: column; align-items: stretch; }
-            .chat-messages-container { height: 380px; }
-            .chat-input-box { flex-direction: column; }
-            .btn-enviar-chat { width: 100%; }
-        }
-
-        /* --- ESTILOS DO HOLOCRON GEMINI API --- */
-        .btn-api-settings {
-            background: rgba(56, 189, 248, 0.12);
-            border: 1px solid var(--jedi-cyan);
-            color: var(--jedi-cyan);
-            font-size: 0.82em;
-            font-weight: 600;
-            padding: 6px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-family: 'Inter', sans-serif;
-            text-transform: none;
-            letter-spacing: 0.3px;
-            width: auto;
-            margin: 0;
-            transition: all 0.25s ease;
-        }
-        .btn-api-settings:hover {
-            background: rgba(56, 189, 248, 0.25);
-            box-shadow: 0 0 12px var(--jedi-cyan-glow);
-            transform: translateY(-1px);
-        }
-        .btn-api-settings.ativo {
-            border-color: #10b981;
-            color: #34d399;
-            background: rgba(16, 185, 129, 0.15);
-        }
-
-        /* Scanner Multimodal no Formulário Manual */
-        .holocron-scanner-banner {
-            background: linear-gradient(135deg, rgba(8, 25, 45, 0.9), rgba(11, 23, 46, 0.95));
-            border: 1.5px dashed var(--jedi-cyan);
-            border-radius: 10px;
-            padding: 16px 20px;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
-        }
-        .holocron-scanner-banner:hover, .holocron-scanner-banner.dragover {
-            border-color: var(--jedi-gold);
-            background: linear-gradient(135deg, rgba(14, 38, 70, 0.95), rgba(16, 32, 64, 0.95));
-            box-shadow: 0 0 20px var(--jedi-cyan-glow);
-            transform: scale(1.01);
-        }
-        .scanner-icon {
-            font-size: 2em;
-            line-height: 1;
-        }
-        .scanner-text {
-            flex: 1;
-        }
-        .scanner-text strong {
-            display: block;
-            color: var(--jedi-gold-bright);
-            font-family: 'Cinzel', serif;
-            font-size: 0.96em;
-            margin-bottom: 3px;
-        }
-        .scanner-text span {
-            font-size: 0.82em;
-            color: var(--text-muted);
-        }
-        .scanner-badge {
-            background: rgba(56, 189, 248, 0.2);
-            color: var(--jedi-cyan);
-            border: 1px solid var(--jedi-cyan);
-            padding: 5px 10px;
-            border-radius: 6px;
-            font-size: 0.78em;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        /* Botão Anexo e Clip no Chat */
-        .btn-anexo-chat {
-            background: rgba(56, 189, 248, 0.12);
-            color: var(--jedi-cyan);
-            border: 1px solid var(--border-subtle);
-            padding: 6px 12px;
-            font-size: 0.8em;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            width: auto;
-            margin: 0;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-        }
-        .btn-anexo-chat:hover {
-            background: rgba(56, 189, 248, 0.25);
-            border-color: var(--jedi-cyan);
-            color: #ffffff;
-        }
-        .btn-icon-clip {
-            background: var(--panel-inner);
-            border: 1.5px solid var(--border-subtle);
-            color: var(--jedi-gold-bright);
-            font-size: 1.2em;
-            border-radius: 8px;
-            padding: 0 14px;
-            cursor: pointer;
-            width: auto;
-            margin: 0;
-            height: 52px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.25s ease;
-        }
-        .btn-icon-clip:hover {
-            border-color: var(--jedi-cyan);
-            box-shadow: 0 0 10px var(--jedi-cyan-glow);
-        }
-
-        /* Auditor da Força */
-        .btn-auditar-forca {
-            background: linear-gradient(135deg, #1e3a8a, #0369a1);
-            color: #ffffff;
-            border: 1px solid var(--jedi-cyan);
-            padding: 14px;
-            font-size: 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 15px;
-            margin-bottom: 5px;
-            font-weight: 700;
-            font-family: 'Cinzel', serif;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 14px rgba(3, 105, 161, 0.3);
-        }
-        .btn-auditar-forca:hover {
-            background: linear-gradient(135deg, #2563eb, #0284c7);
-            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45);
-            transform: translateY(-2px);
-        }
-
-        .resultado-auditoria-box {
-            background: var(--panel-inner);
-            border: 1.5px solid var(--border-subtle);
-            border-radius: 10px;
-            padding: 18px;
-            margin-top: 15px;
-            margin-bottom: 10px;
-            animation: fadeInPanel 0.3s ease;
-        }
-        .resultado-auditoria-box h4 {
-            margin: 0 0 12px 0;
-            font-family: 'Cinzel', serif;
-            font-size: 1.05em;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .resultado-auditoria-box.equilibrio {
-            border-color: #10b981;
-            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
-        }
-        .resultado-auditoria-box.equilibrio h4 {
-            color: #34d399;
-        }
-        .resultado-auditoria-box.alerta {
-            border-color: var(--jedi-gold);
-            box-shadow: 0 0 15px rgba(229, 184, 75, 0.2);
-        }
-        .resultado-auditoria-box.alerta h4 {
-            color: var(--jedi-gold-bright);
-        }
-        .auditoria-checklist {
-            list-style: none;
-            padding: 0;
-            margin: 0 0 12px 0;
-            font-size: 0.9em;
-        }
-        .auditoria-checklist li {
-            padding: 6px 0;
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .auditoria-parecer {
-            font-size: 0.88em;
-            color: var(--text-main);
-            background: rgba(0, 0, 0, 0.3);
-            padding: 10px 14px;
-            border-radius: 6px;
-            line-height: 1.5;
-            border-left: 3px solid var(--jedi-cyan);
-        }
-
-        /* Botão Voz do Mestre no Chat */
-        .chat-msg-actions {
-            margin-top: 8px;
-            display: flex;
-            gap: 8px;
-        }
-        .btn-ouvir-mestre {
-            background: rgba(56, 189, 248, 0.15);
-            border: 1px solid var(--border-subtle);
-            color: var(--jedi-cyan);
-            font-size: 0.76em;
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            width: auto;
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            transition: all 0.2s ease;
-        }
-        .btn-ouvir-mestre:hover {
-            background: rgba(56, 189, 248, 0.3);
-            border-color: var(--jedi-cyan);
-            color: #ffffff;
-        }
-
-        /* Modal de Configuração da API Gemini */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(4, 9, 20, 0.85);
-            backdrop-filter: blur(6px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 99999;
-            padding: 20px;
-            animation: fadeInPanel 0.2s ease;
-        }
-        .modal-content {
-            background: var(--panel-bg);
-            border: 2px solid var(--jedi-gold);
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8), 0 0 30px var(--jedi-cyan-glow);
-            border-radius: 14px;
-            width: 100%;
-            max-width: 560px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-        .modal-header {
-            background: #040914;
-            padding: 18px 24px;
-            border-bottom: 1.5px solid var(--border-subtle);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .modal-header h3 {
-            margin: 0;
-            font-family: 'Cinzel', serif;
-            color: var(--jedi-gold-bright);
-            font-size: 1.15em;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .btn-modal-fechar {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            font-size: 1.4em;
-            cursor: pointer;
-            padding: 0;
-            width: auto;
-            margin: 0;
-            line-height: 1;
-        }
-        .btn-modal-fechar:hover {
-            color: #ffffff;
-        }
-        .modal-body {
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            font-size: 0.92em;
-        }
-        .modal-body p {
-            margin: 0;
-            color: var(--text-main);
-            line-height: 1.5;
-        }
-        .modal-aviso-seguranca {
-            background: rgba(56, 189, 248, 0.08);
-            border: 1px solid var(--border-subtle);
-            border-left: 3px solid var(--jedi-cyan);
-            padding: 10px 14px;
-            border-radius: 6px;
-            font-size: 0.84em;
-            color: var(--text-muted);
-            line-height: 1.45;
-        }
-        .modal-footer {
-            background: #040914;
-            padding: 16px 24px;
-            border-top: 1.5px solid var(--border-subtle);
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-        }
-        .btn-modal-salvar {
-            background: linear-gradient(135deg, #d4af37, #b48811);
-            color: #050b18;
-            font-family: 'Cinzel', serif;
-            font-weight: 700;
-            padding: 10px 20px;
-            border-radius: 6px;
-            width: auto;
-            margin: 0;
-            font-size: 0.9em;
-        }
-        .btn-modal-cancelar {
-            background: transparent;
-            color: var(--text-muted);
-            border: 1px solid var(--border-subtle);
-            padding: 10px 18px;
-            border-radius: 6px;
-            width: auto;
-            margin: 0;
-            font-size: 0.9em;
-        }
-        .btn-modal-cancelar:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: #ffffff;
-        }
-        .btn-modal-testar {
-            background: rgba(56, 189, 248, 0.15);
-            color: var(--jedi-cyan);
-            border: 1px solid var(--jedi-cyan);
-            padding: 10px 18px;
-            border-radius: 6px;
-            width: auto;
-            margin: 0;
-            font-size: 0.9em;
-            font-weight: 600;
-        }
-        .status-teste-api {
-            font-size: 0.84em;
-            padding: 6px 10px;
-            border-radius: 4px;
-            display: none;
-        }
-        .status-teste-api.sucesso {
-            display: block;
-            background: rgba(16, 185, 129, 0.15);
-            color: #34d399;
-            border: 1px solid #10b981;
-        }
-        .status-teste-api.erro {
-            display: block;
-            background: rgba(239, 68, 68, 0.15);
-            color: #fca5a5;
-            border: 1px solid #ef4444;
         }
     </style>
 </head>
@@ -1194,9 +599,6 @@
                     <span>⚔️</span>
                     <label for="nome_bad_boy">IDENTIFICAÇÃO DO PADAWAN (CONFIRME SEU NOME COMPLETO PARA FORJAR)</label>
                 </div>
-                <button type="button" id="btn_gemini_config" class="btn-api-settings" onclick="abrirModalConfigGemini()" title="Configurações da Conexão Gemini AI">
-                    ⚡ Conectar Gemini API
-                </button>
             </div>
             <div class="padawan-auth-body">
                 <input type="text" id="nome_bad_boy" placeholder="Repita seu nome completo de Padawan para assinar as peças..." oninput="atualizarBotao()">
@@ -1204,336 +606,265 @@
             </div>
         </div>
 
-        <div class="mode-selector-wrapper">
-            <button type="button" class="mode-tab-btn active" id="btn_modo_chat" onclick="alternarModoVisual('chat')">
-                <span class="mode-tab-icon">✨</span>
-                <div class="mode-tab-text">
-                    <strong>Modo Chat com Mestre Jedi</strong>
-                    <small>Orientação Jurídica & Redação Livre</small>
-                </div>
-            </button>
-            <button type="button" class="mode-tab-btn" id="btn_modo_manual" onclick="alternarModoVisual('manual')">
-                <span class="mode-tab-icon">📜</span>
-                <div class="mode-tab-text">
-                    <strong>Modo Formulário Manual</strong>
-                    <small>Preenchimento campo a campo</small>
-                </div>
-            </button>
-        </div>
-
-        <!-- ===================================================================== -->
-        <!-- MODO 1: CHAT DINÂMICO COM O MESTRE JEDI                               -->
-        <!-- ===================================================================== -->
-        <div id="painel_chat" class="painel-modo ativo">
-            <div class="chat-terminal">
-                <div class="chat-terminal-header">
-                    <div class="chat-status-indicator">
-                        <span class="status-dot"></span>
-                        <div>
-                            <span class="chat-title-text">Mestre Jedi Holocron</span>
-                            <span class="chat-subtitle-badge">UNAERP</span>
-                        </div>
-                    </div>
-                    <div style="display: flex; gap: 8px;">
-                        <button type="button" class="btn-anexo-chat" onclick="acionarUploadArquivo()" title="Anexar Decisão Judicial, Despacho ou Anotações (PDF ou Imagem)">
-                            📎 Anexar Decisão/Foto (OCR)
-                        </button>
-                        <button type="button" class="btn-reset-chat" onclick="reiniciarChat()" title="Limpar conversa e iniciar novo atendimento">
-                            🔄 Novo Atendimento
-                        </button>
-                    </div>
-                </div>
-
-                <div class="chat-chips-bar">
-                    <span class="chat-chip" onclick="aplicarPromptChip('duvida')">❓ Tirar Dúvida Jurídica</span>
-                    <span class="chat-chip" onclick="aplicarPromptChip('inicial')">⚖️ Petição Inicial</span>
-                    <span class="chat-chip" onclick="aplicarPromptChip('contestacao')">🛡️ Contestação</span>
-                    <span class="chat-chip" onclick="aplicarPromptChip('habilitacao')">📄 Habilitação</span>
-                    <span class="chat-chip" onclick="aplicarPromptChip('desbloqueio')">🏦 Desbloqueio / SISBAJUD</span>
-                    <span class="chat-chip" onclick="aplicarPromptChip('livre')">✍️ Outra Peça / Nova Tese</span>
-                </div>
-
-                <div id="chat_mensagens" class="chat-messages-container"></div>
-
-                <div id="chat_digitando" class="typing-indicator">
-                    <span>Mestre Jedi está analisando o caso na Força</span>
-                    <div class="typing-dots">
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
-                    </div>
-                </div>
-
-                <div class="chat-input-wrapper">
-                    <div class="chat-input-box">
-                        <button type="button" class="btn-icon-clip" onclick="acionarUploadArquivo()" title="Anexar Foto/PDF de Decisão ou Despacho">📎</button>
-                        <textarea 
-                            id="chat_input" 
-                            class="chat-textarea" 
-                            placeholder="Tire dúvidas sobre o caso ou descreva o atendimento para o Mestre Jedi redigir a petição... (Enter envia | Shift+Enter pula linha)"
-                            onkeydown="tratarTeclaChat(event)"
-                            oninput="ajustarAlturaTextarea(this)"></textarea>
-                        <button type="button" id="btn_chat_enviar" class="btn-enviar-chat" onclick="enviarMensagemChat()">
-                            ⚔️ Enviar
-                        </button>
-                    </div>
-                    <div class="chat-hint-bar">
-                        <span>💡 O Mestre Jedi responde dúvidas, cria novas teses e lê anexos (📎) livremente</span>
-                        <span>Shift + Enter para quebra de linha</span>
-                    </div>
-                </div>
+        <div class="selector-box">
+            <label for="tipo_peca">Selecione a peça que deseja forjar:</label>
+            <select id="tipo_peca" onchange="alternarFormulario()">
+                <option value="habilitacao">Habilitação</option>
+                <option value="procuracao_gratuidade">Procuração e Gratuidade</option>
+                <option value="procuracao_menor">Procuração (Menor)</option>
+                <option value="negativa_geral">Contestação por Negativa Geral</option>
+                <option value="desbloqueio">Pedido de Desbloqueio</option>
+                <option value="citacao_edital">Pedido de Citação por Edital</option>
+                <option value="intimacao_pessoal">Pedido de Intimação Pessoal</option>
+                <option value="penhora_sisbajud">Pedido de Penhora SISBAJUD</option>
+                <option value="oficio_localizar">Pedido de Expedição de Ofício (Localizar Parte Contrária)</option>
+                <option value="inicial">Petição Inicial (Em favor da Mãe)</option>
+                <option value="contestacao_pai">Contestação (Em favor do Pai)</option>
+            </select>
+            <div id="info_pacote" class="pecas-badge">
+                📄 Documentos gerados: Habilitação + Procuração + Gratuidade
             </div>
         </div>
 
-        <!-- ===================================================================== -->
-        <!-- MODO 2: FORMULÁRIO MANUAL (INALTERADO)                                -->
-        <!-- ===================================================================== -->
-        <div id="painel_manual" class="painel-modo">
-            <div class="selector-box">
-                <label for="tipo_peca">Selecione a peça que deseja forjar:</label>
-                <select id="tipo_peca" onchange="alternarFormulario()">
-                    <option value="habilitacao">Habilitação</option>
-                    <option value="negativa_geral">Contestação por Negativa Geral</option>
-                    <option value="desbloqueio">Pedido de Desbloqueio</option>
-                    <option value="citacao_edital">Pedido de Citação por Edital</option>
-                    <option value="intimacao_pessoal">Pedido de Intimação Pessoal</option>
-                    <option value="penhora_sisbajud">Pedido de Penhora SISBAJUD</option>
-                    <option value="oficio_localizar">Pedido de Expedição de Ofício (Localizar Parte Contrária)</option>
-                    <option value="inicial">Petição Inicial (Em favor da Mãe)</option>
-                    <option value="contestacao_pai">Contestação (Em favor do Pai)</option>
+        <!-- BLOCO 1: HABILITAÇÃO -->
+        <div id="bloco_habilitacao" class="bloco-peca ativo">
+            <div class="section-title">Dados da Habilitação</div>
+            <div class="campo"><label>Vara (ex: 1ª):</label><input type="text" id="hab_vara" placeholder="1ª" onkeyup="verificarOrdem66(this)"></div>
+            <div class="campo"><label>Competência / Especialidade:</label>
+                <select id="hab_competencia">
+                    <option value="CÍVEL">CÍVEL</option>
+                    <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
+                    <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
+                    <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
                 </select>
-                <div id="info_pacote" class="pecas-badge">
-                    📄 Documentos gerados: Habilitação + Procuração + Gratuidade
-                </div>
             </div>
-
-            <!-- SCANNER MULTIMODAL HOLOCRON VISION -->
-            <div class="holocron-scanner-banner" id="banner_scanner_manual" onclick="acionarUploadArquivo()" title="Arraste ou clique para enviar foto ou PDF de decisão judicial">
-                <div class="scanner-icon">🔮</div>
-                <div class="scanner-text">
-                    <strong>Visão Holocron (Gemini Multimodal OCR)</strong>
-                    <span>Clique aqui ou arraste uma foto/PDF de despacho, extrato ou decisão para preencher este formulário automaticamente.</span>
-                </div>
-                <span class="scanner-badge">Gemini Vision</span>
-            </div>
-
-            <!-- BLOCO 1: HABILITAÇÃO -->
-            <div id="bloco_habilitacao" class="bloco-peca ativo">
-                <div class="section-title">Dados da Habilitação</div>
-                <div class="campo"><label>Vara (ex: 1ª):</label><input type="text" id="hab_vara" placeholder="1ª" onkeyup="verificarOrdem66(this)"></div>
-                <div class="campo"><label>Competência / Especialidade:</label>
-                    <select id="hab_competencia">
-                        <option value="CÍVEL">CÍVEL</option>
-                        <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
-                        <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
-                        <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
-                    </select>
-                </div>
-                <div class="campo"><label>Processo nº:</label><input type="text" id="hab_numero" placeholder="0000000-00.0000.0.00.0000"></div>
-                <div class="campo"><label>Nome Completo do Assistido:</label><input type="text" id="hab_nome_autor" placeholder="João da Silva"></div>
-                <div class="campo"><label>Nacionalidade:</label><input type="text" id="hab_nacionalidade" value="brasileiro(a)"></div>
-                <div class="campo"><label>Estado Civil:</label><input type="text" id="hab_estado_civil" placeholder="solteiro(a)"></div>
-                <div class="campo"><label>Profissão:</label><input type="text" id="hab_profissao" placeholder="engenheiro(a)"></div>
-                <div class="campo"><label>RG:</label><input type="text" id="hab_rg" placeholder="00.000.000-0"></div>
-                <div class="campo"><label>CPF:</label><input type="text" id="hab_cpf" placeholder="000.000.000-00"></div>
-                <div class="campo"><label>Endereço Completo:</label><input type="text" id="hab_endereco" placeholder="Rua Exemplo, 123, Centro, Ribeirão Preto/SP, CEP:"></div>
-                <div class="campo"><label>Valor da proposta de acordo:</label><input type="text" id="hab_valor_acordo" placeholder="R$ 5.000,00"></div>
-            </div>
-
-            <!-- BLOCO 2: NEGATIVA GERAL -->
-            <div id="bloco_negativa_geral" class="bloco-peca">
-                <div class="section-title">Dados da Contestação por Negativa Geral</div>
-                <div class="campo"><label>Vara (ex: 1ª):</label><input type="text" id="neg_vara" placeholder="1ª" onkeyup="verificarOrdem66(this)"></div>
-                <div class="campo"><label>Competência / Especialidade:</label>
-                    <select id="neg_competencia">
-                        <option value="CÍVEL">CÍVEL</option>
-                        <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
-                        <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
-                        <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
-                    </select>
-                </div>
-                <div class="campo"><label>Processo nº:</label><input type="text" id="neg_numero" placeholder="0000000-00.0000.0.00.0000"></div>
-                <div class="campo"><label>Nome Completo do Assistido:</label><input type="text" id="neg_nome_autor" placeholder="João da Silva"></div>
-                <div class="campo"><label>CPF:</label><input type="text" id="neg_cpf" placeholder="000.000.000-00"></div>
-            </div>
-
-            <!-- BLOCO 3: DESBLOQUEIO -->
-            <div id="bloco_desbloqueio" class="bloco-peca">
-                <div class="section-title">Dados do Processo e das Partes</div>
-                <div class="campo"><label>Vara (apenas o número, ex: 1):</label><input type="text" id="desb_vara" placeholder="1" onkeyup="verificarOrdem66(this)"></div>
-                <div class="campo"><label>Competência / Especialidade:</label>
-                    <select id="desb_competencia">
-                        <option value="CÍVEL">CÍVEL</option>
-                        <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
-                        <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
-                        <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
-                    </select>
-                </div>
-                <div class="campo"><label>Processo nº:</label><input type="text" id="desb_numero" placeholder="0000000-00.0000.0.00.0000"></div>
-                <div class="campo"><label>Nome Completo do(a) Assistido(a):</label><input type="text" id="desb_nome_assistido" placeholder="Ex: João da Silva"></div>
-                <div class="campo"><label>Título da Ação (em que ocorreu o bloqueio):</label><input type="text" id="desb_titulo_da_acao" placeholder="Ex: Ação de Execução de Título Extrajudicial"></div>
-                <div class="campo"><label>Nome da Parte Contrária (Exequente):</label><input type="text" id="desb_nome_parte_contraria" placeholder="Ex: Banco X S.A. ou Maria das Graças"></div>
-                <div class="campo"><label>Natureza do Crédito Executado:</label><input type="text" id="desb_natureza_credito_executado" placeholder="Ex: dívida de natureza cível e não alimentar"></div>
-                <div class="section-title">Dados do Bloqueio e da Conta</div>
-                <div class="campo"><label>Data do Bloqueio:</label><input type="text" id="desb_data_bloqueio" placeholder="Ex: 10/11/2026"></div>
-                <div class="campo"><label>Data da Intimação do Bloqueio:</label><input type="text" id="desb_data_intimacao_bloqueio" placeholder="Ex: 12/11/2026"></div>
-                <div class="campo"><label>Instituição Financeira (Banco):</label><input type="text" id="desb_banco" placeholder="Ex: Banco Itaú S.A."></div>
-                <div class="campo"><label>Tipo de Conta (já com a palavra "conta"):</label><input type="text" id="desb_tipo_conta" placeholder="Ex: conta-corrente"></div>
-                <div class="campo"><label>Valor Total Bloqueado:</label><input type="text" id="desb_valor_total_bloqueado" placeholder="Ex: R$ 4.919,49"></div>
-                <div class="campo"><label>Proporção da Verba Bloqueada (já com artigo):</label><input type="text" id="desb_proporcao_verba_bloqueada" placeholder="Ex: a totalidade"></div>
-                <div class="section-title">Origem da Verba e Subsistência</div>
-                <div class="campo"><label>Natureza da Verba:</label><input type="text" id="desb_natureza_verba" placeholder="Ex: proventos de aposentadoria"></div>
-                <div class="campo"><label>Fonte Pagadora (Quem pagou):</label><input type="text" id="desb_fonte_pagadora" placeholder="Ex: INSS"></div>
-                <div class="campo"><label>Data do Crédito:</label><input type="text" id="desb_data_credito" placeholder="Ex: 05/11/2026"></div>
-                <div class="campo"><label>Valor Creditado:</label><input type="text" id="desb_valor_credito" placeholder="Ex: R$ 4.919,49"></div>
-                <div class="campo"><label>Descrição Literal do Crédito no Extrato:</label><input type="text" id="desb_descricao_credito_extrato" placeholder="Ex: PGTO INSS 05701121220"></div>
-                <div class="campo"><label>Valor de 40 Salários Mínimos na Data:</label><input type="text" id="desb_valor_40_salarios_minimos" placeholder="Ex: R$ 64.840,00"></div>
-                <div class="campo"><label>Localização do Extrato nos Autos:</label><input type="text" id="desb_doc_extrato" placeholder="Ex: Doc. 02 / ID 123456"></div>
-                <div class="campo"><label>Documentos de Despesas e Família nos Autos:</label><input type="text" id="desb_doc_comprovantes" placeholder="Ex: Docs. 03 a 07"></div>
-                <div class="campo"><label>Situação Familiar e Dependência da Renda:</label><input type="text" id="desb_situacao_familiar" placeholder="Ex: reside com a esposa e dois filhos menores, que dependem de sua renda"></div>
-                <div class="campo"><label>Despesas Essenciais:</label><input type="text" id="desb_despesas_essenciais" placeholder="Ex: aluguel, alimentação, medicamentos e transporte"></div>
-            </div>
-
-            <!-- BLOCO 4: CITAÇÃO POR EDITAL -->
-            <div id="bloco_citacao_edital" class="bloco-peca">
-                <div class="section-title">Dados do Pedido de Citação por Edital</div>
-                <div class="campo"><label>Vara (apenas o número, ex: 1):</label><input type="text" id="ced_vara" placeholder="1" onkeyup="verificarOrdem66(this)"></div>
-                <div class="campo"><label>Competência / Especialidade:</label>
-                    <select id="ced_competencia">
-                        <option value="CÍVEL">CÍVEL</option>
-                        <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
-                        <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
-                        <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
-                    </select>
-                </div>
-                <div class="campo"><label>Processo nº:</label><input type="text" id="ced_numero" placeholder="0000000-00.0000.0.00.0000"></div>
-                <div class="campo"><label>Nome Completo do(a) Assistido(a):</label><input type="text" id="ced_nome_assistido" placeholder="Ex: Maria das Graças"></div>
-                <div class="campo"><label>Em atendimento a (decisão / despacho / ato ordinatório e fls.):</label><input type="text" id="ced_decisao_despacho" placeholder="Ex: à r. decisão de fls. 45 / ao ato ordinatório de fls. 22"></div>
-            </div>
-
-            <!-- BLOCO 5: INTIMAÇÃO PESSOAL -->
-            <div id="bloco_intimacao_pessoal" class="bloco-peca">
-                <div class="section-title">Dados do Pedido de Intimação Pessoal</div>
-                <div class="campo"><label>Vara (apenas o número, ex: 1):</label><input type="text" id="int_vara" placeholder="1" onkeyup="verificarOrdem66(this)"></div>
-                <div class="campo"><label>Competência / Especialidade:</label>
-                    <select id="int_competencia">
-                        <option value="CÍVEL">CÍVEL</option>
-                        <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
-                        <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
-                        <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
-                    </select>
-                </div>
-                <div class="campo"><label>Processo nº:</label><input type="text" id="int_numero" placeholder="0000000-00.0000.0.00.0000"></div>
-                <div class="campo"><label>Nome Completo do(a) Assistido(a):</label><input type="text" id="int_nome_assistido" placeholder="Ex: João da Silva"></div>
-                <div class="campo"><label>Motivo da necessidade de contato ("não conseguimos contato com a parte para..."):</label><textarea id="int_motivo_contato" placeholder="Ex: informar o endereço atualizado da parte contrária e apresentar documentos indispensáveis ao prosseguimento do feito."></textarea></div>
-            </div>
-
-            <!-- BLOCO 6: PENHORA SISBAJUD -->
-            <div id="bloco_penhora_sisbajud" class="bloco-peca">
-                <div class="section-title">Dados do Pedido de Penhora SISBAJUD</div>
-                <div class="campo"><label>Vara (apenas o número, ex: 1):</label><input type="text" id="sis_vara" placeholder="1" onkeyup="verificarOrdem66(this)"></div>
-                <div class="campo"><label>Competência / Especialidade:</label>
-                    <select id="sis_competencia">
-                        <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
-                        <option value="CÍVEL">CÍVEL</option>
-                        <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
-                        <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
-                    </select>
-                </div>
-                <div class="campo"><label>Processo nº:</label><input type="text" id="sis_numero" placeholder="0000000-00.0000.0.00.0000"></div>
-                <div class="campo"><label>Nome da Criança / Exequente:</label><input type="text" id="sis_nome_crianca" placeholder="Ex: Enzo Gabriel da Silva"></div>
-                <div class="campo"><label>Nome da Genitora (Representante Legal):</label><input type="text" id="sis_nome_mae" placeholder="Ex: Maria da Silva"></div>
-                <div class="campo"><label>Período dos Alimentos Vencidos ("abranger os valores devidos de..."):</label><input type="text" id="sis_periodo_alimentos" placeholder="Ex: janeiro a novembro de 2026"></div>
-            </div>
-
-            <!-- BLOCO 7: OFÍCIO LOCALIZAR -->
-            <div id="bloco_oficio_localizar" class="bloco-peca">
-                <div class="section-title">Dados do Pedido de Expedição de Ofício (Localizar Parte Contrária)</div>
-                <div class="campo"><label>Vara (apenas o número, ex: 1):</label><input type="text" id="ofi_vara" placeholder="1" onkeyup="verificarOrdem66(this)"></div>
-                <div class="campo"><label>Competência / Especialidade:</label>
-                    <select id="ofi_competencia">
-                        <option value="CÍVEL">CÍVEL</option>
-                        <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
-                        <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
-                        <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
-                    </select>
-                </div>
-                <div class="campo"><label>Processo nº:</label><input type="text" id="ofi_numero" placeholder="0000000-00.0000.0.00.0000"></div>
-                <div class="campo"><label>Nome Completo do(a) Assistido(a):</label><input type="text" id="ofi_nome_assistido" placeholder="Ex: João da Silva"></div>
-            </div>
-
-            <!-- BLOCO 8: PETIÇÃO INICIAL -->
-            <div id="bloco_inicial" class="bloco-peca">
-                <div class="nota-asterisco">- Campos marcados com asterisco serão inseridos apenas na Petição Inicial.</div>
-                <div class="section-title">Qualificação da Parte Autora</div>
-                <div class="campo"><label>Nome Completo do Autor(a):</label><input type="text" id="ini_nome_autor" placeholder="Ex: Adrielle Gonçalves dos Santos"></div>
-                <div class="campo"><label>Nacionalidade:</label><input type="text" id="ini_nacionalidade" value="brasileiro(a)"></div>
-                <div class="campo"><label>Estado Civil:</label><input type="text" id="ini_estado_civil" placeholder="Ex: casada"></div>
-                <div class="campo"><label>Profissão:</label><input type="text" id="ini_profissao" placeholder="Ex: desempregada"></div>
-                <div class="campo"><label>RG:</label><input type="text" id="ini_rg" placeholder="00.000.000-0"></div>
-                <div class="campo"><label>CPF:</label><input type="text" id="ini_cpf" placeholder="000.000.000-00"></div>
-                <div class="campo"><label>Endereço Completo:</label><input type="text" id="ini_endereco" placeholder="Ex: Rua Paranapanema, 345, Ribeirão Preto-SP"></div>
-                <div class="section-title">Dados da Petição Inicial *</div>
-                <div class="campo"><label>Vara* (ex: 1ª):</label><input type="text" id="ini_vara" placeholder="Deixe em branco se for a distribuir" onkeyup="verificarOrdem66(this)"></div>
-                <div class="campo"><label>Nome Completo do Requerido*:</label><input type="text" id="ini_nome_requerido" placeholder="Ex: Ericlis Gonçalves"></div>
-                <div class="campo"><label>Profissão do Requerido*:</label><input type="text" id="ini_profissao_requerido" placeholder="Ex: desenvolvedor de sistemas"></div>
-                <div class="campo"><label>RG do Requerido*:</label><input type="text" id="ini_rg_requerido" placeholder="00.000.000-0"></div>
-                <div class="campo"><label>CPF do Requerido*:</label><input type="text" id="ini_cpf_requerido" placeholder="000.000.000-00"></div>
-                <div class="campo"><label>Endereço do Requerido*:</label><input type="text" id="ini_endereco_requerido" placeholder="Ex: R. Des. Thrasybulo Pinheiro de Albuquerque, São Paulo - SP"></div>
-                <div class="campo"><label>Data do Casamento*:</label><input type="text" id="ini_data_casamento" placeholder="Deixe em branco se não houve casamento civil"></div>
-                <div class="campo"><label>Regime de Bens*:</label><input type="text" id="ini_regime_bens" placeholder="Ex: comunhão parcial de bens"></div>
-                <div class="campo"><label>Cartório e Registro de Casamento (Livro/Fls/Nº)*:</label><input type="text" id="ini_registro_casamento" placeholder="Ex: Cartório de Registro Civil, Livro B-0213, Fls. 227"></div>
-                <div class="campo"><label>Nome do Filho(a)*:</label><input type="text" id="ini_nome_filho" placeholder="Ex: Enzo Gabriel Monteiro dos Santos"></div>
-                <div class="campo"><label>Data de Nascimento do Filho(a)*:</label><input type="text" id="ini_nascimento_filho" placeholder="Ex: 17 de abril de 2016"></div>
-                <div class="campo"><label>RG do Filho(a)*:</label><input type="text" id="ini_rg_filho" placeholder="00.000.000-0"></div>
-                <div class="campo"><label>CPF do Filho(a)*:</label><input type="text" id="ini_cpf_filho" placeholder="000.000.000-00"></div>
-                <div class="campo"><label>Bens a Partilhar*:</label><input type="text" id="ini_bens_partilhar" placeholder="Deixe em branco se não houver bens"></div>
-                <div class="campo"><label>Nome de Solteira a retornar*:</label><input type="text" id="ini_nome_solteira" placeholder="Deixe em branco se não alterou o nome"></div>
-                <div class="campo"><label>Valor da Causa*:</label><input type="text" id="ini_valor_causa" placeholder="12x a pensão mensal - art. 292, III do CPC"></div>
-            </div>
-
-            <!-- BLOCO 9: CONTESTAÇÃO (PAI) -->
-            <div id="bloco_contestacao_pai" class="bloco-peca">
-                <div class="section-title">Dados do Processo</div>
-                <div class="campo"><label>Vara (ex: 1ª):</label><input type="text" id="cpai_vara" placeholder="Ex: 1ª" onkeyup="verificarOrdem66(this)"></div>
-                <div class="campo"><label>Número do Processo:</label><input type="text" id="cpai_numero" placeholder="0000000-00.0000.0.00.0000"></div>
-                <div class="campo"><label>Tipo de Ação:</label><input type="text" id="cpai_tipo_de_acao" placeholder="Ex: Ação de Guarda c/c Alimentos"></div>
-                <div class="campo"><label>Ofício Defensoria (Nº):</label><input type="text" id="cpai_n_oficio_defensoria" placeholder="Ex: 1234/2026"></div>
-                <div class="section-title">Qualificação das Partes</div>
-                <div class="campo"><label>Nome Completo do REQUERIDO (Seu Cliente):</label><input type="text" id="cpai_nome_reu" placeholder="Ex: João da Silva"></div>
-                <div class="campo"><label>Nacionalidade (Requerido):</label><input type="text" id="cpai_nacionalidade" value="brasileiro(a)"></div>
-                <div class="campo"><label>Estado Civil (Requerido):</label><input type="text" id="cpai_estado_civil" placeholder="Ex: divorciado"></div>
-                <div class="campo"><label>Profissão (Requerido):</label><input type="text" id="cpai_profissao" placeholder="Ex: autônomo"></div>
-                <div class="campo"><label>RG (Requerido):</label><input type="text" id="cpai_rg" placeholder="00.000.000-0"></div>
-                <div class="campo"><label>CPF (Requerido):</label><input type="text" id="cpai_cpf" placeholder="000.000.000-00"></div>
-                <div class="campo"><label>Endereço Completo (Requerido):</label><input type="text" id="cpai_endereco" placeholder="Rua, Número, Bairro, Cidade-UF, CEP"></div>
-                <div class="campo"><label>Nome Completo da AUTORA (Parte Contrária):</label><input type="text" id="cpai_nome_autor" placeholder="Ex: Maria das Graças"></div>
-                <div class="section-title">Resumo dos Fatos e Filhos</div>
-                <div class="campo"><label>Nome dos Filhos:</label><input type="text" id="cpai_nomes_filhos" placeholder="Ex: Enzo e Valentina Silva"></div>
-                <div class="campo"><label>Idade dos Filhos:</label><input type="text" id="cpai_idades_filhos" placeholder="Ex: 8 e 5 anos"></div>
-                <div class="campo"><label>O que a Autora pretende? (Síntese):</label><textarea id="cpai_sintese_pretensoes_autor" placeholder="Ex: a fixação de alimentos em 30% dos rendimentos líquidos..."></textarea></div>
-                <div class="section-title">Situação Financeira e Emprego do Réu</div>
-                <div class="campo"><label>Data de Desligamento:</label><input type="text" id="cpai_data_desligamento" placeholder="Ex: 15 de janeiro de 2026"></div>
-                <div class="campo"><label>Último Empregador:</label><input type="text" id="cpai_ultimo_empregador" placeholder="Ex: Construtora X"></div>
-                <div class="campo"><label>Cargo do Último Emprego:</label><input type="text" id="cpai_cargo_ultimo_emprego" placeholder="Ex: pedreiro"></div>
-                <div class="campo"><label>Motivo do Desligamento:</label><input type="text" id="cpai_motivo_desligamento" placeholder="Ex: corte de gastos da empresa"></div>
-                <div class="campo"><label>Último Salário:</label><input type="text" id="cpai_ultimo_salario" placeholder="Ex: R$ 2.500,00"></div>
-                <div class="campo"><label>Renda Atual do Requerido:</label><input type="text" id="cpai_renda_atual_requerido" placeholder="Ex: vive de bicos esporádicos recebendo cerca de R$ 800,00 mensais"></div>
-                <div class="section-title">Teses de Defesa e Propostas</div>
-                <div class="campo"><label>Impugnação às Alegações da Autora:</label><textarea id="cpai_impugnacao_alegacoes_autor" placeholder="Ex: A Autora alega sem provas que o Réu possui empresa oculta..."></textarea></div>
-                <div class="campo"><label>Contribuições In Natura (O que o Réu já paga?):</label><textarea id="cpai_contribuicoes_in_natura" placeholder="Ex: compra material escolar, roupas e paga o plano de saúde"></textarea></div>
-                <div class="campo"><label>Tese sobre a Guarda:</label><textarea id="cpai_tese_guarda_especifica" placeholder="Ex: a guarda compartilhada deve ser mantida pois atende o melhor interesse..."></textarea></div>
-                <div class="campo"><label>Fundamento para o Estudo Social:</label><textarea id="cpai_fundamento_estudo_social" placeholder="Ex: a intensa animosidade entre as partes e as acusações recíprocas"></textarea></div>
-                <div class="campo"><label>Percentual de Rendimentos Proposto (Se empregado):</label><input type="text" id="cpai_percentual_rendimentos_proposto" placeholder="Ex: 20"></div>
-                <div class="campo"><label>Percentual do Salário Mínimo (Se desempregado):</label><input type="text" id="cpai_percentual_salario_minimo_proposto" placeholder="Ex: 30"></div>
-            </div>
-
-            <button type="button" id="btnAuditar" class="btn-auditar-forca" onclick="auditarCamposComGemini()">
-                🛡️ Auditar Requisitos com a Força (Gemini AI)
-            </button>
-            <div id="resultado_auditoria" class="resultado-auditoria-box" style="display:none;"></div>
-            <button type="button" id="btnGerar" onclick="gerarDocumentos()">Forjar Petições</button>
+            <div class="campo"><label>Processo nº:</label><input type="text" id="hab_numero" placeholder="0000000-00.0000.0.00.0000"></div>
+            <div class="campo"><label>Nome Completo do Assistido:</label><input type="text" id="hab_nome_autor" placeholder="João da Silva"></div>
+            <div class="campo"><label>Nacionalidade:</label><input type="text" id="hab_nacionalidade" value="brasileiro(a)"></div>
+            <div class="campo"><label>Estado Civil:</label><input type="text" id="hab_estado_civil" placeholder="solteiro(a)"></div>
+            <div class="campo"><label>Profissão:</label><input type="text" id="hab_profissao" placeholder="engenheiro(a)"></div>
+            <div class="campo"><label>RG:</label><input type="text" id="hab_rg" placeholder="00.000.000-0"></div>
+            <div class="campo"><label>CPF:</label><input type="text" id="hab_cpf" placeholder="000.000.000-00"></div>
+            <div class="campo"><label>Endereço Completo:</label><input type="text" id="hab_endereco" placeholder="Rua Exemplo, 123, Centro, Ribeirão Preto/SP, CEP:"></div>
+            <div class="campo"><label>Valor da proposta de acordo:</label><input type="text" id="hab_valor_acordo" placeholder="R$ 5.000,00"></div>
         </div>
+
+        <!-- BLOCO NOVO A: PROCURAÇÃO E GRATUIDADE -->
+        <div id="bloco_procuracao_gratuidade" class="bloco-peca">
+            <div class="section-title">Dados para Procuração e Declaração de Gratuidade</div>
+            <div class="campo"><label>Nome Completo do(a) Assistido(a):</label><input type="text" id="pg_nome_autor" placeholder="João da Silva"></div>
+            <div class="campo"><label>Nacionalidade:</label><input type="text" id="pg_nacionalidade" value="brasileiro(a)"></div>
+            <div class="campo"><label>Estado Civil:</label><input type="text" id="pg_estado_civil" placeholder="solteiro(a)"></div>
+            <div class="campo"><label>Profissão:</label><input type="text" id="pg_profissao" placeholder="autônomo(a)"></div>
+            <div class="campo"><label>RG:</label><input type="text" id="pg_rg" placeholder="00.000.000-0"></div>
+            <div class="campo"><label>CPF:</label><input type="text" id="pg_cpf" placeholder="000.000.000-00"></div>
+            <div class="campo"><label>Endereço Completo:</label><input type="text" id="pg_endereco" placeholder="Rua Exemplo, 123, Centro, Ribeirão Preto/SP, CEP:"></div>
+        </div>
+
+        <!-- BLOCO NOVO B: PROCURAÇÃO (MENOR) -->
+        <div id="bloco_procuracao_menor" class="bloco-peca">
+            <div class="section-title">Dados do(a) Menor Outorgante</div>
+            <div class="campo"><label>Nome Completo da Criança / Menor:</label><input type="text" id="pm_nome_crianca" placeholder="Enzo Gabriel da Silva"></div>
+            <div class="campo"><label>CPF da Criança / Menor:</label><input type="text" id="pm_cpf_crianca" placeholder="000.000.000-00"></div>
+            <div class="section-title">Dados da Assistida (Representante Legal)</div>
+            <div class="campo"><label>Nome Completo da Assistida (Representante):</label><input type="text" id="pm_nome_mae" placeholder="Maria da Silva"></div>
+            <div class="campo"><label>Nacionalidade da Assistida:</label><input type="text" id="pm_nacionalidade" value="brasileira"></div>
+            <div class="campo"><label>Estado Civil da Assistida:</label><input type="text" id="pm_estado_civil" placeholder="solteira"></div>
+            <div class="campo"><label>Profissão da Assistida:</label><input type="text" id="pm_profissao" placeholder="autônoma"></div>
+            <div class="campo"><label>RG da Assistida:</label><input type="text" id="pm_rg" placeholder="00.000.000-0"></div>
+            <div class="campo"><label>CPF da Assistida:</label><input type="text" id="pm_cpf" placeholder="000.000.000-00"></div>
+            <div class="campo"><label>Endereço Completo:</label><input type="text" id="pm_endereco" placeholder="Rua Exemplo, 123, Centro, Ribeirão Preto/SP, CEP:"></div>
+        </div>
+
+        <!-- BLOCO 2: NEGATIVA GERAL -->
+        <div id="bloco_negativa_geral" class="bloco-peca">
+            <div class="section-title">Dados da Contestação por Negativa Geral</div>
+            <div class="campo"><label>Vara (ex: 1ª):</label><input type="text" id="neg_vara" placeholder="1ª" onkeyup="verificarOrdem66(this)"></div>
+            <div class="campo"><label>Competência / Especialidade:</label>
+                <select id="neg_competencia">
+                    <option value="CÍVEL">CÍVEL</option>
+                    <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
+                    <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
+                    <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
+                </select>
+            </div>
+            <div class="campo"><label>Processo nº:</label><input type="text" id="neg_numero" placeholder="0000000-00.0000.0.00.0000"></div>
+            <div class="campo"><label>Nome Completo do Assistido:</label><input type="text" id="neg_nome_autor" placeholder="João da Silva"></div>
+            <div class="campo"><label>CPF:</label><input type="text" id="neg_cpf" placeholder="000.000.000-00"></div>
+        </div>
+
+        <!-- BLOCO 3: DESBLOQUEIO -->
+        <div id="bloco_desbloqueio" class="bloco-peca">
+            <div class="section-title">Dados do Processo e das Partes</div>
+            <div class="campo"><label>Vara (apenas o número, ex: 1):</label><input type="text" id="desb_vara" placeholder="1" onkeyup="verificarOrdem66(this)"></div>
+            <div class="campo"><label>Competência / Especialidade:</label>
+                <select id="desb_competencia">
+                    <option value="CÍVEL">CÍVEL</option>
+                    <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
+                    <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
+                    <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
+                </select>
+            </div>
+            <div class="campo"><label>Processo nº:</label><input type="text" id="desb_numero" placeholder="0000000-00.0000.0.00.0000"></div>
+            <div class="campo"><label>Nome Completo do(a) Assistido(a):</label><input type="text" id="desb_nome_assistido" placeholder="Ex: João da Silva"></div>
+            <div class="campo"><label>Título da Ação (em que ocorreu o bloqueio):</label><input type="text" id="desb_titulo_da_acao" placeholder="Ex: Ação de Execução de Título Extrajudicial"></div>
+            <div class="campo"><label>Nome da Parte Contrária (Exequente):</label><input type="text" id="desb_nome_parte_contraria" placeholder="Ex: Banco X S.A. ou Maria das Graças"></div>
+            <div class="campo"><label>Natureza do Crédito Executado:</label><input type="text" id="desb_natureza_credito_executado" placeholder="Ex: dívida de natureza cível e não alimentar"></div>
+            <div class="section-title">Dados do Bloqueio e da Conta</div>
+            <div class="campo"><label>Data do Bloqueio:</label><input type="text" id="desb_data_bloqueio" placeholder="Ex: 10/11/2026"></div>
+            <div class="campo"><label>Data da Intimação do Bloqueio:</label><input type="text" id="desb_data_intimacao_bloqueio" placeholder="Ex: 12/11/2026"></div>
+            <div class="campo"><label>Instituição Financeira (Banco):</label><input type="text" id="desb_banco" placeholder="Ex: Banco Itaú S.A."></div>
+            <div class="campo"><label>Tipo de Conta (já com a palavra "conta"):</label><input type="text" id="desb_tipo_conta" placeholder="Ex: conta-corrente"></div>
+            <div class="campo"><label>Valor Total Bloqueado:</label><input type="text" id="desb_valor_total_bloqueado" placeholder="Ex: R$ 4.919,49"></div>
+            <div class="campo"><label>Proporção da Verba Bloqueada (já com artigo):</label><input type="text" id="desb_proporcao_verba_bloqueada" placeholder="Ex: a totalidade"></div>
+            <div class="section-title">Origem da Verba e Subsistência</div>
+            <div class="campo"><label>Natureza da Verba:</label><input type="text" id="desb_natureza_verba" placeholder="Ex: proventos de aposentadoria"></div>
+            <div class="campo"><label>Fonte Pagadora (Quem pagou):</label><input type="text" id="desb_fonte_pagadora" placeholder="Ex: INSS"></div>
+            <div class="campo"><label>Data do Crédito:</label><input type="text" id="desb_data_credito" placeholder="Ex: 05/11/2026"></div>
+            <div class="campo"><label>Valor Creditado:</label><input type="text" id="desb_valor_credito" placeholder="Ex: R$ 4.919,49"></div>
+            <div class="campo"><label>Descrição Literal do Crédito no Extrato:</label><input type="text" id="desb_descricao_credito_extrato" placeholder="Ex: PGTO INSS 05701121220"></div>
+            <div class="campo"><label>Valor de 40 Salários Mínimos na Data:</label><input type="text" id="desb_valor_40_salarios_minimos" placeholder="Ex: R$ 64.840,00"></div>
+            <div class="campo"><label>Localização do Extrato nos Autos:</label><input type="text" id="desb_doc_extrato" placeholder="Ex: Doc. 02 / ID 123456"></div>
+            <div class="campo"><label>Documentos de Despesas e Família nos Autos:</label><input type="text" id="desb_doc_comprovantes" placeholder="Ex: Docs. 03 a 07"></div>
+            <div class="campo"><label>Situação Familiar e Dependência da Renda:</label><input type="text" id="desb_situacao_familiar" placeholder="Ex: reside com a esposa e dois filhos menores, que dependem de sua renda"></div>
+            <div class="campo"><label>Despesas Essenciais:</label><input type="text" id="desb_despesas_essenciais" placeholder="Ex: aluguel, alimentação, medicamentos e transporte"></div>
+        </div>
+
+        <!-- BLOCO 4: CITAÇÃO POR EDITAL -->
+        <div id="bloco_citacao_edital" class="bloco-peca">
+            <div class="section-title">Dados do Pedido de Citação por Edital</div>
+            <div class="campo"><label>Vara (apenas o número, ex: 1):</label><input type="text" id="ced_vara" placeholder="1" onkeyup="verificarOrdem66(this)"></div>
+            <div class="campo"><label>Competência / Especialidade:</label>
+                <select id="ced_competencia">
+                    <option value="CÍVEL">CÍVEL</option>
+                    <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
+                    <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
+                    <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
+                </select>
+            </div>
+            <div class="campo"><label>Processo nº:</label><input type="text" id="ced_numero" placeholder="0000000-00.0000.0.00.0000"></div>
+            <div class="campo"><label>Nome Completo do(a) Assistido(a):</label><input type="text" id="ced_nome_assistido" placeholder="Ex: Maria das Graças"></div>
+            <div class="campo"><label>Em atendimento a (decisão / despacho / ato ordinatório e fls.):</label><input type="text" id="ced_decisao_despacho" placeholder="Ex: à r. decisão de fls. 45 / ao ato ordinatório de fls. 22"></div>
+        </div>
+
+        <!-- BLOCO 5: INTIMAÇÃO PESSOAL -->
+        <div id="bloco_intimacao_pessoal" class="bloco-peca">
+            <div class="section-title">Dados do Pedido de Intimação Pessoal</div>
+            <div class="campo"><label>Vara (apenas o número, ex: 1):</label><input type="text" id="int_vara" placeholder="1" onkeyup="verificarOrdem66(this)"></div>
+            <div class="campo"><label>Competência / Especialidade:</label>
+                <select id="int_competencia">
+                    <option value="CÍVEL">CÍVEL</option>
+                    <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
+                    <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
+                    <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
+                </select>
+            </div>
+            <div class="campo"><label>Processo nº:</label><input type="text" id="int_numero" placeholder="0000000-00.0000.0.00.0000"></div>
+            <div class="campo"><label>Nome Completo do(a) Assistido(a):</label><input type="text" id="int_nome_assistido" placeholder="Ex: João da Silva"></div>
+            <div class="campo"><label>Motivo da necessidade de contato ("não conseguimos contato com a parte para..."):</label><textarea id="int_motivo_contato" placeholder="Ex: informar o endereço atualizado da parte contrária e apresentar documentos indispensáveis ao prosseguimento do feito."></textarea></div>
+        </div>
+
+        <!-- BLOCO 6: PENHORA SISBAJUD -->
+        <div id="bloco_penhora_sisbajud" class="bloco-peca">
+            <div class="section-title">Dados do Pedido de Penhora SISBAJUD</div>
+            <div class="campo"><label>Vara (apenas o número, ex: 1):</label><input type="text" id="sis_vara" placeholder="1" onkeyup="verificarOrdem66(this)"></div>
+            <div class="campo"><label>Competência / Especialidade:</label>
+                <select id="sis_competencia">
+                    <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
+                    <option value="CÍVEL">CÍVEL</option>
+                    <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
+                    <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
+                </select>
+            </div>
+            <div class="campo"><label>Processo nº:</label><input type="text" id="sis_numero" placeholder="0000000-00.0000.0.00.0000"></div>
+            <div class="campo"><label>Nome da Criança / Exequente:</label><input type="text" id="sis_nome_crianca" placeholder="Ex: Enzo Gabriel da Silva"></div>
+            <div class="campo"><label>Nome da Genitora (Representante Legal):</label><input type="text" id="sis_nome_mae" placeholder="Ex: Maria da Silva"></div>
+            <div class="campo"><label>Período dos Alimentos Vencidos ("abranger os valores devidos de..."):</label><input type="text" id="sis_periodo_alimentos" placeholder="Ex: janeiro a novembro de 2026"></div>
+        </div>
+
+        <!-- BLOCO 7: OFÍCIO LOCALIZAR -->
+        <div id="bloco_oficio_localizar" class="bloco-peca">
+            <div class="section-title">Dados do Pedido de Expedição de Ofício (Localizar Parte Contrária)</div>
+            <div class="campo"><label>Vara (apenas o número, ex: 1):</label><input type="text" id="ofi_vara" placeholder="1" onkeyup="verificarOrdem66(this)"></div>
+            <div class="campo"><label>Competência / Especialidade:</label>
+                <select id="ofi_competencia">
+                    <option value="CÍVEL">CÍVEL</option>
+                    <option value="DE FAMÍLIA E SUCESSÕES">DE FAMÍLIA E SUCESSÕES</option>
+                    <option value="DA FAZENDA PÚBLICA">DA FAZENDA PÚBLICA</option>
+                    <option value="DA INFÂNCIA E DA JUVENTUDE E DO IDOSO">DA INFÂNCIA E DA JUVENTUDE E DO IDOSO</option>
+                </select>
+            </div>
+            <div class="campo"><label>Processo nº:</label><input type="text" id="ofi_numero" placeholder="0000000-00.0000.0.00.0000"></div>
+            <div class="campo"><label>Nome Completo do(a) Assistido(a):</label><input type="text" id="ofi_nome_assistido" placeholder="Ex: João da Silva"></div>
+        </div>
+
+        <!-- BLOCO 8: PETIÇÃO INICIAL -->
+        <div id="bloco_inicial" class="bloco-peca">
+            <div class="nota-asterisco">- Campos marcados com asterisco serão inseridos apenas na Petição Inicial.</div>
+            <div class="section-title">Qualificação da Parte Autora</div>
+            <div class="campo"><label>Nome Completo do Autor(a):</label><input type="text" id="ini_nome_autor" placeholder="Ex: Adrielle Gonçalves dos Santos"></div>
+            <div class="campo"><label>Nacionalidade:</label><input type="text" id="ini_nacionalidade" value="brasileiro(a)"></div>
+            <div class="campo"><label>Estado Civil:</label><input type="text" id="ini_estado_civil" placeholder="Ex: casada"></div>
+            <div class="campo"><label>Profissão:</label><input type="text" id="ini_profissao" placeholder="Ex: desempregada"></div>
+            <div class="campo"><label>RG:</label><input type="text" id="ini_rg" placeholder="00.000.000-0"></div>
+            <div class="campo"><label>CPF:</label><input type="text" id="ini_cpf" placeholder="000.000.000-00"></div>
+            <div class="campo"><label>Endereço Completo:</label><input type="text" id="ini_endereco" placeholder="Ex: Rua Paranapanema, 345, Ribeirão Preto-SP"></div>
+            <div class="section-title">Dados da Petição Inicial *</div>
+            <div class="campo"><label>Vara* (ex: 1ª):</label><input type="text" id="ini_vara" placeholder="Deixe em branco se for a distribuir" onkeyup="verificarOrdem66(this)"></div>
+            <div class="campo"><label>Nome Completo do Requerido*:</label><input type="text" id="ini_nome_requerido" placeholder="Ex: Ericlis Gonçalves"></div>
+            <div class="campo"><label>Profissão do Requerido*:</label><input type="text" id="ini_profissao_requerido" placeholder="Ex: desenvolvedor de sistemas"></div>
+            <div class="campo"><label>RG do Requerido*:</label><input type="text" id="ini_rg_requerido" placeholder="00.000.000-0"></div>
+            <div class="campo"><label>CPF do Requerido*:</label><input type="text" id="ini_cpf_requerido" placeholder="000.000.000-00"></div>
+            <div class="campo"><label>Endereço do Requerido*:</label><input type="text" id="ini_endereco_requerido" placeholder="Ex: R. Des. Thrasybulo Pinheiro de Albuquerque, São Paulo - SP"></div>
+            <div class="campo"><label>Data do Casamento*:</label><input type="text" id="ini_data_casamento" placeholder="Deixe em branco se não houve casamento civil"></div>
+            <div class="campo"><label>Regime de Bens*:</label><input type="text" id="ini_regime_bens" placeholder="Ex: comunhão parcial de bens"></div>
+            <div class="campo"><label>Cartório e Registro de Casamento (Livro/Fls/Nº)*:</label><input type="text" id="ini_registro_casamento" placeholder="Ex: Cartório de Registro Civil, Livro B-0213, Fls. 227"></div>
+            <div class="campo"><label>Nome do Filho(a)*:</label><input type="text" id="ini_nome_filho" placeholder="Ex: Enzo Gabriel Monteiro dos Santos"></div>
+            <div class="campo"><label>Data de Nascimento do Filho(a)*:</label><input type="text" id="ini_nascimento_filho" placeholder="Ex: 17 de abril de 2016"></div>
+            <div class="campo"><label>RG do Filho(a)*:</label><input type="text" id="ini_rg_filho" placeholder="00.000.000-0"></div>
+            <div class="campo"><label>CPF do Filho(a)*:</label><input type="text" id="ini_cpf_filho" placeholder="000.000.000-00"></div>
+            <div class="campo"><label>Bens a Partilhar*:</label><input type="text" id="ini_bens_partilhar" placeholder="Deixe em branco se não houver bens"></div>
+            <div class="campo"><label>Nome de Solteira a retornar*:</label><input type="text" id="ini_nome_solteira" placeholder="Deixe em branco se não alterou o nome"></div>
+            <div class="campo"><label>Valor da Causa*:</label><input type="text" id="ini_valor_causa" placeholder="12x a pensão mensal - art. 292, III do CPC"></div>
+        </div>
+
+        <!-- BLOCO 9: CONTESTAÇÃO (PAI) -->
+        <div id="bloco_contestacao_pai" class="bloco-peca">
+            <div class="section-title">Dados do Processo</div>
+            <div class="campo"><label>Vara (ex: 1ª):</label><input type="text" id="cpai_vara" placeholder="Ex: 1ª" onkeyup="verificarOrdem66(this)"></div>
+            <div class="campo"><label>Número do Processo:</label><input type="text" id="cpai_numero" placeholder="0000000-00.0000.0.00.0000"></div>
+            <div class="campo"><label>Tipo de Ação:</label><input type="text" id="cpai_tipo_de_acao" placeholder="Ex: Ação de Guarda c/c Alimentos"></div>
+            <div class="campo"><label>Ofício Defensoria (Nº):</label><input type="text" id="cpai_n_oficio_defensoria" placeholder="Ex: 1234/2026"></div>
+            <div class="section-title">Qualificação das Partes</div>
+            <div class="campo"><label>Nome Completo do REQUERIDO (Seu Cliente):</label><input type="text" id="cpai_nome_reu" placeholder="Ex: João da Silva"></div>
+            <div class="campo"><label>Nacionalidade (Requerido):</label><input type="text" id="cpai_nacionalidade" value="brasileiro(a)"></div>
+            <div class="campo"><label>Estado Civil (Requerido):</label><input type="text" id="cpai_estado_civil" placeholder="Ex: divorciado"></div>
+            <div class="campo"><label>Profissão (Requerido):</label><input type="text" id="cpai_profissao" placeholder="Ex: autônomo"></div>
+            <div class="campo"><label>RG (Requerido):</label><input type="text" id="cpai_rg" placeholder="00.000.000-0"></div>
+            <div class="campo"><label>CPF (Requerido):</label><input type="text" id="cpai_cpf" placeholder="000.000.000-00"></div>
+            <div class="campo"><label>Endereço Completo (Requerido):</label><input type="text" id="cpai_endereco" placeholder="Rua, Número, Bairro, Cidade-UF, CEP"></div>
+            <div class="campo"><label>Nome Completo da AUTORA (Parte Contrária):</label><input type="text" id="cpai_nome_autor" placeholder="Ex: Maria das Graças"></div>
+            <div class="section-title">Resumo dos Fatos e Filhos</div>
+            <div class="campo"><label>Nome dos Filhos:</label><input type="text" id="cpai_nomes_filhos" placeholder="Ex: Enzo e Valentina Silva"></div>
+            <div class="campo"><label>Idade dos Filhos:</label><input type="text" id="cpai_idades_filhos" placeholder="Ex: 8 e 5 anos"></div>
+            <div class="campo"><label>O que a Autora pretende? (Síntese):</label><textarea id="cpai_sintese_pretensoes_autor" placeholder="Ex: a fixação de alimentos em 30% dos rendimentos líquidos..."></textarea></div>
+            <div class="section-title">Situação Financeira e Emprego do Réu</div>
+            <div class="campo"><label>Data de Desligamento:</label><input type="text" id="cpai_data_desligamento" placeholder="Ex: 15 de janeiro de 2026"></div>
+            <div class="campo"><label>Último Empregador:</label><input type="text" id="cpai_ultimo_empregador" placeholder="Ex: Construtora X"></div>
+            <div class="campo"><label>Cargo do Último Emprego:</label><input type="text" id="cpai_cargo_ultimo_emprego" placeholder="Ex: pedreiro"></div>
+            <div class="campo"><label>Motivo do Desligamento:</label><input type="text" id="cpai_motivo_desligamento" placeholder="Ex: corte de gastos da empresa"></div>
+            <div class="campo"><label>Último Salário:</label><input type="text" id="cpai_ultimo_salario" placeholder="Ex: R$ 2.500,00"></div>
+            <div class="campo"><label>Renda Atual do Requerido:</label><input type="text" id="cpai_renda_atual_requerido" placeholder="Ex: vive de bicos esporádicos recebendo cerca de R$ 800,00 mensais"></div>
+            <div class="section-title">Teses de Defesa e Propostas</div>
+            <div class="campo"><label>Impugnação às Alegações da Autora:</label><textarea id="cpai_impugnacao_alegacoes_autor" placeholder="Ex: A Autora alega sem provas que o Réu possui empresa oculta..."></textarea></div>
+            <div class="campo"><label>Contribuições In Natura (O que o Réu já paga?):</label><textarea id="cpai_contribuicoes_in_natura" placeholder="Ex: compra material escolar, roupas e paga o plano de saúde"></textarea></div>
+            <div class="campo"><label>Tese sobre a Guarda:</label><textarea id="cpai_tese_guarda_especifica" placeholder="Ex: a guarda compartilhada deve ser mantida pois atende o melhor interesse..."></textarea></div>
+            <div class="campo"><label>Fundamento para o Estudo Social:</label><textarea id="cpai_fundamento_estudo_social" placeholder="Ex: a intensa animosidade entre as partes e as acusações recíprocas"></textarea></div>
+            <div class="campo"><label>Percentual de Rendimentos Proposto (Se empregado):</label><input type="text" id="cpai_percentual_rendimentos_proposto" placeholder="Ex: 20"></div>
+            <div class="campo"><label>Percentual do Salário Mínimo (Se desempregado):</label><input type="text" id="cpai_percentual_salario_minimo_proposto" placeholder="Ex: 30"></div>
+        </div>
+
+        <button type="button" id="btnGerar" onclick="gerarDocumentos()">Forjar Petições</button>
     </div>
 
     <div id="idle-toast" class="idle-toast" onclick="limparTimerCafe()">
@@ -1541,54 +872,12 @@
     </div>
 </div>
 
-<!-- MODAL DE CONFIGURAÇÃO GEMINI API -->
-<div id="modal_gemini_config" class="modal-overlay" style="display:none;" onclick="if(event.target === this) fecharModalConfigGemini()">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>⚡ Conexão Holocron (Gemini API)</h3>
-            <button type="button" class="btn-modal-fechar" onclick="fecharModalConfigGemini()">&times;</button>
-        </div>
-        <div class="modal-body">
-            <p>O Holocron pode utilizar a inteligência artificial <strong>Gemini (Google DeepMind)</strong> diretamente para ler decisões judiciais e despachos (visão multimodal OCR), responder dúvidas e forjar petições dinâmicas personalizadas.</p>
-            
-            <div class="campo">
-                <label for="input_gemini_api_key">Sua Chave da API Gemini (Google AI Studio):</label>
-                <input type="password" id="input_gemini_api_key" placeholder="AIzaSy..." autocomplete="off">
-            </div>
-
-            <div class="campo">
-                <label for="select_gemini_model">Modelo Gemini:</label>
-                <select id="select_gemini_model">
-                    <option value="models/gemini-3.8-flash">Gemini 3.8 Flash (Recomendado • Multimodal Rápido e Preciso)</option>
-                </select>
-            </div>
-
-            <div class="modal-aviso-seguranca">
-                🛡️ <strong>Segurança GitHub Pages (Regra 4):</strong> Sua chave é armazenada exclusivamente na memória local do seu navegador (<code>localStorage</code>). Nenhuma chave é gravada no código-fonte ou enviada ao GitHub. Se preferir não usar chave própria, o sistema continuará operando normalmente através da ponte Google Apps Script.
-            </div>
-
-            <div id="status_teste_conexao" class="status-teste-api"></div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn-modal-testar" onclick="testarConexaoGemini()">Testar Sintonia</button>
-            <button type="button" class="btn-modal-cancelar" onclick="fecharModalConfigGemini()">Cancelar</button>
-            <button type="button" class="btn-modal-salvar" onclick="salvarConfigGemini()">Salvar Conexão</button>
-        </div>
-    </div>
-</div>
-
-<!-- INPUT DE ARQUIVO OCULTO PARA VISÃO MULTIMODAL -->
-<input type="file" id="input_arquivo_holocron" accept="image/*,application/pdf" style="display:none;" onchange="processarArquivoComGemini(event)">
-
 <script src="https://cdn.jsdelivr.net/npm/pizzip@3.1.7/dist/pizzip.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/docxtemplater@3.37.11/build/docxtemplater.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
 
 <script>
-// 1. URL DO SCRIPT DA IA DA FORJA
-const URL_IA_JEDI = "https://script.google.com/macros/s/AKfycbzA1TEn9KQW3taJF0FId7hC4oOEZRphSid3dg5anDC3LzzSVyza1DmcZMYi4lMV3MCGDA/exec";
-
-// 2. URL DO SCRIPT DO RELATÓRIO DA FORJA (PLANILHA)
+// URL DO SCRIPT DO RELATÓRIO DA FORJA (PLANILHA)
 const URL_PLANILHA_JEDI = "https://script.google.com/macros/s/AKfycbzvfsh-NOIrdvAVnTrTR7q1JurdLpnaPBjsn8NxcKy2WEWewcf11DSZDaGNz5V8-zqPpg/exec";
 
 const audioForja = new Audio('modelos/som-jedi.mp3');
@@ -1625,6 +914,8 @@ audioAbertura.addEventListener('timeupdate', () => {
 
 const DESCRICOES_PACOTE = {
     habilitacao: "📄 Documentos gerados: Habilitação + Procuração + Gratuidade",
+    procuracao_gratuidade: "📄 Documentos gerados: Procuração + Gratuidade",
+    procuracao_menor: "📄 Documento gerado: Somente Procuração (Menor representado pela Assistida)",
     negativa_geral: "📄 Documento gerado: Somente Contestação por Negativa Geral",
     desbloqueio: "📄 Documento gerado: Somente Pedido de Desbloqueio",
     citacao_edital: "📄 Documento gerado: Somente Pedido de Citação por Edital",
@@ -1635,32 +926,12 @@ const DESCRICOES_PACOTE = {
     contestacao_pai: "📄 Documentos gerados: Contestação + Procuração + Gratuidade"
 };
 
-function alternarModoVisual(modo) {
-    const btnChat = document.getElementById('btn_modo_chat');
-    const btnManual = document.getElementById('btn_modo_manual');
-    const painelChat = document.getElementById('painel_chat');
-    const painelManual = document.getElementById('painel_manual');
-
-    if (modo === 'chat') {
-        btnChat.classList.add('active');
-        btnManual.classList.remove('active');
-        painelChat.classList.add('ativo');
-        painelManual.classList.remove('ativo');
-        const inputChat = document.getElementById('chat_input');
-        if (inputChat) inputChat.focus();
-    } else {
-        btnManual.classList.add('active');
-        btnChat.classList.remove('active');
-        painelManual.classList.add('ativo');
-        painelChat.classList.remove('ativo');
-    }
-}
-
 function alternarFormulario() {
     const tipo = document.getElementById('tipo_peca').value;
     const blocos = [
-        'habilitacao', 'negativa_geral', 'desbloqueio', 'citacao_edital',
-        'intimacao_pessoal', 'penhora_sisbajud', 'oficio_localizar', 'inicial', 'contestacao_pai'
+        'habilitacao', 'procuracao_gratuidade', 'procuracao_menor', 'negativa_geral',
+        'desbloqueio', 'citacao_edital', 'intimacao_pessoal', 'penhora_sisbajud',
+        'oficio_localizar', 'inicial', 'contestacao_pai'
     ];
 
     blocos.forEach(nome => {
@@ -1690,7 +961,6 @@ const TEXTO_BOTAO_PADRAO = "Forjar Petições";
 const TEXTO_NAO_PADAWAN = "não acho que você seja um padawan";
 
 // LISTA EXCLUSIVA DE PADAWANS AUTORIZADOS (NOMES COMPLETOS)
-// Qualquer pessoa fora desta lista é automaticamente considerada um Sith!
 const PADAWANS = [
     "joao miguel fontes chueng",
     "filipe eduardo maglio colus",
@@ -1751,12 +1021,11 @@ function validarEntradaPortal() {
         return;
     }
 
-    // Qualquer nome que não esteja na lista oficial de Padawans é considerado Sith
     if (!ehNomePadawanValido(nomeDigitado)) {
         cardBox.classList.add('portal-sith-alerta');
         btnEntrar.classList.add('sith-mode');
         feedback.className = 'portal-feedback erro-sith';
-        feedback.innerHTML = "🔴 PERTURBAÇÃO NA FORÇA! Presença Sith detectada.<br>Seu nome não consta nos arquivos do Templo Jedi... Brincadeiras a parte, esta é uma plataforma em teste, favor não utilizar.";
+        feedback.innerHTML = "🔴 PERTURBAÇÃO NA FORÇA! Presença Sith detectada.<br>Seu nome não consta nos arquivos do Templo Jedi. O acesso à Forja está bloqueado para o Lado Sombrio!";
         if (input) {
             input.value = "";
             input.focus();
@@ -1764,7 +1033,6 @@ function validarEntradaPortal() {
         return;
     }
 
-    // Padawan autorizado: inicia o segundo GIF (salto no hiperespaço)
     overlay.classList.add('oculto');
     if (legenda) {
         legenda.innerText = `✨ BEM-VINDO, PADAWAN ${nomeDigitado.toUpperCase()} • SALTANDO PARA A FORJA...`;
@@ -1819,7 +1087,6 @@ function verificarOrdem66Ativa() {
 function atualizarBotao() {
     const input = document.getElementById('nome_bad_boy');
     const botaoManual = document.getElementById('btnGerar');
-    const botaoChat = document.getElementById('btn_chat_enviar');
     const badge = document.getElementById('padawan_badge');
     if (!input) return;
 
@@ -1828,7 +1095,6 @@ function atualizarBotao() {
     const ehSith = ehNomeSith(valorOriginal);
 
     if (botaoManual) botaoManual.classList.toggle('sith-mode', ehSith);
-    if (botaoChat) botaoChat.classList.toggle('sith-mode', ehSith);
 
     if (ehSith) {
         document.body.classList.add('sith-theme');
@@ -1897,107 +1163,6 @@ function inicializarEasterEggCafe() {
     });
 }
 
-// =====================================================================
-// CHAT DINÂMICO COM O MESTRE JEDI
-// =====================================================================
-let historicoChat = [];
-let ultimoPacoteIA = null;
-
-const MENSAGEM_INICIAL_JEDI = `Saudações, jovem Padawan! Sou o **Mestre Jedi** do EAJ/UNAERP (Comarca de Ribeirão Preto/SP).
-
-Estou pronto para ajudar de duas formas:
-1. **Tirar dúvidas jurídicas ou processuais** sobre qualquer caso do escritório;
-2. **Redigir petições completas e personalizadas** (iniciais, contestações, pedidos intermediários ou novas teses/tópicos criados livremente).
-
-Lembre-se de repetir seu nome completo no campo **Identificação do Padawan** acima para liberar a assinatura e o download das peças! Conte-me sua dúvida ou cole os dados do atendimento abaixo.`;
-
-function ajustarAlturaTextarea(textarea) {
-    textarea.style.height = 'auto';
-    textarea.style.height = Math.min(textarea.scrollHeight, 160) + 'px';
-}
-
-function tratarTeclaChat(e) {
-    if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        enviarMensagemChat();
-    }
-}
-
-function aplicarPromptChip(tipo) {
-    const input = document.getElementById('chat_input');
-    if (!input) return;
-    const templates = {
-        duvida: "Mestre Jedi, tenho uma dúvida jurídica/processual sobre este caso: ",
-        inicial: "Preciso redigir uma Petição Inicial (Ribeirão Preto/SP). Seguem os dados do atendimento, Vara/Competência e fatos:",
-        contestacao: "Preciso redigir uma Contestação. Seguem os dados do processo, Vara/Competência, qualificação e argumentos de defesa:",
-        habilitacao: "Preciso de uma Habilitação com Procuração e Gratuidade de Justiça. Dados do processo e do assistido:",
-        desbloqueio: "Preciso de uma petição de Desbloqueio / SISBAJUD. Seguem os dados do processo, Vara/Competência e valores:",
-        livre: "Preciso redigir uma petição personalizada com teses específicas para este caso:"
-    };
-    input.value = templates[tipo] || "";
-    ajustarAlturaTextarea(input);
-    input.focus();
-}
-
-function formatarTextoMarkdown(texto) {
-    if (!texto) return "";
-    let html = texto.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-    html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
-    html = html.replace(/`([^`]+)`/g, '<code style="background:rgba(56,189,248,0.15);padding:2px 6px;border-radius:4px;color:var(--jedi-cyan);font-family:monospace;">$1</code>');
-    html = html.replace(/^\s*[-*]\s+(.*)$/gm, '<li>$1</li>');
-    html = html.replace(/(<li>[\s\S]*?<\/li>)/g, '<ul>$1</ul>');
-    html = html.replace(/<\/ul>\s*<ul>/g, '');
-    html = html.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
-    return html;
-}
-
-function adicionarMensagemUI(role, texto, extraHtml = "") {
-    const container = document.getElementById('chat_mensagens');
-    if (!container) return;
-    const divMsg = document.createElement('div');
-    divMsg.className = `chat-msg ${role}`;
-    const avatarIcon = role === 'jedi' ? '🧙‍♂️' : (role === 'user' ? '⚔️' : '⚡');
-    const audioBtnHtml = role === 'jedi' ? `
-        <div class="chat-msg-actions">
-            <button type="button" class="btn-ouvir-mestre" onclick="ouvirMensagemMestre(this)">🔊 Ouvir Mestre</button>
-        </div>
-    ` : '';
-    divMsg.innerHTML = `
-        <div class="chat-avatar">${avatarIcon}</div>
-        <div class="chat-bubble">
-            ${formatarTextoMarkdown(texto)}
-            ${extraHtml}
-            ${audioBtnHtml}
-        </div>
-    `;
-    container.appendChild(divMsg);
-    container.scrollTop = container.scrollHeight;
-}
-
-function setDigitando(ativo, textoCustom = "Mestre Jedi está analisando o caso na Força") {
-    const el = document.getElementById('chat_digitando');
-    const container = document.getElementById('chat_mensagens');
-    if (el) {
-        const textoSpan = el.querySelector('span');
-        if (textoSpan) textoSpan.innerText = textoCustom;
-        el.classList.toggle('ativo', ativo);
-        if (ativo && container) container.scrollTop = container.scrollHeight;
-    }
-}
-
-function reiniciarChat() {
-    historicoChat = [];
-    const container = document.getElementById('chat_mensagens');
-    if (container) container.innerHTML = '';
-    adicionarMensagemUI('jedi', MENSAGEM_INICIAL_JEDI);
-    const input = document.getElementById('chat_input');
-    if (input) {
-        input.value = '';
-        ajustarAlturaTextarea(input);
-    }
-}
-
 function registrarLogPlanilha(padawan, processo, acao, pecas) {
     if (!URL_PLANILHA_JEDI || URL_PLANILHA_JEDI.includes("COLE_AQUI")) return;
     fetch(URL_PLANILHA_JEDI, {
@@ -2013,980 +1178,7 @@ function registrarLogPlanilha(padawan, processo, acao, pecas) {
 }
 
 // =====================================================================
-// INTEGRAÇÃO NATIVA GEMINI API (GOOGLE DEEPMIND) - REDAÇÃO LIVRE & VISÃO
-// =====================================================================
-const PROMPT_SISTEMA_JEDI = `Você é o Mestre Jedi da Forja de Documentos do Escritório de Assistência Jurídica (EAJ/UNAERP) na Comarca de Ribeirão Preto/SP.
-Você é um especialista em Direito Civil, Direito de Família e Processo Civil (CPC/2015).
-Você ajuda e orienta estagiários (padawans) de Direito a tirarem dúvidas jurídicas e a redigirem petições completas e personalizadas.
-
-DIRETRIZES DE ATUAÇÃO (SEM LIMITADORES RÍGIDOS):
-1. LIBERDADE DE CRIAÇÃO E REDAÇÃO: Você NÃO está restrito a modelos engessados. Você pode responder dúvidas práticas ou teóricas sobre o caso, criar novas teses, redigir petições completas (iniciais, contestações, pedidos de desbloqueio, agravos, embargos, petições intermediárias) com a estrutura formal do CPC:
-  - Endereçamento (ex: EXCELENTÍSSIMO SENHOR DOUTOR JUIZ DE DIREITO DA ... VARA CÍVEL / DE FAMÍLIA E SUCESSÕES DA COMARCA DE RIBEIRÃO PRETO/SP)
-  - Qualificação completa das partes
-  - Fatos bem narrados
-  - Fundamentação jurídica sólida (legislação aplicável e jurisprudência pacífica)
-  - Pedidos claros e requerimentos finais (citação, gratuidade da justiça, produção de provas).
-
-2. GERAÇÃO DINÂMICA DO DOCUMENTO WORD (.docx):
-Quando o usuário solicitar a redação/forja da petição e você tiver reunido os fatos e dados necessários (ou quando ele pedir "redija a petição", "gere o documento", "forjar peça"), forneça um resumo ao padawan e inclua no final da resposta um bloco JSON delimitado exatamente por:
-\`\`\`json_ia
-{
-  "ready": true,
-  "titulo_peca": "Nome_Da_Peticao",
-  "numero_processo": "0000000-00.0000.0.00.0000 ou A Distribuir",
-  "vara": "1ª Vara de Família e Sucessões",
-  "competencia": "Ribeirão Preto/SP",
-  "incluir_anexos": true,
-  "dados_cliente": {
-    "nome_autor": "Nome Completo do Assistido",
-    "nacionalidade": "brasileiro(a)",
-    "estado_civil": "solteiro(a)",
-    "profissao": "profissao",
-    "rg": "00.000.000-0",
-    "cpf": "000.000.000-00",
-    "endereco": "Rua..., nº..., Bairro..., Ribeirão Preto/SP"
-  },
-  "paragrafos": [
-    { "texto": "EXCELENTÍSSIMO(A) SENHOR(A) DOUTOR(A) JUIZ(A) DE DIREITO DA [VARA] DA COMARCA DE RIBEIRÃO PRETO/SP" },
-    { "texto": "[NOME DO ASSISTIDO], já devidamente qualificado(a)..." },
-    { "texto": "I. DOS FATOS" },
-    { "texto": "Texto narrando os fatos do caso..." },
-    { "texto": "II. DO DIREITO" },
-    { "texto": "Texto da fundamentação jurídica..." },
-    { "texto": "III. DOS PEDIDOS" },
-    { "texto": "Diante do exposto, requer a Vossa Excelência: a) ..., b) ..." }
-  ]
-}
-\`\`\`
-Se o usuário estiver apenas tirando dúvidas ou se ainda faltarem dados indispensáveis para redigir a petição, NÃO envie o bloco json_ia; responda em tom solene, amigável e instrutivo de Mestre Jedi.`;
-
-function abrirModalConfigGemini() {
-    const modal = document.getElementById('modal_gemini_config');
-    if (!modal) return;
-    const inputKey = document.getElementById('input_gemini_api_key');
-    const selectModel = document.getElementById('select_gemini_model');
-    const statusEl = document.getElementById('status_teste_conexao');
-
-    if (inputKey) inputKey.value = localStorage.getItem('jedi_gemini_api_key') || '';
-    if (selectModel) selectModel.value = localStorage.getItem('jedi_gemini_model') || 'gemini-2.5-flash';
-    if (statusEl) statusEl.style.display = 'none';
-
-    modal.style.display = 'flex';
-}
-
-function fecharModalConfigGemini() {
-    const modal = document.getElementById('modal_gemini_config');
-    if (modal) modal.style.display = 'none';
-}
-
-function salvarConfigGemini() {
-    const inputKey = document.getElementById('input_gemini_api_key');
-    const selectModel = document.getElementById('select_gemini_model');
-
-    const key = inputKey ? inputKey.value.trim() : '';
-    const model = selectModel ? selectModel.value : 'gemini-2.5-flash';
-
-    if (key) {
-        localStorage.setItem('jedi_gemini_api_key', key);
-    } else {
-        localStorage.removeItem('jedi_gemini_api_key');
-    }
-    localStorage.setItem('jedi_gemini_model', model);
-
-    atualizarStatusBotaoGemini();
-    fecharModalConfigGemini();
-
-    if (key) {
-        alert("✨ Conexão Gemini API configurada com sucesso!\n\nAgora o Holocron opera com inteligência e visão multimodal direta.");
-    } else {
-        alert("ℹ️ Chave removida. O sistema continuará operando através da ponte Google Apps Script.");
-    }
-}
-
-async function testarConexaoGemini() {
-    const inputKey = document.getElementById('input_gemini_api_key');
-    const selectModel = document.getElementById('select_gemini_model');
-    const statusEl = document.getElementById('status_teste_conexao');
-    if (!inputKey || !statusEl) return;
-
-    const key = inputKey.value.trim();
-    const model = selectModel ? selectModel.value : 'gemini-2.5-flash';
-
-    if (!key) {
-        statusEl.className = 'status-teste-api erro';
-        statusEl.style.display = 'block';
-        statusEl.textContent = '❌ Digite sua chave antes de testar a sintonia.';
-        return;
-    }
-
-    statusEl.className = 'status-teste-api';
-    statusEl.style.display = 'block';
-    statusEl.style.color = 'var(--jedi-cyan)';
-    statusEl.textContent = '⚡ Testando sintonia com os Arquivos Jedi...';
-
-    try {
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: 'Responda estritamente: A Força está com você!' }] }]
-            })
-        });
-
-        if (!res.ok) {
-            const err = await res.json().catch(() => ({}));
-            throw new Error(err.error ? err.error.message : `Erro HTTP ${res.status}`);
-        }
-
-        statusEl.className = 'status-teste-api sucesso';
-        statusEl.textContent = `✅ Sintonia confirmada! Conexão ativa com o modelo ${model}.`;
-    } catch (e) {
-        statusEl.className = 'status-teste-api erro';
-        statusEl.textContent = `❌ Perturbação na Força: ${e.message}`;
-    }
-}
-
-function atualizarStatusBotaoGemini() {
-    const btn = document.getElementById('btn_gemini_config');
-    if (!btn) return;
-    const key = localStorage.getItem('jedi_gemini_api_key');
-    if (key) {
-        btn.classList.add('ativo');
-        btn.innerHTML = '🟢 Gemini Direto Ativo';
-    } else {
-        btn.classList.remove('ativo');
-        btn.innerHTML = '⚡ Conectar Gemini API';
-    }
-}
-
-function acionarUploadArquivo() {
-    const input = document.getElementById('input_arquivo_holocron');
-    if (input) input.click();
-}
-
-function ouvirMensagemMestre(btn) {
-    const bubble = btn.closest('.chat-bubble');
-    if (!bubble) return;
-
-    const clone = bubble.cloneNode(true);
-    const actions = clone.querySelector('.chat-msg-actions');
-    if (actions) actions.remove();
-    const card = clone.querySelector('.forja-sucesso-card');
-    if (card) card.remove();
-    const textoLimpo = clone.innerText.replace(/[\*#_`~>]/g, '').trim();
-
-    if (!('speechSynthesis' in window)) {
-        alert("Seu navegador não possui suporte para síntese de voz.");
-        return;
-    }
-
-    if (window.speechSynthesis.speaking) {
-        window.speechSynthesis.cancel();
-        btn.innerHTML = '🔊 Ouvir Mestre';
-        return;
-    }
-
-    const utterance = new SpeechSynthesisUtterance(textoLimpo);
-    utterance.lang = 'pt-BR';
-    utterance.rate = 1.0;
-    utterance.pitch = 0.92;
-
-    const vozes = window.speechSynthesis.getVoices();
-    const vozPt = vozes.find(v => v.lang === 'pt-BR' || v.lang.startsWith('pt'));
-    if (vozPt) utterance.voice = vozPt;
-
-    btn.innerHTML = '⏹️ Parar Voz';
-    utterance.onend = () => { btn.innerHTML = '🔊 Ouvir Mestre'; };
-    utterance.onerror = () => { btn.innerHTML = '🔊 Ouvir Mestre'; };
-    window.speechSynthesis.speak(utterance);
-}
-
-async function chamarGeminiAPI({ prompt, fileBase64, mimeType, jsonMode = false, historico = [] }) {
-    const apiKey = localStorage.getItem('jedi_gemini_api_key');
-    if (!apiKey) {
-        throw new Error("Chave da API Gemini não configurada.");
-    }
-    const modelo = localStorage.getItem('jedi_gemini_model') || 'gemini-2.5-flash';
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent?key=${apiKey}`;
-
-    const contents = [];
-
-    if (historico && historico.length > 0) {
-        for (const msg of historico) {
-            const role = (msg.role === 'jedi' || msg.role === 'assistant' || msg.role === 'model') ? 'model' : 'user';
-            const cleanContent = (msg.content || "").replace(/```json_ia[\s\S]*?```/g, '').trim();
-            if (cleanContent) {
-                contents.push({
-                    role: role,
-                    parts: [{ text: cleanContent }]
-                });
-            }
-        }
-    }
-
-    const userParts = [];
-    if (fileBase64 && mimeType) {
-        userParts.push({
-            inlineData: {
-                mimeType: mimeType,
-                data: fileBase64
-            }
-        });
-    }
-    if (prompt) {
-        userParts.push({ text: prompt });
-    }
-
-    contents.push({
-        role: "user",
-        parts: userParts
-    });
-
-    const payload = {
-        contents: contents,
-        systemInstruction: {
-            parts: [{ text: PROMPT_SISTEMA_JEDI }]
-        }
-    };
-
-    if (jsonMode) {
-        payload.generationConfig = {
-            responseMimeType: "application/json"
-        };
-    }
-
-    const response = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-    });
-
-    if (!response.ok) {
-        const errJson = await response.json().catch(() => ({}));
-        const msg = errJson.error ? errJson.error.message : `Status ${response.status}`;
-        throw new Error(msg);
-    }
-
-    const data = await response.json();
-    const candidate = data.candidates && data.candidates[0];
-    if (!candidate || !candidate.content || !candidate.content.parts) {
-        throw new Error("O Holocron não retornou resposta legível.");
-    }
-
-    return candidate.content.parts.map(p => p.text).join("");
-}
-
-function normalizarModelId(id) {
-    if (!id) return 'habilitacao';
-    const s = id.toLowerCase().replace('.docx', '').replace(/\s+/g, '_').trim();
-    if (s.includes('habilitacao') || s.includes('hab')) return 'habilitacao';
-    if (s.includes('contestacao_pai') || s.includes('pai')) return 'contestacao_pai';
-    if (s.includes('negativa') || s.includes('contestacao')) return 'negativa_geral';
-    if (s.includes('desbloqueio')) return 'desbloqueio';
-    if (s.includes('edital') || s.includes('citacao')) return 'citacao_edital';
-    if (s.includes('intimacao')) return 'intimacao_pessoal';
-    if (s.includes('sisbajud') || s.includes('penhora')) return 'penhora_sisbajud';
-    if (s.includes('localizar') || s.includes('oficio')) return 'oficio_localizar';
-    if (s.includes('inicial')) return 'inicial';
-    return s;
-}
-
-function preencherFormularioManual(modelId, fields) {
-    if (!fields) return;
-    const setV = (id, val) => {
-        const el = document.getElementById(id);
-        if (el && val !== undefined && val !== null) el.value = val;
-    };
-
-    const tipoSelect = document.getElementById('tipo_peca');
-    if (tipoSelect) {
-        tipoSelect.value = modelId;
-        alternarFormulario();
-    }
-
-    if (modelId === 'habilitacao') {
-        setV('hab_vara', fields.vara);
-        setV('hab_competencia', fields.competencia);
-        setV('hab_numero', fields.numero);
-        setV('hab_nome_autor', fields.nome_autor || fields.nome_assistido);
-        setV('hab_nacionalidade', fields.nacionalidade);
-        setV('hab_estado_civil', fields.estado_civil);
-        setV('hab_profissao', fields.profissao);
-        setV('hab_rg', fields.rg);
-        setV('hab_cpf', fields.cpf);
-        setV('hab_endereco', fields.endereco);
-        setV('hab_valor_acordo', fields.valor_acordo);
-    } else if (modelId === 'negativa_geral') {
-        setV('neg_vara', fields.vara);
-        setV('neg_competencia', fields.competencia);
-        setV('neg_numero', fields.numero);
-        setV('neg_nome_autor', fields.nome_autor || fields.nome_assistido);
-        setV('neg_cpf', fields.cpf);
-    } else if (modelId === 'desbloqueio') {
-        setV('desb_vara', fields.vara);
-        setV('desb_competencia', fields.competencia);
-        setV('desb_numero', fields.numero);
-        setV('desb_nome_assistido', fields.nome_assistido || fields.nome_autor);
-        setV('desb_titulo_da_acao', fields.titulo_da_acao);
-        setV('desb_nome_parte_contraria', fields["nome_parte_contrária"] || fields.nome_parte_contraria);
-        setV('desb_natureza_credito_executado', fields.natureza_credito_executado);
-        setV('desb_data_bloqueio', fields.data_bloqueio);
-        setV('desb_data_intimacao_bloqueio', fields.data_intimacao_bloqueio);
-        setV('desb_banco', fields.banco);
-        setV('desb_tipo_conta', fields.tipo_conta);
-        setV('desb_valor_total_bloqueado', fields.valor_total_bloqueado);
-        setV('desb_proporcao_verba_bloqueada', fields.proporcao_verba_bloqueada);
-        setV('desb_natureza_verba', fields.natureza_verba);
-        setV('desb_fonte_pagadora', fields.fonte_pagadora);
-        setV('desb_data_credito', fields.data_credito);
-        setV('desb_valor_credito', fields.valor_credito);
-        setV('desb_descricao_credito_extrato', fields.descricao_credito_extrato);
-        setV('desb_valor_40_salarios_minimos', fields.valor_40_salarios_minimos);
-        setV('desb_doc_extrato', fields.doc_extrato);
-        setV('desb_doc_comprovantes', fields.doc_comprovantes);
-        setV('desb_situacao_familiar', fields.situacao_familiar);
-        setV('desb_despesas_essenciais', fields.despesas_essenciais);
-    } else if (modelId === 'citacao_edital') {
-        setV('ced_vara', fields.vara);
-        setV('ced_competencia', fields.competencia);
-        setV('ced_numero', fields.numero);
-        setV('ced_nome_assistido', fields.nome_assistido || fields.nome_autor);
-        setV('ced_decisao_despacho', fields["decisão_despacho_ato_ordinatorio_fls"] || fields.decisao_despacho);
-    } else if (modelId === 'intimacao_pessoal') {
-        setV('int_vara', fields.vara);
-        setV('int_competencia', fields.competencia);
-        setV('int_numero', fields.numero);
-        setV('int_nome_assistido', fields.nome_assistido || fields.nome_autor);
-        setV('int_motivo_contato', fields.motivo_da_necessidade_de_contato || fields.motivo_contato);
-    } else if (modelId === 'penhora_sisbajud') {
-        setV('sis_vara', fields.vara);
-        setV('sis_competencia', fields.competencia);
-        setV('sis_numero', fields.numero);
-        setV('sis_nome_crianca', fields["nome_criança"] || fields.nome_crianca);
-        setV('sis_nome_mae', fields.nome_mae || fields.nome_assistido);
-        setV('sis_periodo_alimentos', fields["período_dos_alimentos_vencidos"] || fields.periodo_alimentos);
-    } else if (modelId === 'oficio_localizar') {
-        setV('ofi_vara', fields.vara);
-        setV('ofi_competencia', fields.competencia);
-        setV('ofi_numero', fields.numero);
-        setV('ofi_nome_assistido', fields.nome_assistido || fields.nome_autor);
-    } else if (modelId === 'inicial') {
-        setV('ini_nome_autor', fields.nome_autor || fields.nome_assistido);
-        setV('ini_nacionalidade', fields.nacionalidade);
-        setV('ini_estado_civil', fields.estado_civil);
-        setV('ini_profissao', fields.profissao);
-        setV('ini_rg', fields.rg);
-        setV('ini_cpf', fields.cpf);
-        setV('ini_endereco', fields.endereco);
-        setV('ini_vara', fields.vara);
-        setV('ini_nome_requerido', fields.nome_requerido);
-        setV('ini_profissao_requerido', fields.profissao_requerido);
-        setV('ini_rg_requerido', fields.rg_requerido);
-        setV('ini_cpf_requerido', fields.cpf_requerido);
-        setV('ini_endereco_requerido', fields.endereco_requerido);
-        setV('ini_data_casamento', fields.data_casamento);
-        setV('ini_regime_bens', fields.regime_bens);
-        setV('ini_registro_casamento', fields.registro_casamento);
-        setV('ini_nome_filho', fields.nome_filho);
-        setV('ini_nascimento_filho', fields.nascimento_filho);
-        setV('ini_rg_filho', fields.rg_filho);
-        setV('ini_cpf_filho', fields.cpf_filho);
-        setV('ini_bens_partilhar', fields.bens_partilhar);
-        setV('ini_nome_solteira', fields.nome_solteira);
-        setV('ini_valor_causa', fields.valor_causa);
-    } else if (modelId === 'contestacao_pai') {
-        setV('cpai_vara', fields.vara);
-        setV('cpai_numero', fields.numero);
-        setV('cpai_tipo_de_acao', fields.tipo_de_acao);
-        setV('cpai_n_oficio_defensoria', fields.n_oficio_defensoria);
-        setV('cpai_nome_reu', fields.nome_reu || fields.nome_assistido);
-        setV('cpai_nacionalidade', fields.nacionalidade);
-        setV('cpai_estado_civil', fields.estado_civil);
-        setV('cpai_profissao', fields.profissao);
-        setV('cpai_rg', fields.rg);
-        setV('cpai_cpf', fields.cpf);
-        setV('cpai_endereco', fields.endereco);
-        setV('cpai_nome_autor', fields.nome_autor);
-        setV('cpai_nomes_filhos', fields.nomes_filhos);
-        setV('cpai_idades_filhos', fields.idades_filhos);
-        setV('cpai_sintese_pretensoes_autor', fields.sintese_pretensoes_autor);
-        setV('cpai_data_desligamento', fields.data_desligamento);
-        setV('cpai_ultimo_empregador', fields.ultimo_empregador);
-        setV('cpai_cargo_ultimo_emprego', fields.cargo_ultimo_emprego);
-        setV('cpai_motivo_desligamento', fields.motivo_desligamento);
-        setV('cpai_ultimo_salario', fields.ultimo_salario);
-        setV('cpai_renda_atual_requerido', fields.renda_atual_requerido);
-        setV('cpai_impugnacao_alegacoes_autor', fields.impugnacao_alegacoes_autor);
-        setV('cpai_contribuicoes_in_natura', fields.contribuicoes_in_natura);
-        setV('cpai_tese_guarda_especifica', fields.tese_guarda_especifica);
-        setV('cpai_fundamento_estudo_social', fields.fundamento_estudo_social);
-        setV('cpai_percentual_rendimentos_proposto', fields.percentual_rendimentos_proposto);
-        setV('cpai_percentual_salario_minimo_proposto', fields.percentual_salario_minimo_proposto);
-    }
-}
-
-async function processarArquivoComGemini(event) {
-    const file = event.target.files && event.target.files[0];
-    if (!file) return;
-
-    event.target.value = '';
-
-    const apiKey = localStorage.getItem('jedi_gemini_api_key');
-    if (!apiKey) {
-        abrirModalConfigGemini();
-        alert("🔮 VISÃO HOLOCRON (GEMINI AI)\n\nPara analisar imagens ou PDFs de decisões judiciais com visão multimodal do Gemini, por favor insira sua chave da API Gemini do Google AI Studio.");
-        return;
-    }
-
-    if (file.size > 15 * 1024 * 1024) {
-        alert("O arquivo é muito grande para o Holocron (máximo 15MB).");
-        return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = async () => {
-        const dataUrl = reader.result;
-        const base64Data = dataUrl.split(',')[1];
-        const mimeType = file.type || (file.name.toLowerCase().endsWith('.pdf') ? 'application/pdf' : 'image/jpeg');
-
-        alternarModoVisual('chat');
-        adicionarMensagemUI('user', `📄 [Anexo Enviado: ${file.name}] - Mestre Jedi, por favor analise este documento judicial e identifique a situação e os dados necessários.`);
-        setDigitando(true, "Holocron Vision: Analisando documento com Gemini Multimodal...");
-
-        const promptAnalise = `Analise atentamente este documento judicial anexo (${file.name}).
-Sua tarefa é:
-1. Identificar o tipo do documento (despacho, intimação, sentença, extrato de bloqueio, certidão etc.).
-2. Identificar a Comarca, Vara, Número do Processo e Partes envolvidas.
-3. Se for uma situação que se enquadre em um dos modelos padrão do formulário manual (habilitacao, negativa_geral, desbloqueio, citacao_edital, intimacao_pessoal, penhora_sisbajud, oficio_localizar, inicial, contestacao_pai), extraia os campos para esse modelo.
-4. Retornar um JSON estrito com o seguinte formato:
-{
-  "ready": true,
-  "modelId": "nome_do_modelo_ou_dinamico",
-  "fields": {
-     // campos mapeados caso se aplique a um modelo manual
-  },
-  "resumo_documento": "resumo claro de 2 a 3 frases sobre o que o documento trata",
-  "orientacao_padawan": "orientação ao estagiário sobre a estratégia processual e próximos passos"
-}`;
-
-        try {
-            const rawResponse = await chamarGeminiAPI({
-                prompt: promptAnalise,
-                fileBase64: base64Data,
-                mimeType: mimeType,
-                jsonMode: true
-            });
-
-            let dados;
-            try {
-                dados = JSON.parse(rawResponse);
-            } catch (err) {
-                const match = rawResponse.match(/\{[\s\S]*\}/);
-                if (match) {
-                    dados = JSON.parse(match[0]);
-                } else {
-                    throw new Error("Não foi possível decodificar os dados extraídos pelo Holocron.");
-                }
-            }
-
-            setDigitando(false);
-
-            if (dados.modelId && dados.fields) {
-                const modelId = normalizarModelId(dados.modelId);
-                preencherFormularioManual(modelId, dados.fields);
-            }
-
-            const cardInfo = `
-                <div class="forja-sucesso-card" style="border-color: var(--jedi-gold);">
-                    <h4>🔮 Holocron Vision: Análise Concluída</h4>
-                    <p><strong>Síntese do Documento:</strong> ${dados.resumo_documento || 'Documento analisado com sucesso.'}</p>
-                    <p><strong>Estratégia Processual:</strong> ${dados.orientacao_padawan || 'Verifique os dados preenchidos no formulário.'}</p>
-                    <div style="display:flex; gap:10px; margin-top:10px;">
-                        <button type="button" class="btn-redownload" onclick="alternarModoVisual('manual')" style="background:linear-gradient(135deg, #1e3a8a, #0369a1); border-color:var(--jedi-cyan);">
-                            📜 Conferir no Formulário Manual
-                        </button>
-                    </div>
-                </div>
-            `;
-
-            adicionarMensagemUI('jedi', `Saudações, padawan! Analisei o documento **${file.name}** através da Visão Multimodal do Gemini. Todos os dados identificados foram lidos e processados pela Forja.`, cardInfo);
-
-        } catch (erro) {
-            console.error("Erro na Visão Holocron:", erro);
-            setDigitando(false);
-            adicionarMensagemUI('jedi', `Houve uma perturbação na Força ao tentar analisar o arquivo anexo: ${erro.message}`);
-        }
-    };
-    reader.readAsDataURL(file);
-}
-
-async function auditarCamposComGemini() {
-    const btn = document.getElementById('btnAuditar');
-    const container = document.getElementById('resultado_auditoria');
-    if (!container) return;
-
-    const apiKey = localStorage.getItem('jedi_gemini_api_key');
-    if (!apiKey) {
-        abrirModalConfigGemini();
-        alert("🛡️ AUDITOR DA FORÇA (GEMINI AI)\n\nPara auditar os requisitos da petição com inteligência artificial, configure sua chave da API Gemini.");
-        return;
-    }
-
-    const tipo = document.getElementById('tipo_peca').value;
-
-    const getVal = id => {
-        const el = document.getElementById(id);
-        return el ? el.value.trim() : "";
-    };
-
-    let campos = {};
-    if (tipo === 'habilitacao') {
-        campos = { vara: getVal('hab_vara'), competencia: getVal('hab_competencia'), numero: getVal('hab_numero'), nome_autor: getVal('hab_nome_autor'), cpf: getVal('hab_cpf'), rg: getVal('hab_rg'), endereco: getVal('hab_endereco'), valor_acordo: getVal('hab_valor_acordo') };
-    } else if (tipo === 'negativa_geral') {
-        campos = { vara: getVal('neg_vara'), competencia: getVal('neg_competencia'), numero: getVal('neg_numero'), nome_autor: getVal('neg_nome_autor'), cpf: getVal('neg_cpf') };
-    } else if (tipo === 'desbloqueio') {
-        campos = { vara: getVal('desb_vara'), competencia: getVal('desb_competencia'), numero: getVal('desb_numero'), nome_assistido: getVal('desb_nome_assistido'), titulo_da_acao: getVal('desb_titulo_da_acao'), nome_parte_contraria: getVal('desb_nome_parte_contraria'), banco: getVal('desb_banco'), valor_total_bloqueado: getVal('desb_valor_total_bloqueado'), natureza_verba: getVal('desb_natureza_verba'), valor_40_salarios_minimos: getVal('desb_valor_40_salarios_minimos') };
-    } else if (tipo === 'citacao_edital') {
-        campos = { vara: getVal('ced_vara'), competencia: getVal('ced_competencia'), numero: getVal('ced_numero'), nome_assistido: getVal('ced_nome_assistido'), decisao_despacho: getVal('ced_decisao_despacho') };
-    } else if (tipo === 'intimacao_pessoal') {
-        campos = { vara: getVal('int_vara'), competencia: getVal('int_competencia'), numero: getVal('int_numero'), nome_assistido: getVal('int_nome_assistido'), motivo_contato: getVal('int_motivo_contato') };
-    } else if (tipo === 'penhora_sisbajud') {
-        campos = { vara: getVal('sis_vara'), competencia: getVal('sis_competencia'), numero: getVal('sis_numero'), nome_crianca: getVal('sis_nome_crianca'), nome_mae: getVal('sis_nome_mae'), periodo_alimentos: getVal('sis_periodo_alimentos') };
-    } else if (tipo === 'oficio_localizar') {
-        campos = { vara: getVal('ofi_vara'), competencia: getVal('ofi_competencia'), numero: getVal('ofi_numero'), nome_assistido: getVal('ofi_nome_assistido') };
-    } else if (tipo === 'inicial') {
-        campos = { vara: getVal('ini_vara'), nome_autor: getVal('ini_nome_autor'), cpf: getVal('ini_cpf'), endereco: getVal('ini_endereco'), nome_requerido: getVal('ini_nome_requerido'), nome_filho: getVal('ini_nome_filho'), nascimento_filho: getVal('ini_nascimento_filho'), valor_causa: getVal('ini_valor_causa') };
-    } else if (tipo === 'contestacao_pai') {
-        campos = { vara: getVal('cpai_vara'), numero: getVal('cpai_numero'), nome_reu: getVal('cpai_nome_reu'), cpf: getVal('cpai_cpf'), nome_autor: getVal('cpai_nome_autor'), nomes_filhos: getVal('cpai_nomes_filhos'), renda_atual_requerido: getVal('cpai_renda_atual_requerido'), percentual_salario_minimo_proposto: getVal('cpai_percentual_salario_minimo_proposto') };
-    }
-
-    btn.disabled = true;
-    btn.innerHTML = '🔮 Consultando a Força...';
-    container.style.display = 'block';
-    container.className = 'resultado-auditoria-box';
-    container.innerHTML = '<div style="color:var(--jedi-cyan); text-align:center; padding:10px;">⚡ O Mestre Jedi está auditando os requisitos processuais do seu modelo...</div>';
-
-    const promptAuditoria = `Audite o preenchimento da peça jurídica abaixo segundo as regras do Código de Processo Civil (CPC/2015).
-
-Peça selecionada: "${tipo}"
-Dados preenchidos pelo padawan:
-${JSON.stringify(campos, null, 2)}
-
-Sua tarefa:
-1. Verificar se o número do processo segue o formato padrão CNJ (NNNNNNN-DD.AAAA.J.TR.OOOO).
-2. Verificar se faltam campos essenciais para a validade da petição (${tipo}).
-3. Avaliar requisitos específicos da peça (ex: no desbloqueio, se há indicação de proventos/40 salários mínimos impenhoráveis; na citação por edital, se houve esgotamento; na penhora, se o período dos alimentos foi informado).
-4. Retornar um JSON no formato:
-{
-  "status_geral": "EQUILIBRIO" ou "ALERTA",
-  "titulo": "Mensagem curta do Mestre Jedi",
-  "itens_checklist": [
-    { "status": "ok" ou "atencao" ou "erro", "descricao": "..." }
-  ],
-  "parecer_doutrinario": "Parágrafo com parecer técnico e recomendações práticas"
-}`;
-
-    try {
-        const rawJson = await chamarGeminiAPI({
-            prompt: promptAuditoria,
-            jsonMode: true
-        });
-
-        let resultado;
-        try {
-            resultado = JSON.parse(rawJson);
-        } catch (e) {
-            const m = rawJson.match(/\{[\s\S]*\}/);
-            resultado = m ? JSON.parse(m[0]) : { status_geral: "ALERTA", titulo: "Resultado da Auditoria", itens_checklist: [], parecer_doutrinario: rawJson };
-        }
-
-        const ehEquilibrio = resultado.status_geral === "EQUILIBRIO";
-
-        container.className = `resultado-auditoria-box ${ehEquilibrio ? 'equilibrio' : 'alerta'}`;
-        container.innerHTML = `
-            <h4>${ehEquilibrio ? '🛡️ A Força está em Equilíbrio nesta Peça!' : '⚠️ Perturbações Detectadas pelo Holocron'}</h4>
-            <div style="font-size:0.92em; margin-bottom:10px; color:${ehEquilibrio ? '#a7f3d0' : 'var(--jedi-gold-bright)'};">
-                ${resultado.titulo || 'Auditoria concluída com sucesso.'}
-            </div>
-            <ul class="auditoria-checklist">
-                ${(resultado.itens_checklist || []).map(item => `
-                    <li>
-                        <span>${item.status === 'ok' ? '✅' : (item.status === 'erro' ? '❌' : '⚠️')}</span>
-                        <span>${item.descricao}</span>
-                    </li>
-                `).join('')}
-            </ul>
-            <div class="auditoria-parecer">
-                <strong>📜 Parecer do Mestre Jedi:</strong><br>
-                ${resultado.parecer_doutrinario || 'Tudo pronto para protocolo.'}
-            </div>
-        `;
-
-    } catch (err) {
-        console.error("Erro na auditoria:", err);
-        container.className = 'resultado-auditoria-box alerta';
-        container.innerHTML = `<h4>⚠️ Falha na Auditoria</h4><p style="color:#fca5a5;">${err.message}</p>`;
-    } finally {
-        btn.disabled = false;
-        btn.innerHTML = '🛡️ Auditar Requisitos com a Força (Gemini AI)';
-    }
-}
-
-function configurarDragAndDrop() {
-    const banners = [
-        document.getElementById('banner_scanner_manual'),
-        document.getElementById('painel_chat')
-    ];
-
-    banners.forEach(el => {
-        if (!el) return;
-        ['dragenter', 'dragover'].forEach(eventName => {
-            el.addEventListener(eventName, (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                el.classList.add('dragover');
-            }, false);
-        });
-
-        ['dragleave', 'drop'].forEach(eventName => {
-            el.addEventListener(eventName, (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                el.classList.remove('dragover');
-            }, false);
-        });
-
-        el.addEventListener('drop', (e) => {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            if (files && files.length > 0) {
-                const fakeEvent = { target: { files: files, value: '' } };
-                processarArquivoComGemini(fakeEvent);
-            }
-        }, false);
-    });
-}
-
-async function gerarDocumentoDinamicoIA(dadosIA, padawan) {
-    const DocxConstructor = window.docxtemplater || window.Docxtemplater;
-    if (typeof PizZip === 'undefined' || typeof DocxConstructor === 'undefined') {
-        return { sucesso: false, erro: "Bibliotecas PizZip ou Docxtemplater não carregadas." };
-    }
-
-    audioForja.currentTime = 0;
-    audioForja.play().catch(erro => console.log("Erro de Áudio:", erro));
-
-    const paragrafosBrutos = Array.isArray(dadosIA.paragrafos) ? dadosIA.paragrafos : [];
-    const paragrafosFormatados = paragrafosBrutos
-        .map(p => (typeof p === 'string' ? { texto: p } : p))
-        .filter(p => p && p.texto && p.texto.trim() !== "");
-
-    if (paragrafosFormatados.length === 0) {
-        return { sucesso: false, erro: "A IA não retornou parágrafos válidos para montar o documento." };
-    }
-
-    const cliente = dadosIA.dados_cliente || {};
-    const nomeCliente = (cliente.nome_autor || "ASSISTIDO").toUpperCase();
-    const primeiroNome = nomeCliente.split(" ")[0] || "Cliente";
-
-    const dadosMolduraHabilitacao = {
-        modo_manual: false,
-        modo_ia: true,
-        paragrafos: paragrafosFormatados,
-        nome_bad_boy: padawan
-    };
-
-    const tituloLimpo = (dadosIA.titulo_peca || "Peticao_IA")
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^a-zA-Z0-9]+/g, "_")
-        .replace(/^_|_$/g, "")
-        .substring(0, 35) || "Peticao";
-
-    const arquivosParaGerar = [
-        {
-            id: tituloLimpo,
-            nomeArquivo: `${tituloLimpo}_${primeiroNome}.docx`,
-            caminho: 'modelos/habilitacao.docx',
-            dados: dadosMolduraHabilitacao
-        }
-    ];
-
-    if (dadosIA.incluir_anexos === true || dadosIA.incluir_anexos === "true") {
-        const dadosAnexos = {
-            nome_autor: nomeCliente,
-            nacionalidade: cliente.nacionalidade || "brasileiro(a)",
-            estado_civil: cliente.estado_civil || "solteiro(a)",
-            profissao: cliente.profissao || "autônomo(a)",
-            rg: cliente.rg || "",
-            cpf: cliente.cpf || "",
-            endereco: cliente.endereco || "",
-            nome_bad_boy: padawan
-        };
-
-        arquivosParaGerar.push(
-            {
-                id: 'Procuracao',
-                nomeArquivo: `Procuracao_${primeiroNome}.docx`,
-                caminho: 'modelos/procuracao.docx',
-                dados: dadosAnexos
-            },
-            {
-                id: 'Gratuidade',
-                nomeArquivo: `Gratuidade_${primeiroNome}.docx`,
-                caminho: 'modelos/gratuidade.docx',
-                dados: dadosAnexos
-            }
-        );
-    }
-
-    try {
-        for (const arq of arquivosParaGerar) {
-            const resposta = await fetch(arq.caminho);
-            if (!resposta.ok) {
-                throw new Error(`Arquivo base não encontrado no GitHub: ${arq.caminho}`);
-            }
-
-            const conteudoBinario = await resposta.arrayBuffer();
-            const zip = new PizZip(conteudoBinario);
-            const doc = new DocxConstructor(zip, { paragraphLoop: true, linebreaks: true });
-            doc.render(arq.dados);
-
-            const blobDocumento = doc.getZip().generate({
-                type: "blob",
-                mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-            });
-
-            saveAs(blobDocumento, arq.nomeArquivo);
-            await new Promise(resolve => setTimeout(resolve, 500));
-        }
-
-        return {
-            sucesso: true,
-            arquivos: arquivosParaGerar,
-            processo: dadosIA.numero_processo || "Não informado",
-            acao: dadosIA.titulo_peca || "Petição Dinâmica (IA)"
-        };
-    } catch (erro) {
-        console.error("Erro ao gerar documento dinâmico:", erro);
-        return { sucesso: false, erro: erro.message };
-    }
-}
-
-async function enviarMensagemChat() {
-    const input = document.getElementById('chat_input');
-    const btnEnviar = document.getElementById('btn_chat_enviar');
-    if (!input || !btnEnviar) return;
-
-    const textoUsuario = input.value.trim();
-    if (!textoUsuario) return;
-
-    if (textoUsuario.includes("66") || textoUsuario.toLowerCase().includes("ordem 66")) {
-        document.body.classList.add('sith-theme');
-    }
-
-    adicionarMensagemUI('user', textoUsuario);
-    input.value = '';
-    ajustarAlturaTextarea(input);
-
-    historicoChat.push({ role: "user", content: textoUsuario });
-
-    btnEnviar.disabled = true;
-    setDigitando(true);
-
-    // Rota Direta Gemini API (se chave estiver configurada no navegador)
-    const apiKey = localStorage.getItem('jedi_gemini_api_key');
-    if (apiKey) {
-        try {
-            const rawResposta = await chamarGeminiAPI({
-                prompt: textoUsuario,
-                historico: historicoChat.slice(0, -1)
-            });
-
-            setDigitando(false);
-
-            const matchIA = rawResposta.match(/```json_ia([\s\S]*?)```/);
-            let respostaMestre = rawResposta.replace(/```json_ia[\s\S]*?```/g, '').trim();
-
-            historicoChat.push({ role: "assistant", content: respostaMestre });
-
-            if (matchIA) {
-                let dadosJson;
-                try {
-                    dadosJson = JSON.parse(matchIA[1]);
-                } catch (e) {
-                    console.error("Erro ao analisar dados da IA:", e);
-                }
-
-                if (dadosJson && (dadosJson.ready === true || dadosJson.ready === "true")) {
-                    const nomeDigitadoInterno = obterPadawanAtual();
-                    const padawanAtual = (nomeDigitadoInterno || "PADAWAN").toUpperCase();
-
-                    if (!nomeDigitadoInterno || !nomeEhPadawan()) {
-                        if (ehNomeSith(nomeDigitadoInterno)) document.body.classList.add('sith-theme');
-                        adicionarMensagemUI('jedi', respostaMestre);
-                        adicionarMensagemUI('system', ehNomeSith(nomeDigitadoInterno)
-                            ? "🔴 Presença Sith detectada! Apenas os Padawans autorizados com nome completo no topo podem assinar e baixar peças."
-                            : "⚠️ Repita seu nome completo de Padawan autorizado no campo 'Identificação do Padawan' no topo e clique em Baixar ou peça para gerar novamente.");
-                        const campoInterno = document.getElementById('nome_bad_boy');
-                        if (campoInterno) campoInterno.focus();
-                        btnEnviar.disabled = false;
-                        atualizarBotao();
-                        return;
-                    }
-
-                    const resultadoForja = await gerarDocumentoDinamicoIA(dadosJson, padawanAtual);
-
-                    if (resultadoForja.sucesso) {
-                        ultimoPacoteIA = { dadosIA: dadosJson, padawan: padawanAtual };
-
-                        const cardSucesso = `
-                            <div class="forja-sucesso-card">
-                                <h4>🎉 ${dadosJson.titulo_peca || "Petição Forjada com Sucesso!"}</h4>
-                                <p><strong>Juízo:</strong> ${dadosJson.vara || "A distribuir"} • ${dadosJson.competencia || "Ribeirão Preto/SP"}</p>
-                                <div class="forja-pecas-lista">
-                                    ${resultadoForja.arquivos.map(a => `<span class="forja-peca-tag">📄 ${a.nomeArquivo}</span>`).join('')}
-                                </div>
-                                <button type="button" class="btn-redownload" onclick="baixarNovamenteIA()">
-                                    📥 Baixar Novamente
-                                </button>
-                            </div>
-                        `;
-
-                        adicionarMensagemUI('jedi', respostaMestre, cardSucesso);
-                        registrarLogPlanilha(
-                            padawanAtual,
-                            resultadoForja.processo,
-                            resultadoForja.acao,
-                            resultadoForja.arquivos.map(a => a.id).join(", ")
-                        );
-                    } else {
-                        adicionarMensagemUI('jedi', respostaMestre);
-                        adicionarMensagemUI('system', `⚠️ Erro ao montar o arquivo Word: ${resultadoForja.erro}`);
-                    }
-
-                    btnEnviar.disabled = false;
-                    input.focus();
-                    return;
-                }
-            }
-
-            adicionarMensagemUI('jedi', respostaMestre);
-            btnEnviar.disabled = false;
-            input.focus();
-            return;
-
-        } catch (errDirect) {
-            console.warn("Distúrbio na conexão direta com Gemini, tentando ponte Apps Script:", errDirect);
-        }
-    }
-
-    try {
-        const padawanAtual = (obterPadawanAtual() || "ESTAGIÁRIO(A)").toUpperCase();
-
-        const resposta = await fetch(URL_IA_JEDI, {
-            method: "POST",
-            body: JSON.stringify({
-                action: "chat",
-                padawan: padawanAtual,
-                messages: historicoChat
-            })
-        });
-
-        if (!resposta.ok) {
-            throw new Error(`O Holocron respondeu com código de erro: ${resposta.status}`);
-        }
-
-        const textoResposta = await resposta.text();
-        if (textoResposta.trim().startsWith("<")) {
-            throw new Error("O Google Apps Script retornou HTML em vez de JSON. Verifique se a implantação está publicada como 'Qualquer pessoa'.");
-        }
-
-        let dadosJson;
-        try {
-            dadosJson = JSON.parse(textoResposta);
-        } catch (e) {
-            dadosJson = { reply: textoResposta, ready: false };
-        }
-
-        const respostaMestre = dadosJson.reply || "A Força está em silêncio. Tente novamente.";
-        historicoChat.push({ role: "assistant", content: respostaMestre });
-        setDigitando(false);
-
-        if (dadosJson.ready === true || dadosJson.ready === "true") {
-            const nomeDigitadoInterno = obterPadawanAtual();
-            if (!nomeDigitadoInterno || !nomeEhPadawan()) {
-                if (ehNomeSith(nomeDigitadoInterno)) document.body.classList.add('sith-theme');
-                adicionarMensagemUI('jedi', respostaMestre);
-                adicionarMensagemUI('system', ehNomeSith(nomeDigitadoInterno)
-                    ? "🔴 Presença Sith detectada! Apenas os Padawans autorizados com nome completo no topo podem assinar e baixar peças."
-                    : "⚠️ Repita seu nome completo de Padawan autorizado no campo 'Identificação do Padawan' lá no topo e clique em Baixar ou peça para gerar novamente.");
-                const campoInterno = document.getElementById('nome_bad_boy');
-                if (campoInterno) campoInterno.focus();
-                btnEnviar.disabled = false;
-                atualizarBotao();
-                return;
-            }
-
-            const resultadoForja = await gerarDocumentoDinamicoIA(dadosJson, padawanAtual);
-
-            if (resultadoForja.sucesso) {
-                ultimoPacoteIA = { dadosIA: dadosJson, padawan: padawanAtual };
-
-                const cardSucesso = `
-                    <div class="forja-sucesso-card">
-                        <h4>🎉 ${dadosJson.titulo_peca || "Petição Forjada com Sucesso!"}</h4>
-                        <p><strong>Juízo:</strong> ${dadosJson.vara || "A distribuir"} • ${dadosJson.competencia || "Ribeirão Preto/SP"}</p>
-                        <div class="forja-pecas-lista">
-                            ${resultadoForja.arquivos.map(a => `<span class="forja-peca-tag">📄 ${a.nomeArquivo}</span>`).join('')}
-                        </div>
-                        <button type="button" class="btn-redownload" onclick="baixarNovamenteIA()">
-                            📥 Baixar Novamente
-                        </button>
-                    </div>
-                `;
-
-                adicionarMensagemUI('jedi', respostaMestre, cardSucesso);
-                registrarLogPlanilha(
-                    padawanAtual,
-                    resultadoForja.processo,
-                    resultadoForja.acao,
-                    resultadoForja.arquivos.map(a => a.id).join(", ")
-                );
-            } else {
-                adicionarMensagemUI('jedi', respostaMestre);
-                adicionarMensagemUI('system', `⚠️ Erro ao montar o arquivo Word: ${resultadoForja.erro}`);
-            }
-        } else {
-            adicionarMensagemUI('jedi', respostaMestre);
-        }
-
-    } catch (erro) {
-        console.error("Erro na comunicação com o Mestre Jedi:", erro);
-        setDigitando(false);
-        adicionarMensagemUI('jedi', "⚠️ " + erro.message);
-    } finally {
-        btnEnviar.disabled = false;
-        input.focus();
-    }
-}
-
-async function baixarNovamenteIA() {
-    const nomeDigitado = obterPadawanAtual();
-    if (!nomeEhPadawan()) {
-        if (ehNomeSith(nomeDigitado)) document.body.classList.add('sith-theme');
-        alert("🚧 ACESSO NEGADO (SITH BLOQUEADO) 🚧\n\nRepita seu nome completo de Padawan autorizado no campo 'Identificação do Padawan' no topo da página antes de baixar.");
-        const campoInterno = document.getElementById('nome_bad_boy');
-        if (campoInterno) campoInterno.focus();
-        return;
-    }
-    if (ultimoPacoteIA) {
-        const padawanConfirmado = nomeDigitado.toUpperCase();
-        await gerarDocumentoDinamicoIA(ultimoPacoteIA.dadosIA, padawanConfirmado);
-    }
-}
-
-// =====================================================================
-// MOTOR DO MODO FORMULÁRIO MANUAL (MANTIDO INTACTO)
+// MOTOR DE GERAÇÃO DE DOCUMENTOS (.DOCX)
 // =====================================================================
 async function executarGeracaoDocumentosManual(tipo, fields, padawan) {
     let arquivosSelecionados = [];
@@ -3030,6 +1222,50 @@ async function executarGeracaoDocumentosManual(tipo, fields, padawan) {
             { id: 'Habilitacao', caminho: 'modelos/habilitacao.docx', dados: dadosPrincipal },
             { id: 'Procuracao', caminho: 'modelos/procuracao.docx', dados: dadosCliente },
             { id: 'Gratuidade', caminho: 'modelos/gratuidade.docx', dados: dadosCliente }
+        ];
+
+    } else if (tipo === 'procuracao_gratuidade') {
+        dadosCliente = {
+            nome_autor: (fields.nome_autor || "PARTE").toUpperCase(),
+            nacionalidade: fields.nacionalidade || "brasileiro(a)",
+            estado_civil: fields.estado_civil || "solteiro(a)",
+            profissao: fields.profissao || "autônomo(a)",
+            rg: fields.rg || "",
+            cpf: fields.cpf || "",
+            endereco: fields.endereco || "",
+            nome_bad_boy: padawan
+        };
+        nomeBase = dadosCliente.nome_autor ? dadosCliente.nome_autor.split(" ")[0] : "Cliente";
+        processoPlanilha = "Não informado";
+        acaoPlanilha = "Procuração e Gratuidade";
+        arquivosSelecionados = [
+            { id: 'Procuracao', caminho: 'modelos/procuracao.docx', dados: dadosCliente },
+            { id: 'Gratuidade', caminho: 'modelos/gratuidade.docx', dados: dadosCliente }
+        ];
+
+    } else if (tipo === 'procuracao_menor') {
+        const nomeCrianca = (fields.nome_crianca || "MENOR").trim().toUpperCase();
+        const cpfCrianca = (fields.cpf_crianca || "").trim();
+        const nomeMae = (fields.nome_mae || "REPRESENTANTE").trim().toUpperCase();
+
+        const trechoCpfCrianca = cpfCrianca ? `, inscrito(a) no CPF sob o nº ${cpfCrianca}` : "";
+        const qualificacaoCompletaMenor = `${nomeCrianca}${trechoCpfCrianca}, neste ato representado(a) por ${nomeMae}`;
+
+        dadosPrincipal = {
+            nome_autor: qualificacaoCompletaMenor,
+            nacionalidade: fields.nacionalidade || "brasileira",
+            estado_civil: fields.estado_civil || "solteira",
+            profissao: fields.profissao || "autônoma",
+            rg: fields.rg || "",
+            cpf: fields.cpf || "",
+            endereco: fields.endereco || "",
+            nome_bad_boy: padawan
+        };
+        nomeBase = nomeCrianca ? nomeCrianca.split(" ")[0] : "Menor";
+        processoPlanilha = "Não informado";
+        acaoPlanilha = "Procuração (Menor)";
+        arquivosSelecionados = [
+            { id: 'Procuracao', caminho: 'modelos/procuracao.docx', dados: dadosPrincipal }
         ];
 
     } else if (tipo === 'negativa_geral') {
@@ -3300,6 +1536,21 @@ async function gerarDocumentos() {
             rg: getVal('hab_rg'), cpf: getVal('hab_cpf'), endereco: getVal('hab_endereco'),
             valor_acordo: getVal('hab_valor_acordo'), nome_bad_boy: padawan
         };
+    } else if (tipo === 'procuracao_gratuidade') {
+        fields = {
+            nome_autor: getVal('pg_nome_autor'), nacionalidade: getVal('pg_nacionalidade'),
+            estado_civil: getVal('pg_estado_civil'), profissao: getVal('pg_profissao'),
+            rg: getVal('pg_rg'), cpf: getVal('pg_cpf'), endereco: getVal('pg_endereco'),
+            nome_bad_boy: padawan
+        };
+    } else if (tipo === 'procuracao_menor') {
+        fields = {
+            nome_crianca: getVal('pm_nome_crianca'), cpf_crianca: getVal('pm_cpf_crianca'),
+            nome_mae: getVal('pm_nome_mae'), nacionalidade: getVal('pm_nacionalidade'),
+            estado_civil: getVal('pm_estado_civil'), profissao: getVal('pm_profissao'),
+            rg: getVal('pm_rg'), cpf: getVal('pm_cpf'), endereco: getVal('pm_endereco'),
+            nome_bad_boy: padawan
+        };
     } else if (tipo === 'negativa_geral') {
         fields = {
             vara: getVal('neg_vara'), competencia: getVal('neg_competencia'), numero: getVal('neg_numero'),
@@ -3420,7 +1671,6 @@ async function gerarDocumentos() {
 }
 
 window.validarEntradaPortal = validarEntradaPortal;
-window.alternarModoVisual = alternarModoVisual;
 window.alternarFormulario = alternarFormulario;
 window.revelarSegredo = revelarSegredo;
 window.normalizar = normalizar;
@@ -3432,31 +1682,11 @@ window.atualizarBotao = atualizarBotao;
 window.verificarOrdem66 = verificarOrdem66;
 window.gerarDocumentos = gerarDocumentos;
 window.limparTimerCafe = limparTimerCafe;
-window.reiniciarChat = reiniciarChat;
-window.enviarMensagemChat = enviarMensagemChat;
-window.tratarTeclaChat = tratarTeclaChat;
-window.ajustarAlturaTextarea = ajustarAlturaTextarea;
-window.aplicarPromptChip = aplicarPromptChip;
-window.baixarNovamenteIA = baixarNovamenteIA;
-window.abrirModalConfigGemini = abrirModalConfigGemini;
-window.fecharModalConfigGemini = fecharModalConfigGemini;
-window.salvarConfigGemini = salvarConfigGemini;
-window.testarConexaoGemini = testarConexaoGemini;
-window.atualizarStatusBotaoGemini = atualizarStatusBotaoGemini;
-window.acionarUploadArquivo = acionarUploadArquivo;
-window.ouvirMensagemMestre = ouvirMensagemMestre;
-window.chamarGeminiAPI = chamarGeminiAPI;
-window.processarArquivoComGemini = processarArquivoComGemini;
-window.auditarCamposComGemini = auditarCamposComGemini;
-window.configurarDragAndDrop = configurarDragAndDrop;
 
 document.addEventListener('DOMContentLoaded', () => {
     alternarFormulario();
     atualizarBotao();
     inicializarEasterEggCafe();
-    reiniciarChat();
-    atualizarStatusBotaoGemini();
-    configurarDragAndDrop();
     const portalInput = document.getElementById('portal_nome_input');
     if (portalInput) portalInput.focus();
 });
