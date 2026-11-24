@@ -1145,13 +1145,13 @@
         <h1 class="portal-titulo">Ordem Jedi • Escritório de Assistência Jurídica</h1>
         <p class="portal-subtitulo">
             Alto lá, viajante! Apenas <strong>Padawans autorizados</strong> podem acessar a Forja.<br>
-            Informe seu nome para iniciar o salto:
+            Informe seu nome completo para iniciar o salto:
         </p>
         <input 
             type="text" 
             id="portal_nome_input" 
             class="portal-input" 
-            placeholder="Digite seu nome de Padawan..." 
+            placeholder="Digite seu nome completo de Padawan..." 
             autocomplete="off"
             onkeydown="if(event.key === 'Enter'){ event.preventDefault(); validarEntradaPortal(); }">
         <button type="button" id="btn_entrar_portal" onclick="validarEntradaPortal()">
@@ -1192,15 +1192,15 @@
             <div class="padawan-auth-header">
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <span>⚔️</span>
-                    <label for="nome_bad_boy">IDENTIFICAÇÃO DO PADAWAN (CONFIRME SEU NOME PARA FORJAR)</label>
+                    <label for="nome_bad_boy">IDENTIFICAÇÃO DO PADAWAN (CONFIRME SEU NOME COMPLETO PARA FORJAR)</label>
                 </div>
                 <button type="button" id="btn_gemini_config" class="btn-api-settings" onclick="abrirModalConfigGemini()" title="Configurações da Conexão Gemini AI">
                     ⚡ Conectar Gemini API
                 </button>
             </div>
             <div class="padawan-auth-body">
-                <input type="text" id="nome_bad_boy" placeholder="Repita seu nome de Padawan para assinar as peças..." oninput="atualizarBotao()">
-                <div id="padawan_badge" class="padawan-badge-status vazio">⚠️ Repita seu nome para forjar</div>
+                <input type="text" id="nome_bad_boy" placeholder="Repita seu nome completo de Padawan para assinar as peças..." oninput="atualizarBotao()">
+                <div id="padawan_badge" class="padawan-badge-status vazio">⚠️ Repita seu nome completo para forjar</div>
             </div>
         </div>
 
@@ -1688,12 +1688,39 @@ function revelarSegredo() {
 
 const TEXTO_BOTAO_PADRAO = "Forjar Petições";
 const TEXTO_NAO_PADAWAN = "não acho que você seja um padawan";
-const PADAWANS = ["joao", "miguel", "chueng", "filipe", "colus", "bruna", "pedro", "marco", "gabriel", "helena", "ilayla"];
-const SITHS = ["diogo", "beatriz", "hugo", "heitor", "luiz", "leonardo", "marina", "luiza"];
+
+// LISTA EXCLUSIVA DE PADAWANS AUTORIZADOS (NOMES COMPLETOS)
+// Qualquer pessoa fora desta lista é automaticamente considerada um Sith!
+const PADAWANS = [
+    "joao miguel fontes chueng",
+    "filipe eduardo maglio colus",
+    "pedro otavio torrieri",
+    "bruna morello palazzo",
+    "jennyfer amaro",
+    "helena ballera",
+    "marco aurelio"
+];
 
 function normalizar(texto) {
     if (!texto) return "";
-    return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    return texto
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, " ");
+}
+
+function ehNomePadawanValido(texto) {
+    const nomeNorm = normalizar(texto);
+    if (!nomeNorm) return false;
+    return PADAWANS.includes(nomeNorm);
+}
+
+function ehNomeSith(texto) {
+    const nomeNorm = normalizar(texto);
+    if (!nomeNorm) return false;
+    return !PADAWANS.includes(nomeNorm);
 }
 
 // =====================================================================
@@ -1719,29 +1746,21 @@ function validarEntradaPortal() {
 
     if (nomeNorm === "") {
         feedback.className = 'portal-feedback erro-padawan';
-        feedback.innerText = "⚠️ Identifique-se primeiro, jovem Padawan. O portal não abre sem seu nome.";
+        feedback.innerText = "⚠️ Identifique-se primeiro, jovem Padawan. O portal não abre sem seu nome completo.";
         if (input) input.focus();
         return;
     }
 
-    const ehSith = SITHS.some(sith => nomeNorm.includes(sith));
-    if (ehSith) {
+    // Qualquer nome que não esteja na lista oficial de Padawans é considerado Sith
+    if (!ehNomePadawanValido(nomeDigitado)) {
         cardBox.classList.add('portal-sith-alerta');
         btnEntrar.classList.add('sith-mode');
         feedback.className = 'portal-feedback erro-sith';
-        feedback.innerHTML = "🔴 PERTURBAÇÃO NA FORÇA! Presença Sith detectada.<br>O acesso à Forja está terminantemente bloqueado para o Lado Sombrio!";
+        feedback.innerHTML = "🔴 PERTURBAÇÃO NA FORÇA! Presença Sith detectada.<br>Seu nome não consta nos arquivos do Templo Jedi. O acesso à Forja está bloqueado para o Lado Sombrio!";
         if (input) {
             input.value = "";
             input.focus();
         }
-        return;
-    }
-
-    const ehPadawan = PADAWANS.some(padawan => nomeNorm.includes(padawan));
-    if (!ehPadawan) {
-        feedback.className = 'portal-feedback erro-padawan';
-        feedback.innerHTML = "⛔ Nome não encontrado nos arquivos do Templo Jedi.<br>Apenas Padawans autorizados podem atravessar este portal.";
-        if (input) input.focus();
         return;
     }
 
@@ -1767,11 +1786,7 @@ function validarEntradaPortal() {
 function nomeEhPadawan() {
     const input = document.getElementById('nome_bad_boy');
     if (!input) return false;
-    const nome = normalizar(input.value.trim());
-    if (nome === "") return false;
-    const ehSith = SITHS.some(sith => nome.includes(sith));
-    if (ehSith) return false;
-    return PADAWANS.some(padawan => nome.includes(padawan));
+    return ehNomePadawanValido(input.value);
 }
 
 function obterPadawanAtual() {
@@ -1796,8 +1811,7 @@ function verificarOrdem66Ativa() {
         document.body.classList.add('sith-theme');
     } else {
         const input = document.getElementById('nome_bad_boy');
-        const nome = normalizar(input ? input.value.trim() : "");
-        const ehSith = SITHS.some(sith => nome.includes(sith));
+        const ehSith = ehNomeSith(input ? input.value : "");
         if (!ehSith) document.body.classList.remove('sith-theme');
     }
 }
@@ -1810,9 +1824,8 @@ function atualizarBotao() {
     if (!input) return;
 
     const valorOriginal = input.value.trim();
-    const nome = normalizar(valorOriginal);
-    const ehSith = SITHS.some(sith => nome.includes(sith));
-    const ehPadawan = nomeEhPadawan();
+    const ehPadawan = ehNomePadawanValido(valorOriginal);
+    const ehSith = ehNomeSith(valorOriginal);
 
     if (botaoManual) botaoManual.classList.toggle('sith-mode', ehSith);
     if (botaoChat) botaoChat.classList.toggle('sith-mode', ehSith);
@@ -1827,13 +1840,10 @@ function atualizarBotao() {
         if (badge) {
             if (valorOriginal === '') {
                 badge.className = 'padawan-badge-status vazio';
-                badge.innerHTML = '⚠️ Repita seu nome para forjar';
-            } else if (ehPadawan) {
+                badge.innerHTML = '⚠️ Repita seu nome completo para forjar';
+            } else {
                 badge.className = 'padawan-badge-status padawan';
                 badge.innerHTML = `🟢 Padawan Confirmado: <strong>${valorOriginal}</strong>`;
-            } else {
-                badge.className = 'padawan-badge-status sith';
-                badge.innerHTML = '⛔ Nome não consta na Ordem Jedi';
             }
         }
         verificarOrdem66Ativa();
@@ -1857,8 +1867,7 @@ function verificarOrdem66(inputEl) {
         }, 500);
     } else {
         const input = document.getElementById('nome_bad_boy');
-        const nome = normalizar(input ? input.value.trim() : "");
-        const ehSith = SITHS.some(sith => nome.includes(sith));
+        const ehSith = ehNomeSith(input ? input.value : "");
         if (!ehSith) document.body.classList.remove('sith-theme');
     }
 }
@@ -1900,7 +1909,7 @@ Estou pronto para ajudar de duas formas:
 1. **Tirar dúvidas jurídicas ou processuais** sobre qualquer caso do escritório;
 2. **Redigir petições completas e personalizadas** (iniciais, contestações, pedidos intermediários ou novas teses/tópicos criados livremente).
 
-Lembre-se de repetir seu nome no campo **Identificação do Padawan** acima para liberar a assinatura e o download das peças! Conte-me sua dúvida ou cole os dados do atendimento abaixo.`;
+Lembre-se de repetir seu nome completo no campo **Identificação do Padawan** acima para liberar a assinatura e o download das peças! Conte-me sua dúvida ou cole os dados do atendimento abaixo.`;
 
 function ajustarAlturaTextarea(textarea) {
     textarea.style.height = 'auto';
@@ -2012,11 +2021,11 @@ Você ajuda e orienta estagiários (padawans) de Direito a tirarem dúvidas jur�
 
 DIRETRIZES DE ATUAÇÃO (SEM LIMITADORES RÍGIDOS):
 1. LIBERDADE DE CRIAÇÃO E REDAÇÃO: Você NÃO está restrito a modelos engessados. Você pode responder dúvidas práticas ou teóricas sobre o caso, criar novas teses, redigir petições completas (iniciais, contestações, pedidos de desbloqueio, agravos, embargos, petições intermediárias) com a estrutura formal do CPC:
-   - Endereçamento (ex: EXCELENTÍSSIMO SENHOR DOUTOR JUIZ DE DIREITO DA ... VARA CÍVEL / DE FAMÍLIA E SUCESSÕES DA COMARCA DE RIBEIRÃO PRETO/SP)
-   - Qualificação completa das partes
-   - Fatos bem narrados
-   - Fundamentação jurídica sólida (legislação aplicável e jurisprudência pacífica)
-   - Pedidos claros e requerimentos finais (citação, gratuidade da justiça, produção de provas).
+  - Endereçamento (ex: EXCELENTÍSSIMO SENHOR DOUTOR JUIZ DE DIREITO DA ... VARA CÍVEL / DE FAMÍLIA E SUCESSÕES DA COMARCA DE RIBEIRÃO PRETO/SP)
+  - Qualificação completa das partes
+  - Fatos bem narrados
+  - Fundamentação jurídica sólida (legislação aplicável e jurisprudência pacífica)
+  - Pedidos claros e requerimentos finais (citação, gratuidade da justiça, produção de provas).
 
 2. GERAÇÃO DINÂMICA DO DOCUMENTO WORD (.docx):
 Quando o usuário solicitar a redação/forja da petição e você tiver reunido os fatos e dados necessários (ou quando ele pedir "redija a petição", "gere o documento", "forjar peça"), forneça um resumo ao padawan e inclua no final da resposta um bloco JSON delimitado exatamente por:
@@ -2809,11 +2818,15 @@ async function enviarMensagemChat() {
                 }
 
                 if (dadosJson && (dadosJson.ready === true || dadosJson.ready === "true")) {
-                    const padawanAtual = (obterPadawanAtual() || "PADAWAN").toUpperCase();
+                    const nomeDigitadoInterno = obterPadawanAtual();
+                    const padawanAtual = (nomeDigitadoInterno || "PADAWAN").toUpperCase();
 
-                    if (!obterPadawanAtual() || !nomeEhPadawan()) {
+                    if (!nomeDigitadoInterno || !nomeEhPadawan()) {
+                        if (ehNomeSith(nomeDigitadoInterno)) document.body.classList.add('sith-theme');
                         adicionarMensagemUI('jedi', respostaMestre);
-                        adicionarMensagemUI('system', "⚠️ Repita seu nome de Padawan autorizado no campo 'Identificação do Padawan' no topo e clique em Baixar ou peça para gerar novamente.");
+                        adicionarMensagemUI('system', ehNomeSith(nomeDigitadoInterno)
+                            ? "🔴 Presença Sith detectada! Apenas os Padawans autorizados com nome completo no topo podem assinar e baixar peças."
+                            : "⚠️ Repita seu nome completo de Padawan autorizado no campo 'Identificação do Padawan' no topo e clique em Baixar ou peça para gerar novamente.");
                         const campoInterno = document.getElementById('nome_bad_boy');
                         if (campoInterno) campoInterno.focus();
                         btnEnviar.disabled = false;
@@ -2864,7 +2877,6 @@ async function enviarMensagemChat() {
 
         } catch (errDirect) {
             console.warn("Distúrbio na conexão direta com Gemini, tentando ponte Apps Script:", errDirect);
-            // Continua para o fetch(URL_IA_JEDI) abaixo como fallback
         }
     }
 
@@ -2903,8 +2915,11 @@ async function enviarMensagemChat() {
         if (dadosJson.ready === true || dadosJson.ready === "true") {
             const nomeDigitadoInterno = obterPadawanAtual();
             if (!nomeDigitadoInterno || !nomeEhPadawan()) {
+                if (ehNomeSith(nomeDigitadoInterno)) document.body.classList.add('sith-theme');
                 adicionarMensagemUI('jedi', respostaMestre);
-                adicionarMensagemUI('system', "⚠️ Repita seu nome de Padawan autorizado no campo 'Identificação do Padawan' lá no topo e clique em Baixar ou peça para gerar novamente.");
+                adicionarMensagemUI('system', ehNomeSith(nomeDigitadoInterno)
+                    ? "🔴 Presença Sith detectada! Apenas os Padawans autorizados com nome completo no topo podem assinar e baixar peças."
+                    : "⚠️ Repita seu nome completo de Padawan autorizado no campo 'Identificação do Padawan' lá no topo e clique em Baixar ou peça para gerar novamente.");
                 const campoInterno = document.getElementById('nome_bad_boy');
                 if (campoInterno) campoInterno.focus();
                 btnEnviar.disabled = false;
@@ -2956,14 +2971,16 @@ async function enviarMensagemChat() {
 }
 
 async function baixarNovamenteIA() {
+    const nomeDigitado = obterPadawanAtual();
     if (!nomeEhPadawan()) {
-        alert("⚠️ Repita seu nome de Padawan autorizado no campo 'Identificação do Padawan' no topo da página antes de baixar.");
+        if (ehNomeSith(nomeDigitado)) document.body.classList.add('sith-theme');
+        alert("🚧 ACESSO NEGADO (SITH BLOQUEADO) 🚧\n\nRepita seu nome completo de Padawan autorizado no campo 'Identificação do Padawan' no topo da página antes de baixar.");
         const campoInterno = document.getElementById('nome_bad_boy');
         if (campoInterno) campoInterno.focus();
         return;
     }
     if (ultimoPacoteIA) {
-        const padawanConfirmado = obterPadawanAtual().toUpperCase();
+        const padawanConfirmado = nomeDigitado.toUpperCase();
         await gerarDocumentoDinamicoIA(ultimoPacoteIA.dadosIA, padawanConfirmado);
     }
 }
@@ -3253,10 +3270,11 @@ async function gerarDocumentos() {
     const nomeDigitado = obterPadawanAtual();
 
     if (!nomeDigitado || !nomeEhPadawan()) {
-        const nomeNorm = normalizar(nomeDigitado);
-        const ehSith = SITHS.some(sith => nomeNorm.includes(sith));
+        const ehSith = ehNomeSith(nomeDigitado);
         if (ehSith) document.body.classList.add('sith-theme');
-        alert("🚧 ACESSO NEGADO 🚧\n\nVocê precisa repetir seu nome de Padawan autorizado no campo 'Identificação do Padawan' lá no topo (e não pode ser um Sith!) para forjar documentos.");
+        alert(ehSith
+            ? "🔴 PERTURBAÇÃO NA FORÇA (SITH DETECTADO) 🔴\n\nApenas os Padawans autorizados com nome completo no campo 'Identificação do Padawan' podem forjar documentos!"
+            : "🚧 ACESSO NEGADO 🚧\n\nVocê precisa repetir seu nome completo de Padawan autorizado no campo 'Identificação do Padawan' lá no topo para forjar documentos.");
         const campoInterno = document.getElementById('nome_bad_boy');
         if (campoInterno) campoInterno.focus();
         return;
@@ -3406,6 +3424,8 @@ window.alternarModoVisual = alternarModoVisual;
 window.alternarFormulario = alternarFormulario;
 window.revelarSegredo = revelarSegredo;
 window.normalizar = normalizar;
+window.ehNomePadawanValido = ehNomePadawanValido;
+window.ehNomeSith = ehNomeSith;
 window.nomeEhPadawan = nomeEhPadawan;
 window.obterPadawanAtual = obterPadawanAtual;
 window.atualizarBotao = atualizarBotao;
